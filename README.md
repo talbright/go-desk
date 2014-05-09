@@ -1,4 +1,4 @@
 go-desk
 =======
 
-Desk.com APIv2 client implementation in Go
+Experimental Desk.com APIv2 client implementation in Go.
