@@ -3,6 +3,7 @@ package desk
 import (
 	"fmt"
   "net/http"
+  /* "log" */
 )
 
 type CasesService struct {
@@ -10,9 +11,13 @@ type CasesService struct {
 }
 
 type Case struct {
-	ID            *string                   `json:"id,omitempty"`
+	ID            *int                      `json:"id,omitempty"`
 	Type          *string                   `json:"type,omitempty"`
 	Status        *string                   `json:"status,omitempty"`
+}
+
+func (c Case) String() string {
+	return Stringify(c)
 }
 
 func (s *CasesService) Get(id string) (*Case, *http.Response, error) {
@@ -23,6 +28,9 @@ func (s *CasesService) Get(id string) (*Case, *http.Response, error) {
 	}
 	cse := new(Case)
 	resp, err := s.client.Do(req, cse)
+  /* var v map[string]interface{} */
+	/* resp, err := s.client.Do(req, &v) */
+  /* log.Printf("response %v",v)  */
 	if err != nil {
 		return nil, resp, err
 	}

@@ -26,6 +26,8 @@ const (
 type Client struct {
 	client        *http.Client
   BaseURL       *url.URL
+  UserEmail     string
+  UserPassword  string
 	Cases         *CasesService
 }
 
@@ -35,12 +37,12 @@ func init() {
 	log.Printf("Desk client library (%v) for desk.com API %v\n",DeskLibVersion,DeskApiVersion)
 }
 
-func NewClient(httpClient *http.Client,endpointURL string) *Client {
+func NewClient(httpClient *http.Client,endpointURL string,userEmail string,userPassword string) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
 	baseURL, _ := url.Parse(fmt.Sprintf("%s/api/%s/",endpointURL,DeskApiVersion))
-	c := &Client{client: httpClient, BaseURL: baseURL}
+	c := &Client{client: httpClient, BaseURL: baseURL, UserEmail: userEmail, UserPassword: userPassword}
 	c.Cases = &CasesService{client: c}
 	return c
 }
@@ -53,7 +55,6 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	}
 
 	u := c.BaseURL.ResolveReference(rel)
-  /* log.Printf("rel: %v, url: %v u: %v",rel,urlStr,u) */
 
 	buf := new(bytes.Buffer)
 	if body != nil {
@@ -64,6 +65,8 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	}
 
 	req, err := http.NewRequest(method, u.String(), buf)
+  log.Printf("setting basic auth: %v/%v",c.UserEmail,c.UserPassword)
+  req.SetBasicAuth(c.UserEmail,c.UserPassword)
 	if err != nil {
 		return nil, err
 	}
