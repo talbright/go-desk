@@ -65,7 +65,6 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	}
 
 	req, err := http.NewRequest(method, u.String(), buf)
-  log.Printf("setting basic auth: %v/%v",c.UserEmail,c.UserPassword)
   req.SetBasicAuth(c.UserEmail,c.UserPassword)
 	if err != nil {
 		return nil, err
@@ -82,6 +81,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 // interface, the raw response body will be written to v, without attempting to
 // first decode it.
 func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
+  log.Printf("Do %v",req)
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
