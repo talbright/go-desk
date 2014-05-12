@@ -12,7 +12,7 @@ func main() {
   userPassword := flag.String("password", "", "password for authentication") 
   flag.Parse()
   client := desk.NewClient(nil,*siteUrl,*userEmail,*userPassword)
-  cse,_,err := client.Cases.Get("1")
+  cse,_,err := client.Case.Get("1")
   if err != nil {
 		fmt.Printf("error: %v\n\n", err)
 	} else {

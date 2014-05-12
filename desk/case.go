@@ -1,18 +1,8 @@
 package desk
 
-import (
-	"fmt"
-  "net/http"
-  /* "log" */
-)
-
-type CasesService struct {
-	client *Client
-}
-
 type Case struct {
 	ID              *int                      `json:"id,omitempty"`
-	ExternalID      *int                      `json:"external_id,omitempty"`
+	ExternalID      *string                   `json:"external_id,omitempty"`
   Links           map[string]interface{}    `json:"links,omitempty"` 
 	Type            *string                   `json:"type,omitempty"`
 	Status          *string                   `json:"status,omitempty"`
@@ -35,24 +25,5 @@ type Case struct {
 
 func (c Case) String() string {
 	return Stringify(c)
-}
-
-func (s *CasesService) Get(id string) (*Case, *http.Response, error) {
-	u := fmt.Sprintf("cases/%v", id)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-	cse := new(Case)
-	resp, err := s.client.Do(req, cse)
-  //For posterity sake leaving here...an example of making a request
-  //and dumping it into a generic map
-  //var v map[string]interface{} 
-	//resp, err := s.client.Do(req, &v) 
-  //log.Printf("response %v",v)  
-	if err != nil {
-		return nil, resp, err
-	}
-	return cse, resp, err
 }
 
