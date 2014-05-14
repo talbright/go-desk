@@ -29,6 +29,7 @@ type Client struct {
   UserEmail     string
   UserPassword  string
 	Case          *CaseService
+  Customer      *CustomerService
 }
 
 func init() {
@@ -44,6 +45,7 @@ func NewClient(httpClient *http.Client,endpointURL string,userEmail string,userP
 	baseURL, _ := url.Parse(fmt.Sprintf("%s/api/%s/",endpointURL,DeskApiVersion))
 	c := &Client{client: httpClient, BaseURL: baseURL, UserEmail: userEmail, UserPassword: userPassword}
 	c.Case = &CaseService{client: c}
+	c.Customer = &CustomerService{client: c}
 	return c
 }
 

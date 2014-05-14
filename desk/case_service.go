@@ -3,7 +3,8 @@ package desk
 import (
 	"fmt"
   "net/http"
-  /* "log" */
+  "net/url"
+  "encoding/json"
 )
 
 type CaseService struct {
@@ -11,8 +12,8 @@ type CaseService struct {
 }
 
 func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
-	u := fmt.Sprintf("cases/%v", id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	path := fmt.Sprintf("cases/%v", id)
+	req, err := s.client.NewRequest("GET", path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -29,7 +30,31 @@ func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 	return cse, resp, err
 }
 
-func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
+func (s *CaseService) Create(cse *Case,customer *Customer,message *Message) (*Case, *http.Response, error) {
   return nil,nil,nil
 }
+
+func (s *CaseService) List(params *url.Values) (*Collection,*http.Response,error) {
+  path := fmt.Sprintf("cases") 
+  if params != nil && len(*params)>0 {
+    path = fmt.Sprintf("%v?%v",path,params.Encode())
+  }
+  req, err := s.client.NewRequest("GET",path,nil)
+  collection := new(Collection)
+	resp, err := s.client.Do(req, collection)
+  if err != nil {
+    return nil,resp,err
+  }
+  cases := new([]Case)
+  err = json.Unmarshal(*collection.Embed.RawEntries,&cases)
+  if err != nil {
+    return nil,resp,err
+  }
+  collection.Embed.Entries = make([]interface{},len(*cases))
+  for i,v := range *cases {
+    collection.Embed.Entries[i] = interface{}(v)
+  }
+  collection.Embed.RawEntries = nil
+  return collection,resp,err
+} 
 

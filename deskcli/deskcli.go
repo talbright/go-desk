@@ -3,6 +3,7 @@ package main
 import (
   "fmt"
   "flag"
+  "net/url"
   "github.com/talbright/go-desk/desk"
 )
 
@@ -12,11 +13,20 @@ func main() {
   userPassword := flag.String("password", "", "password for authentication") 
   flag.Parse()
   client := desk.NewClient(nil,*siteUrl,*userEmail,*userPassword)
-  cse,_,err := client.Case.Get("1")
+  // cse,_,err := client.Case.Get("1")
+  // if err != nil {
+	// 	fmt.Printf("error: %v\n\n", err)
+	// } else {
+	// 	fmt.Printf("%v\n\n",cse.String())
+	// }
+  searchParams := url.Values{}
+  searchParams.Add("sort_field","created_at")
+  searchParams.Add("sort_direction","asc")
+  collection,_,err := client.Case.List(&searchParams)
   if err != nil {
 		fmt.Printf("error: %v\n\n", err)
 	} else {
-		fmt.Printf("%v\n\n",cse.String())
-	}
+    fmt.Printf("%v\n\n",collection.String()) 
+  } 
 }
 

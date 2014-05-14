@@ -3,7 +3,7 @@ package desk
 type Case struct {
 	ID              *int                      `json:"id,omitempty"`
 	ExternalID      *string                   `json:"external_id,omitempty"`
-  Links           map[string]interface{}    `json:"links,omitempty"` 
+  Links           *map[string]interface{}   `json:"_links,omitempty"` 
 	Type            *string                   `json:"type,omitempty"`
 	Status          *string                   `json:"status,omitempty"`
 	Description     *string                   `json:"description,omitempty"`
@@ -11,7 +11,7 @@ type Case struct {
 	Blurb           *string                   `json:"blurb,omitempty"`
 	Language        *string                   `json:"language,omitempty"`
 	Priority        *int                      `json:"priority,omitempty"`
-  CustomFields    map[string]interface{}    `json:"custom_fields,omitempty"` 
+  CustomFields    *map[string]interface{}   `json:"custom_fields,omitempty"` 
   LockedUntil     *Timestamp                `json:"locked_until",omitempty`
   CreatedAt       *Timestamp                `json:"created_at,omitempty"`
   UpdatedAt       *Timestamp                `json:"updated_at,omitempty"`
