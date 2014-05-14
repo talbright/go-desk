@@ -7,42 +7,41 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
-  "log"
 	/* "reflect" */
 	/* "strconv" */
 	/* "strings" */
-	/* "time" */
-)
+	/* "time" */)
 
 const (
-  DeskLibVersion      = "0.1"
-	DeskApiVersion      = "v2"
-	DeskHost            = "desk.com"
-	DeskUserAgent       = "go-desk/" + DeskLibVersion
+	DeskLibVersion = "0.1"
+	DeskApiVersion = "v2"
+	DeskHost       = "desk.com"
+	DeskUserAgent  = "go-desk/" + DeskLibVersion
 )
 
 type Client struct {
-	client        *http.Client
-  BaseURL       *url.URL
-  UserEmail     string
-  UserPassword  string
-	Case          *CaseService
-  Customer      *CustomerService
+	client       *http.Client
+	BaseURL      *url.URL
+	UserEmail    string
+	UserPassword string
+	Case         *CaseService
+	Customer     *CustomerService
 }
 
 func init() {
-  log.SetPrefix("[desk] ")
-  log.Println("init")
-	log.Printf("Desk client library (%v) for desk.com API %v\n",DeskLibVersion,DeskApiVersion)
+	log.SetPrefix("[desk] ")
+	log.Println("init")
+	log.Printf("Desk client library (%v) for desk.com API %v\n", DeskLibVersion, DeskApiVersion)
 }
 
-func NewClient(httpClient *http.Client,endpointURL string,userEmail string,userPassword string) *Client {
+func NewClient(httpClient *http.Client, endpointURL string, userEmail string, userPassword string) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
-	baseURL, _ := url.Parse(fmt.Sprintf("%s/api/%s/",endpointURL,DeskApiVersion))
+	baseURL, _ := url.Parse(fmt.Sprintf("%s/api/%s/", endpointURL, DeskApiVersion))
 	c := &Client{client: httpClient, BaseURL: baseURL, UserEmail: userEmail, UserPassword: userPassword}
 	c.Case = &CaseService{client: c}
 	c.Customer = &CustomerService{client: c}
@@ -67,7 +66,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	}
 
 	req, err := http.NewRequest(method, u.String(), buf)
-  req.SetBasicAuth(c.UserEmail,c.UserPassword)
+	req.SetBasicAuth(c.UserEmail, c.UserPassword)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +82,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 // interface, the raw response body will be written to v, without attempting to
 // first decode it.
 func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
-  log.Printf("Do %v",req)
+	log.Printf("Do %v", req)
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -108,8 +107,8 @@ func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 }
 
 type ErrorResponse struct {
-	Response *http.Response 
-	Message  string           `json:"message"`
+	Response *http.Response
+	Message  string `json:"message"`
 }
 
 func (r *ErrorResponse) Error() string {
@@ -129,4 +128,3 @@ func CheckResponse(r *http.Response) error {
 	}
 	return errorResponse
 }
-
