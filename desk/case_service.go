@@ -30,10 +30,6 @@ func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 	return cse, resp, err
 }
 
-func (s *CaseService) Create(cse *Case, customer *Customer, message *Message) (*Case, *http.Response, error) {
-	return nil, nil, nil
-}
-
 func (s *CaseService) List(params *url.Values) (*Collection, *http.Response, error) {
 	path := fmt.Sprintf("cases")
 	if params != nil && len(*params) > 0 {
@@ -57,3 +53,34 @@ func (s *CaseService) List(params *url.Values) (*Collection, *http.Response, err
 	collection.Embed.RawEntries = nil
 	return collection, resp, err
 }
+
+func (s *CaseService) Search(params *url.Values,q *string) (*Collection, *http.Response, error) {
+	path := fmt.Sprintf("cases/search")
+	if params != nil && len(*params) > 0 {
+		path = fmt.Sprintf("%v?%v", path, params.Encode())
+	} else if q != nil {
+		path = fmt.Sprintf("%v?%v", path, q)
+  }
+	req, err := s.client.NewRequest("GET", path, nil)
+	collection := new(Collection)
+	resp, err := s.client.Do(req, collection)
+	if err != nil {
+		return nil, resp, err
+	}
+	cases := new([]Case)
+	err = json.Unmarshal(*collection.Embed.RawEntries, &cases)
+	if err != nil {
+		return nil, resp, err
+	}
+	collection.Embed.Entries = make([]interface{}, len(*cases))
+	for i, v := range *cases {
+		collection.Embed.Entries[i] = interface{}(v)
+	}
+	collection.Embed.RawEntries = nil
+	return collection, resp, err
+}
+
+func (s *CaseService) Create(cse *Case, customer *Customer, message *Message) (*Case, *http.Response, error) {
+	return nil, nil, nil
+}
+
