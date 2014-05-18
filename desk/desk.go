@@ -12,8 +12,7 @@ import (
 	"net/url"
 	/* "reflect" */
 	/* "strconv" */
-	/* "strings" */
-	/* "time" */)
+	/* "strings" */ /* "time" */)
 
 const (
 	DeskLibVersion = "0.1"
