@@ -4,11 +4,22 @@ import (
 	"encoding/json"
 )
 
+// EntryCollection holds the raw json data for embedded resources.
+// The RawEntries field is used internally and not something an
+// API user would typically want to access.
+//
+// Once the EntryCollection has been unmarshaled these resources
+// become available as typed GO objects in the Entries field,
+// which contains the data you probably want to get at.
 type EntryCollection struct {
 	RawEntries *json.RawMessage `json:"entries,omitempty"`
 	Entries    []interface{}
 }
 
+// Page represents a single page of results, typically from a search
+// or list API method. A page has an embedded collection of resources
+// which, contains the data you probably want to get at.
+// See Desk API (http://dev.desk.com/API/using-the-api/#embedding)
 type Page struct {
 	PageNumber   *int                    `json:"page,omitempty"`
 	TotalEntries *int                    `json:"total_entries,omitempty"`
