@@ -11,6 +11,8 @@ type CaseService struct {
 	client *Client
 }
 
+// Get retrieves a single case by ID. 
+// See Desk API method show (http://dev.desk.com/API/cases/#show)
 func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 	path := fmt.Sprintf("cases/%v", id)
 	req, err := s.client.NewRequest("GET", path, nil)
@@ -30,6 +32,8 @@ func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 	return cse, resp, err
 }
 
+// List cases with filtering and pagination.
+// See Desk API method list (http://dev.desk.com/API/cases/#list)
 func (s *CaseService) List(params *url.Values) (*Collection, *http.Response, error) {
 	path := fmt.Sprintf("cases")
 	if params != nil && len(*params) > 0 {
@@ -54,6 +58,8 @@ func (s *CaseService) List(params *url.Values) (*Collection, *http.Response, err
 	return collection, resp, err
 }
 
+// Search for cases with filtering and pagination.
+// See Desk API method list (http://dev.desk.com/API/cases/#search)
 func (s *CaseService) Search(params *url.Values,q *string) (*Collection, *http.Response, error) {
 	path := fmt.Sprintf("cases/search")
 	if params != nil && len(*params) > 0 {
@@ -80,7 +86,20 @@ func (s *CaseService) Search(params *url.Values,q *string) (*Collection, *http.R
 	return collection, resp, err
 }
 
+// Create a case. 
+// See Desk API method list (http://dev.desk.com/API/cases/#create)
 func (s *CaseService) Create(cse *Case, customer *Customer, message *Message) (*Case, *http.Response, error) {
 	return nil, nil, nil
 }
 
+// Update a case. 
+// See Desk API method list (http://dev.desk.com/API/cases/#update)
+func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
+	return nil, nil, nil
+}
+
+// Delete a case by ID. 
+// See Desk API method show (http://dev.desk.com/API/cases/#delete)
+func (s *CaseService) Delete(id string) (*http.Response, error) {
+  return nil,nil
+}
