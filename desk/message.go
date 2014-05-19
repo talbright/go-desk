@@ -1,7 +1,6 @@
 package desk
 
 type Message struct {
-	Links            map[string]interface{} `json:"links,omitempty"`
 	Direction        *string                `json:"direction,omitempty"`
 	Body             *string                `json:"body,omitempty"`
 	BodyText         *string                `json:"body_text,omitempty"`
@@ -18,6 +17,7 @@ type Message struct {
 	FromFacebookName *string                `json:"from_facebook_name,omitempty"`
 	CreatedAt        *Timestamp             `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp             `json:"updated_at,omitempty"`
+  LinkCollection
 }
 
 func (c Message) String() string {

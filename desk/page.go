@@ -4,23 +4,23 @@ import (
 	"encoding/json"
 )
 
-type Embedded struct {
+type EntryCollection struct {
 	RawEntries *json.RawMessage `json:"entries,omitempty"`
 	Entries    []interface{}
 }
 
-type Collection struct {
-	Page         *int                    `json:"page,omitempty"`
+type Page struct {
+	PageNumber   *int                    `json:"page,omitempty"`
 	TotalEntries *int                    `json:"total_entries,omitempty"`
-	Links        *map[string]interface{} `json:"_links,omitempty"`
-	Embed        *Embedded               `json:"_embedded,omitempty"`
+	Embedded     *EntryCollection        `json:"_embedded,omitempty"`
+  LinkCollection
 }
 
-func (c Collection) String() string {
+func (c Page) String() string {
 	return Stringify(c)
 }
 
-//TODO still a work in progress
+//TODO create generalized method for unmarshalling raw entries by type 
 //func (e *Embedded) UnmarshalRawEntries(entries interface{}) (error) {
 //
 // err := json.Unmarshal(*e.RawEntries,entries)

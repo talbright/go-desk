@@ -13,7 +13,7 @@ func main() {
   userPassword := flag.String("password", "", "password for authentication") 
   flag.Parse()
   client := desk.NewClient(nil,*siteUrl,*userEmail,*userPassword)
-  SearchExample(client) 
+  ListExample(client) 
 }
 
 func GetExample(client *desk.Client) {

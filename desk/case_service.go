@@ -34,33 +34,33 @@ func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 
 // List cases with filtering and pagination.
 // See Desk API method list (http://dev.desk.com/API/cases/#list)
-func (s *CaseService) List(params *url.Values) (*Collection, *http.Response, error) {
+func (s *CaseService) List(params *url.Values) (*Page, *http.Response, error) {
 	path := fmt.Sprintf("cases")
 	if params != nil && len(*params) > 0 {
 		path = fmt.Sprintf("%v?%v", path, params.Encode())
 	}
 	req, err := s.client.NewRequest("GET", path, nil)
-	collection := new(Collection)
-	resp, err := s.client.Do(req, collection)
+	page := new(Page)
+	resp, err := s.client.Do(req, page)
 	if err != nil {
 		return nil, resp, err
 	}
 	cases := new([]Case)
-	err = json.Unmarshal(*collection.Embed.RawEntries, &cases)
+	err = json.Unmarshal(*page.Embedded.RawEntries, &cases)
 	if err != nil {
 		return nil, resp, err
 	}
-	collection.Embed.Entries = make([]interface{}, len(*cases))
+	page.Embedded.Entries = make([]interface{}, len(*cases))
 	for i, v := range *cases {
-		collection.Embed.Entries[i] = interface{}(v)
+		page.Embedded.Entries[i] = interface{}(v)
 	}
-	collection.Embed.RawEntries = nil
-	return collection, resp, err
+	page.Embedded.RawEntries = nil
+	return page, resp, err
 }
 
 // Search for cases with filtering and pagination.
 // See Desk API method list (http://dev.desk.com/API/cases/#search)
-func (s *CaseService) Search(params *url.Values,q *string) (*Collection, *http.Response, error) {
+func (s *CaseService) Search(params *url.Values,q *string) (*Page, *http.Response, error) {
 	path := fmt.Sprintf("cases/search")
 	if params != nil && len(*params) > 0 {
 		path = fmt.Sprintf("%v?%v", path, params.Encode())
@@ -68,22 +68,22 @@ func (s *CaseService) Search(params *url.Values,q *string) (*Collection, *http.R
 		path = fmt.Sprintf("%v?%v", path, q)
   }
 	req, err := s.client.NewRequest("GET", path, nil)
-	collection := new(Collection)
-	resp, err := s.client.Do(req, collection)
+	page := new(Page)
+	resp, err := s.client.Do(req, page)
 	if err != nil {
 		return nil, resp, err
 	}
 	cases := new([]Case)
-	err = json.Unmarshal(*collection.Embed.RawEntries, &cases)
+	err = json.Unmarshal(*page.Embedded.RawEntries, &cases)
 	if err != nil {
 		return nil, resp, err
 	}
-	collection.Embed.Entries = make([]interface{}, len(*cases))
+	page.Embedded.Entries = make([]interface{}, len(*cases))
 	for i, v := range *cases {
-		collection.Embed.Entries[i] = interface{}(v)
+		page.Embedded.Entries[i] = interface{}(v)
 	}
-	collection.Embed.RawEntries = nil
-	return collection, resp, err
+	page.Embedded.RawEntries = nil
+	return page, resp, err
 }
 
 // Create a case. 

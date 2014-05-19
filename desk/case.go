@@ -3,7 +3,6 @@ package desk
 type Case struct {
 	ID              *int                    `json:"id,omitempty"`
 	ExternalID      *string                 `json:"external_id,omitempty"`
-	Links           *map[string]interface{} `json:"_links,omitempty"`
 	Type            *string                 `json:"type,omitempty"`
 	Status          *string                 `json:"status,omitempty"`
 	Description     *string                 `json:"description,omitempty"`
@@ -21,6 +20,7 @@ type Case struct {
 	FirstOpenedAt   *Timestamp              `json:"first_opened_at,omitempty"`
 	ResolvedAt      *Timestamp              `json:"resolved_at,omitempty"`
 	FirstResolvedAt *Timestamp              `json:"first_resolved_at,omitempty"`
+  LinkCollection
 }
 
 func (c Case) String() string {
