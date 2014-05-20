@@ -1,9 +1,9 @@
 package desk
 
 type Customer struct {
-	ID         *int                   `json:"id,omitempty"`
-	ExternalID *string                `json:"external_id,omitempty"`
-  LinkCollection
+	ID         *int    `json:"id,omitempty"`
+	ExternalID *string `json:"external_id,omitempty"`
+	LinkCollection
 	/* Type            *string                   `json:"type,omitempty"` */
 	/* Status          *string                   `json:"status,omitempty"` */
 	/* Description     *string                   `json:"description,omitempty"` */

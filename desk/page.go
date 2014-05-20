@@ -21,17 +21,17 @@ type EntryCollection struct {
 // which, contains the data you probably want to get at.
 // See Desk API (http://dev.desk.com/API/using-the-api/#embedding)
 type Page struct {
-	PageNumber   *int                    `json:"page,omitempty"`
-	TotalEntries *int                    `json:"total_entries,omitempty"`
-	Embedded     *EntryCollection        `json:"_embedded,omitempty"`
-  LinkCollection
+	PageNumber   *int             `json:"page,omitempty"`
+	TotalEntries *int             `json:"total_entries,omitempty"`
+	Embedded     *EntryCollection `json:"_embedded,omitempty"`
+	LinkCollection
 }
 
 func (c Page) String() string {
 	return Stringify(c)
 }
 
-//TODO create generalized method for unmarshalling raw entries by type 
+//TODO create generalized method for unmarshalling raw entries by type
 //func (e *Embedded) UnmarshalRawEntries(entries interface{}) (error) {
 //
 // err := json.Unmarshal(*e.RawEntries,entries)
