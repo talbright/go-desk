@@ -8,10 +8,17 @@ import (
 )
 
 type CaseService struct {
-	client *Client
+	client      *Client
+  Message     *MessageService 
 }
 
-// Get retrieves a single case by ID. 
+func NewCaseService(httpClient *Client) *CaseService {
+	s := &CaseService{client: httpClient}
+	s.Message = &MessageService{client: httpClient}
+	return s
+}
+
+// Get retrieves a single case by ID.
 // See Desk API method show (http://dev.desk.com/API/cases/#show)
 func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 	path := fmt.Sprintf("cases/%v", id)
@@ -60,13 +67,13 @@ func (s *CaseService) List(params *url.Values) (*Page, *http.Response, error) {
 
 // Search for cases with filtering and pagination.
 // See Desk API method list (http://dev.desk.com/API/cases/#search)
-func (s *CaseService) Search(params *url.Values,q *string) (*Page, *http.Response, error) {
+func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Response, error) {
 	path := fmt.Sprintf("cases/search")
 	if params != nil && len(*params) > 0 {
 		path = fmt.Sprintf("%v?%v", path, params.Encode())
 	} else if q != nil {
 		path = fmt.Sprintf("%v?%v", path, q)
-  }
+	}
 	req, err := s.client.NewRequest("GET", path, nil)
 	page := new(Page)
 	resp, err := s.client.Do(req, page)
@@ -86,20 +93,20 @@ func (s *CaseService) Search(params *url.Values,q *string) (*Page, *http.Respons
 	return page, resp, err
 }
 
-// Create a case. 
-// See Desk API method list (http://dev.desk.com/API/cases/#create)
+// Create a case.
+// See Desk API: http://dev.desk.com/API/cases/#create
 func (s *CaseService) Create(cse *Case, customer *Customer, message *Message) (*Case, *http.Response, error) {
 	return nil, nil, nil
 }
 
-// Update a case. 
-// See Desk API method list (http://dev.desk.com/API/cases/#update)
+// Update a case.
+// See Desk API: http://dev.desk.com/API/cases/#update
 func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
 	return nil, nil, nil
 }
 
-// Delete a case by ID. 
-// See Desk API method show (http://dev.desk.com/API/cases/#delete)
+// Delete a case by ID.
+// See Desk API: http://dev.desk.com/API/cases/#delete
 func (s *CaseService) Delete(id string) (*http.Response, error) {
-  return nil,nil
+	return nil, nil
 }
