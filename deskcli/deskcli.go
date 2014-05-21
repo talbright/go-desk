@@ -5,6 +5,7 @@ import (
   "reflect"
   "flag"
   "net/url"
+  "time"
   "github.com/talbright/go-desk/desk"
 )
 
@@ -65,3 +66,16 @@ func (e *Example) SearchCase(client *desk.Client) {
     fmt.Printf("%v\n\n",collection.String()) 
   } 
 }
+
+func (e *Example) UpdateCase(client *desk.Client) {
+  subject := fmt.Sprintf("updated case at %v",time.Now())
+  id := 1
+  caze := desk.Case{ ID: &id, Subject: &subject}
+  new_case,_,err := client.Case.Update(&caze)
+  if err != nil {
+    fmt.Printf("error: %v\n\n", err)
+  } else {
+    fmt.Printf("%v\n\n",new_case) 
+  }
+}
+

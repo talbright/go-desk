@@ -102,7 +102,19 @@ func (s *CaseService) Create(cse *Case, customer *Customer, message *Message) (*
 // Update a case.
 // See Desk API: http://dev.desk.com/API/cases/#update
 func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
-	return nil, nil, nil
+	u := fmt.Sprintf("cases/%d", *cse.ID)
+	req, err := s.client.NewRequest("PATCH", u, cse)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	c := new(Case)
+	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return c, resp, err
 }
 
 // Delete a case by ID.

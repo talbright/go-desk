@@ -12,7 +12,7 @@ type MessageService struct {
 }
 
 // Get retrieves the message for a case.
-// See Desk API method (http://dev.desk.com/API/cases/#message-show)
+// See Desk API: http://dev.desk.com/API/cases/#message-show
 func (s *MessageService) Get(caseId string) (*Message, *http.Response, error) {
 	path := fmt.Sprintf("cases/%v/message", caseId)
 	req, err := s.client.NewRequest("GET", path, nil)
