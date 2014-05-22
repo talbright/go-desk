@@ -96,7 +96,19 @@ func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Respon
 // Create a case.
 // See Desk API: http://dev.desk.com/API/cases/#create
 func (s *CaseService) Create(cse *Case, customer *Customer, message *Message) (*Case, *http.Response, error) {
-	return nil, nil, nil
+	u := fmt.Sprintf("cases")
+	req, err := s.client.NewRequest("POST", u, cse)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	c := new(Case)
+	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return c, resp, err
 }
 
 // Update a case.

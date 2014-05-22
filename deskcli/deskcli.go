@@ -79,3 +79,15 @@ func (e *Example) UpdateCase(client *desk.Client) {
   }
 }
 
+func (e *Example) CreateCase(client *desk.Client) {
+  caze := desk.Case { }
+  customer := desk.Customer {}
+  message := desk.Message {}
+  new_case,_,err := client.Case.Create(&caze,&customer,&message)
+  if err!= nil {
+    fmt.Printf("error: %v\n\n", err)
+  } else {
+    fmt.Printf("%v\n\n",new_case)
+  }
+}
+
