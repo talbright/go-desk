@@ -91,3 +91,12 @@ func (e *Example) CreateCase(client *desk.Client) {
   }
 }
 
+func (e *Example) GetCustomer(client *desk.Client) {
+  customer,_,err := client.Customer.Get("192220782")
+  if err != nil {
+		fmt.Printf("error: %v\n\n", err)
+	} else {
+		fmt.Printf("%v\n\n",customer.String())
+	}
+}
+
