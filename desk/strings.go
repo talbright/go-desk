@@ -13,6 +13,10 @@ import (
 	"reflect"
 )
 
+type Stringable interface {
+  String() string
+}
+
 var timestampType = reflect.TypeOf(Timestamp{})
 
 // Stringify attempts to create a reasonable string representation of types in
