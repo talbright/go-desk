@@ -24,6 +24,7 @@ func main() {
   reflect.ValueOf(&Example{}).MethodByName(*exampleName).Call(inputs)
 }
 
+//Cases
 func (e *Example) GetCaseMessage(client *desk.Client) {
   cse,_,err := client.Case.Message.Get("1")
   if err != nil {
@@ -91,6 +92,7 @@ func (e *Example) CreateCase(client *desk.Client) {
   }
 }
 
+//Customers
 func (e *Example) GetCustomer(client *desk.Client) {
   customer,_,err := client.Customer.Get("192220782")
   if err != nil {
@@ -125,3 +127,38 @@ func (e *Example) SearchCustomer(client *desk.Client) {
   } 
 }
 
+func (e *Example) CreateCustomer(client *desk.Client) {
+  firstName := "James"
+  lastName := "Dean"
+  customer := desk.Customer { FirstName: &firstName, LastName: &lastName }
+  new_customer,_,err := client.Customer.Create(&customer)
+  if err!= nil {
+    fmt.Printf("error: %v\n\n", err)
+  } else {
+    fmt.Printf("%v\n\n",new_customer)
+  }
+}
+
+func (e *Example) UpdateCustomer(client *desk.Client) {
+  id := 192220782
+  background := fmt.Sprintf("background updated at %v",time.Now())
+  customer := desk.Customer{ ID: &id, Background: &background }
+  updatedCustomer,_,err := client.Customer.Update(&customer)
+  if err != nil {
+    fmt.Printf("error: %v\n\n", err)
+  } else {
+    fmt.Printf("%v\n\n",updatedCustomer) 
+  }
+}
+
+func (e *Example) CustomerCases(client *desk.Client) {
+  params := url.Values{}
+  params.Add("sort_field","created_at")
+  params.Add("sort_direction","asc")
+  page,_,err := client.Customer.Cases("192220782",&params)
+  if err != nil {
+    fmt.Printf("error: %v\n\n", err)
+  } else {
+    fmt.Printf("%v\n\n",page) 
+  }
+}
