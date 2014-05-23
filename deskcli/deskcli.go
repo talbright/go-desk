@@ -100,3 +100,28 @@ func (e *Example) GetCustomer(client *desk.Client) {
 	}
 }
 
+func (e *Example) ListCustomer(client *desk.Client) {
+  listParams := url.Values{}
+  listParams.Add("sort_field","created_at")
+  listParams.Add("sort_direction","asc")
+  collection,_,err := client.Customer.List(&listParams)
+  if err != nil {
+		fmt.Printf("error: %v\n\n", err)
+	} else {
+    fmt.Printf("%v\n\n",collection.String()) 
+  } 
+}
+
+func (e *Example) SearchCustomer(client *desk.Client) {
+  searchParams := url.Values{}
+  searchParams.Add("sort_field","created_at")
+  searchParams.Add("sort_direction","asc")
+  searchParams.Add("max_id","200000000")
+  collection,_,err := client.Customer.Search(&searchParams,nil)
+  if err != nil {
+		fmt.Printf("error: %v\n\n", err)
+	} else {
+    fmt.Printf("%v\n\n",collection.String()) 
+  } 
+}
+
