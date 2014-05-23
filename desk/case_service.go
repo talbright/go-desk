@@ -50,18 +50,12 @@ func (s *CaseService) List(params *url.Values) (*Page, *http.Response, error) {
 	page := new(Page)
 	resp, err := s.client.Do(req, page)
 	if err != nil {
-		return nil, resp, err
+		return nil,resp,err
 	}
-	cases := new([]Case)
-	err = json.Unmarshal(*page.Embedded.RawEntries, &cases)
-	if err != nil {
-		return nil, resp, err
-	}
-	page.Embedded.Entries = make([]interface{}, len(*cases))
-	for i, v := range *cases {
-		page.Embedded.Entries[i] = interface{}(v)
-	}
-	page.Embedded.RawEntries = nil
+  err = s.unravelPage(page)
+  if err != nil {
+    return nil,nil,err
+  }
 	return page, resp, err
 }
 
@@ -80,16 +74,10 @@ func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Respon
 	if err != nil {
 		return nil, resp, err
 	}
-	cases := new([]Case)
-	err = json.Unmarshal(*page.Embedded.RawEntries, &cases)
-	if err != nil {
-		return nil, resp, err
-	}
-	page.Embedded.Entries = make([]interface{}, len(*cases))
-	for i, v := range *cases {
-		page.Embedded.Entries[i] = interface{}(v)
-	}
-	page.Embedded.RawEntries = nil
+  err = s.unravelPage(page)
+  if err != nil {
+    return nil,nil,err
+  }
 	return page, resp, err
 }
 
@@ -134,3 +122,18 @@ func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
 func (s *CaseService) Delete(id string) (*http.Response, error) {
 	return nil, nil
 }
+
+func (s* CaseService)unravelPage(page *Page) (error) {
+  cases := new([]Case)
+  err := json.Unmarshal(*page.Embedded.RawEntries,&cases)
+  if err!= nil {
+    return err
+  }
+  page.Embedded.Entries = make([]interface{},len(*cases))
+  for i, v:= range *cases {
+    page.Embedded.Entries[i] = interface{}(v)
+  }
+  page.Embedded.RawEntries=nil
+  return err
+}
+
