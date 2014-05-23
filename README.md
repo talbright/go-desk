@@ -1,9 +1,9 @@
 
 Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 
-# Status
+## Status
 
-# Case API
+### Case API
 
 http://dev.desk.com/API/cases/
 
@@ -39,7 +39,7 @@ http://dev.desk.com/API/cases/
 - [ ] List Links 
 - [ ] Create Link
 
-# Customer API
+### Customer API
 
 http://dev.desk.com/API/customer/
 
@@ -50,87 +50,87 @@ http://dev.desk.com/API/customer/
 - [x] Search
 - [ ] List Cases
 
-# Companies API
+### Companies API
 
 *TODO*
 
-# Groups API
+### Groups API
 
 *TODO*
 
-# Users API
+### Users API
 
 *TODO*
 
-# Articles API
+### Articles API
 
 *TODO*
 
-# Brands API
+### Brands API
 
 *TODO*
 
-# Custom Fields API
+### Custom Fields API
 
 *TODO*
 
-# Etags API
+### Etags API
 
 *TODO*
 
-# Facebook (Accounts, Feeds, Users) API
+### Facebook (Accounts, Feeds, Users) API
 
 *TODO*
 
-# Filters API
+### Filters API
 
 *TODO*
 
-# Mailboxes (Inbound, Outbound) API
+### Mailboxes (Inbound, Outbound) API
 
 *TODO*
 
-# Insights API
+### Insights API
 
 *TODO*
 
-# Insights V3 API
+### Insights V3 API
 
 *TODO*
 
-# Integration URLs API
+### Integration URLs API
 
 *TODO*
 
-# Jobs API
+### Jobs API
 
 *TODO*
 
-# Labels API
+### Labels API
 
 *TODO*
 
-# Macros API
+### Macros API
 
 *TODO*
 
-# Rules API
+### Rules API
 
 *TODO*
 
-# Site Settings API
+### Site Settings API
 
 *TODO*
 
-# System Message API
+### System Message API
 
 *TODO*
 
-# Topics API
+### Topics API
 
 *TODO*
 
-# Twitter (Accounts, Users) API
+### Twitter (Accounts, Users) API
 
 *TODO*
 
