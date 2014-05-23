@@ -45,10 +45,10 @@ http://dev.desk.com/API/customer/
 
 - [x] List
 - [x] Show
-- [ ] Create
-- [ ] Update
+- [x] Create
+- [x] Update
 - [x] Search
-- [ ] List Cases
+- [x] List Cases
 
 ### Companies API
 
