@@ -20,6 +20,7 @@ type Case struct {
 	FirstOpenedAt   *Timestamp              `json:"first_opened_at,omitempty"`
 	ResolvedAt      *Timestamp              `json:"resolved_at,omitempty"`
 	FirstResolvedAt *Timestamp              `json:"first_resolved_at,omitempty"`
+  Message         *Message                `json:"message,omitempty"`
 	LinkCollection
 }
 

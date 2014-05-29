@@ -12,6 +12,8 @@ import (
 //We could also create a map/slice of functions, but I want to play with reflection...
 type Example struct {}
 
+const DefaultCustomerId int = 192220782
+
 func main() {
   siteUrl := flag.String("site-url", "", "site URL to use ie: mysite.desk.com")
   userEmail := flag.String("email", "", "email for authentication") 
@@ -70,16 +72,30 @@ func (e *Example) UpdateCase(client *desk.Client) {
 }
 
 func (e *Example) CreateCase(client *desk.Client) {
-  caze := desk.Case { }
-  customer := desk.Customer {}
-  message := desk.Message {}
-  newCase,_,err := client.Case.Create(&caze,&customer,&message)
+  ctype := "email"
+  priority := 4
+  cstatus := "open"
+  direction := "in"
+  status := "received"
+  to := "someone@desk.com" 
+  from := "someone-else@desk.com"
+  subject := "Case created by API via desk-go"
+  body := "Please assist me with this case"
+  links := desk.NewLinkCollection()
+  links.AddHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId))
+  caze := desk.Case { 
+    Type: &ctype, Subject: &subject, Priority: &priority, Status: &cstatus }
+  message := desk.Message { 
+    Direction: &direction, Status: &status, To: &to, From: &from, Subject: &subject, Body: &body }
+  caze.Message = &message;
+  caze.LinkCollection = *links;
+  newCase,_,err := client.Case.Create(&caze)
   HandleResults(newCase,err)
 }
 
 //Customers
 func (e *Example) GetCustomer(client *desk.Client) {
-  customer,_,err := client.Customer.Get("192220782")
+  customer,_,err := client.Customer.Get(fmt.Sprintf("%d",DefaultCustomerId))
   HandleResults(customer,err)
 }
 
@@ -109,7 +125,7 @@ func (e *Example) CreateCustomer(client *desk.Client) {
 }
 
 func (e *Example) UpdateCustomer(client *desk.Client) {
-  id := 192220782
+  id := DefaultCustomerId 
   background := fmt.Sprintf("background updated at %v",time.Now())
   customer := desk.Customer{ ID: &id, Background: &background }
   updatedCustomer,_,err := client.Customer.Update(&customer)
@@ -120,6 +136,6 @@ func (e *Example) CustomerCases(client *desk.Client) {
   params := url.Values{}
   params.Add("sort_field","created_at")
   params.Add("sort_direction","asc")
-  page,_,err := client.Customer.Cases("192220782",&params)
+  page,_,err := client.Customer.Cases(fmt.Sprintf("%d",DefaultCustomerId),&params)
   HandleResults(page,err)
 }

@@ -1,4 +1,3 @@
-
 Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 
 ## Status
@@ -10,7 +9,7 @@ http://dev.desk.com/API/cases/
 - [x] List
 - [x] Search
 - [x] Show
-- [ ] Create
+- [x] Create
 - [x] Update
 - [ ] Delete Case
 - [ ] Forward Case
