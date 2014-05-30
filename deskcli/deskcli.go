@@ -64,31 +64,34 @@ func (e *Example) SearchCase(client *desk.Client) {
 }
 
 func (e *Example) UpdateCase(client *desk.Client) {
-  subject := fmt.Sprintf("updated case at %v",time.Now())
-  id := 1
-  caze := desk.Case{ ID: &id, Subject: &subject}
+  caze:=desk.CaseBuilder.
+    SetString("Subject",fmt.Sprintf("updated case at %v",time.Now())).
+    SetInt("ID",1).
+    Build()
   newCase,_,err := client.Case.Update(&caze)
   HandleResults(newCase,err)
 }
 
 func (e *Example) CreateCase(client *desk.Client) {
-  ctype := "email"
-  priority := 4
-  cstatus := "open"
-  direction := "in"
-  status := "received"
-  to := "someone@desk.com" 
-  from := "someone-else@desk.com"
-  subject := "Case created by API via desk-go"
-  body := "Please assist me with this case"
-  links := desk.NewLinkCollection()
-  links.AddHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId))
-  caze := desk.Case { 
-    Type: &ctype, Subject: &subject, Priority: &priority, Status: &cstatus }
-  message := desk.Message { 
-    Direction: &direction, Status: &status, To: &to, From: &from, Subject: &subject, Body: &body }
-  caze.Message = &message;
-  caze.LinkCollection = *links;
+  links:=desk.LinkCollectionBuilder.
+    SetHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId)).
+    Build()
+  message:=desk.MessageBuilder.
+    SetString("Direction","in").
+    SetString("Status","received").
+    SetString("To","someone@desk.com").
+    SetString("From","someone-else@desk.com").
+    SetString("Subject","Case created by API via desk-go").
+    SetString("Body","Please assist me with this case").
+    Build()
+  caze:=desk.CaseBuilder.
+    SetString("Type","email").
+    SetString("Subject","Case created by API via desk-go").
+    SetInt("Priority",4).
+    SetString("Status","received").
+    SetMessage(message).
+    SetLinkCollection(links).
+    Build()
   newCase,_,err := client.Case.Create(&caze)
   HandleResults(newCase,err)
 }

@@ -1,5 +1,9 @@
 package desk
 
+import (
+  "github.com/lann/builder"
+)
+
 // LinkCollection contains related resources which are linked and
 // embedded using the HAL specification. Most API methods include
 // embedded links in their response.
@@ -7,6 +11,8 @@ package desk
 type LinkCollection struct {
 	Links map[string]map[string]interface{}   `json:"_links,omitempty"`
 }
+
+type linkCollectionBuilder builder.Builder
 
 func NewLinkCollection() *LinkCollection {
 	c := &LinkCollection{}
@@ -48,3 +54,16 @@ func (c* LinkCollection) HasLink(name string) (bool) {
 func (c* LinkCollection) HasLinkAndSubItem(name string,subitem string) (bool) {
   return c.HasLink(name) && c.Links[name][subitem]!=nil
 }
+
+func (b linkCollectionBuilder) SetHrefLink(class string,href string) linkCollectionBuilder {
+  coll:=builder.GetStruct(b).(LinkCollection)
+  coll.AddHrefLink(class,href)
+  return builder.Set(b, "Links", coll.Links).(linkCollectionBuilder)
+}
+
+func (b linkCollectionBuilder) Build() LinkCollection {
+  return builder.GetStruct(b).(LinkCollection)
+}
+
+var LinkCollectionBuilder = builder.Register(linkCollectionBuilder{}, LinkCollection{}).(linkCollectionBuilder)
+

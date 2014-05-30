@@ -6,8 +6,17 @@ import (
     . "github.com/smartystreets/goconvey/convey"
 )
 
-func TestAllTheThings(t *testing.T) {
+func TestLinkCollection(t *testing.T) {
     fmt.Println("")
+    Convey("Builder",t,func() {
+      Convey("should build an href link", func(){
+        lc:=LinkCollectionBuilder.
+          SetHrefLink("customer","/api/v2/customers/1234").
+          Build()
+        So(lc.Links["customer"]["class"],ShouldEqual,"customer")
+        So(lc.Links["customer"]["href"],ShouldEqual,"/api/v2/customers/1234")
+      })
+    })
     Convey("NewLinkCollection", t, func() {
         lc := NewLinkCollection()
         Convey("should not be nil", func() {
