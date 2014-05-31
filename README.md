@@ -12,10 +12,10 @@ http://dev.desk.com/API/cases/
 - [x] Create
 - [x] Update
 - [x] Delete Case
-- [ ] Forward Case
+- [x] Forward Case
 - [x] Show Message
 - [ ] Update Message
-- [ ] Reply Fields
+- [ ] List Replies 
 - [ ] Show Reply
 - [ ] Update Reply
 - [ ] Create Reply

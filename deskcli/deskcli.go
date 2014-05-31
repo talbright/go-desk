@@ -107,9 +107,14 @@ func (e *Example) DeleteCase(client *desk.Client) {
   newCase,_,err := client.Case.Create(caze)
   HandleResults(newCase,err)
   results,err := client.Case.Delete(fmt.Sprintf("%d",*newCase.ID))
-  fmt.Printf("DELETE results: %v\n",results)
+  fmt.Printf("Delete results: %v\n",results)
   foundCase,results,err := client.Case.Get(fmt.Sprintf("%d",*newCase.ID))
   HandleResults(foundCase,err)
+}
+
+func (e *Example) ForwardCase(client *desk.Client) {
+  resp,_ := client.Case.Forward("1","someone@desk.com","some note")
+  fmt.Printf("Forward results: %v\n",resp)
 }
 
 //-----------------------------------------------------------------------------

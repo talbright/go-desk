@@ -130,6 +130,21 @@ func (s *CaseService) Delete(id string) (*http.Response, error) {
 	return resp, err
 }
 
+//Forward a case
+//See Desk API: http://dev.desk.com/API/cases/#forward
+func (s* CaseService) Forward(id string,recipients string,note string) (*http.Response, error) {
+  forward:=make(map[string]string)
+  forward["to"] = recipients
+  forward["note_text"] = note
+	u := fmt.Sprintf("cases/%s/forward",id)
+	req, err := s.client.NewRequest("POST", u, forward)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := s.client.Do(req,nil)
+	return resp, err
+}
+
 func (s* CaseService)unravelPage(page *Page) (error) {
   cases := new([]Case)
   err := json.Unmarshal(*page.Embedded.RawEntries,&cases)
