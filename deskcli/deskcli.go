@@ -26,7 +26,9 @@ func main() {
   reflect.ValueOf(&Example{}).MethodByName(*exampleName).Call(inputs)
 }
 
+//-----------------------------------------------------------------------------
 //Utilities
+//-----------------------------------------------------------------------------
 func HandleResults(resource desk.Stringable,err error) {
   if err != nil {
 		fmt.Printf("error: %v\n\n", err)
@@ -35,7 +37,29 @@ func HandleResults(resource desk.Stringable,err error) {
 	}
 }
 
+func BuildSampleCase() *desk.Case {
+  message:=desk.MessageBuilder.
+    SetString("Direction","in").
+    SetString("Status","received").
+    SetString("To","someone@desk.com").
+    SetString("From","someone-else@desk.com").
+    SetString("Subject","Case created by API via desk-go").
+    SetString("Body","Please assist me with this case").
+    BuildMessage()
+  caze:=desk.CaseBuilder.
+    SetString("Type","email").
+    SetString("Subject","Case created by API via desk-go").
+    SetInt("Priority",4).
+    SetString("Status","received").
+    SetMessage(message).
+    AddHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId)).
+    BuildCase()
+  return &caze
+}
+
+//-----------------------------------------------------------------------------
 //Cases
+//-----------------------------------------------------------------------------
 func (e *Example) GetCaseMessage(client *desk.Client) {
   cse,_,err := client.Case.Message.Get("1")
   HandleResults(cse,err)
@@ -73,27 +97,24 @@ func (e *Example) UpdateCase(client *desk.Client) {
 }
 
 func (e *Example) CreateCase(client *desk.Client) {
-  message:=desk.MessageBuilder.
-    SetString("Direction","in").
-    SetString("Status","received").
-    SetString("To","someone@desk.com").
-    SetString("From","someone-else@desk.com").
-    SetString("Subject","Case created by API via desk-go").
-    SetString("Body","Please assist me with this case").
-    BuildMessage()
-  caze:=desk.CaseBuilder.
-    SetString("Type","email").
-    SetString("Subject","Case created by API via desk-go").
-    SetInt("Priority",4).
-    SetString("Status","received").
-    SetMessage(message).
-    AddHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId)).
-    BuildCase()
-  newCase,_,err := client.Case.Create(&caze)
+  caze:=BuildSampleCase()
+  newCase,_,err := client.Case.Create(caze)
   HandleResults(newCase,err)
 }
 
+func (e *Example) DeleteCase(client *desk.Client) {
+  caze:=BuildSampleCase()
+  newCase,_,err := client.Case.Create(caze)
+  HandleResults(newCase,err)
+  results,err := client.Case.Delete(fmt.Sprintf("%d",*newCase.ID))
+  fmt.Printf("DELETE results: %v\n",results)
+  foundCase,results,err := client.Case.Get(fmt.Sprintf("%d",*newCase.ID))
+  HandleResults(foundCase,err)
+}
+
+//-----------------------------------------------------------------------------
 //Customers
+//-----------------------------------------------------------------------------
 func (e *Example) GetCustomer(client *desk.Client) {
   customer,_,err := client.Customer.Get(fmt.Sprintf("%d",DefaultCustomerId))
   HandleResults(customer,err)

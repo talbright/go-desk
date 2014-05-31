@@ -120,7 +120,14 @@ func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
 // Delete a case by ID.
 // See Desk API: http://dev.desk.com/API/cases/#delete
 func (s *CaseService) Delete(id string) (*http.Response, error) {
-	return nil, nil
+	u := fmt.Sprintf("cases/%s", id)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	c := new(Case)
+	resp, err := s.client.Do(req, c)
+	return resp, err
 }
 
 func (s* CaseService)unravelPage(page *Page) (error) {
