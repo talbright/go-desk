@@ -58,6 +58,24 @@ func TestJsonBuilder(t *testing.T) {
         So(caze.LinkCollection.Links["customer2"]["href"],ShouldEqual,"/api/v2/customer/1234")
         So(caze.LinkCollection.Links["customer2"]["class"],ShouldEqual,"customer2")
       })
+      Convey("should add address",func() {
+        customer:=CustomerBuilder.AddAddress("123 somewhere","primary").BuildCustomer()
+        So(customer.Addresses,ShouldNotBeNil)
+        So(customer.Addresses[0]["value"],ShouldEqual,"123 somewhere")
+        So(customer.Addresses[0]["type"],ShouldEqual,"primary")
+      })
+      Convey("should add email",func() {
+        customer:=CustomerBuilder.AddEmail("me@me.com","primary").BuildCustomer()
+        So(customer.Emails,ShouldNotBeNil)
+        So(customer.Emails[0]["value"],ShouldEqual,"me@me.com")
+        So(customer.Emails[0]["type"],ShouldEqual,"primary")
+      })
+      Convey("should add phone number",func() {
+        customer:=CustomerBuilder.AddPhoneNumber("1231231234","primary").BuildCustomer()
+        So(customer.PhoneNumbers,ShouldNotBeNil)
+        So(customer.PhoneNumbers[0]["value"],ShouldEqual,"1231231234")
+        So(customer.PhoneNumbers[0]["type"],ShouldEqual,"primary")
+      })
       Convey("should build Customer struct",func() {
         customer:=CustomerBuilder.BuildCustomer()
         So(customer,ShouldNotBeNil)

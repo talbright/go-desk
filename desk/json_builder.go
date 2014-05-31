@@ -52,6 +52,24 @@ func (b jsonBuilder) AddCustomField(name string,value interface{}) jsonBuilder {
   return builder.Set(b,"CustomFields",fields).(jsonBuilder)
 }
 
+func (b jsonBuilder) AddEmail(value string,valueType string) jsonBuilder {
+  customer:=builder.GetStructLike(b,Customer{}).(Customer)
+  customer.AddEmail(value,valueType)
+  return builder.Set(b,"Emails",customer.Emails).(jsonBuilder)
+}
+
+func (b jsonBuilder) AddAddress(value string,valueType string) jsonBuilder {
+  customer:=builder.GetStructLike(b,Customer{}).(Customer)
+  customer.AddAddress(value,valueType)
+  return builder.Set(b,"Addresses",customer.Addresses).(jsonBuilder)
+}
+
+func (b jsonBuilder) AddPhoneNumber(value string,valueType string) jsonBuilder {
+  customer:=builder.GetStructLike(b,Customer{}).(Customer)
+  customer.AddPhoneNumber(value,valueType)
+  return builder.Set(b,"PhoneNumbers",customer.PhoneNumbers).(jsonBuilder)
+}
+
 func (b jsonBuilder) BuildCustomer() Customer {
   return builder.GetStructLike(b, Customer{}).(Customer)
 }
