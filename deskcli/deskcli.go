@@ -67,15 +67,12 @@ func (e *Example) UpdateCase(client *desk.Client) {
   caze:=desk.CaseBuilder.
     SetString("Subject",fmt.Sprintf("updated case at %v",time.Now())).
     SetInt("ID",1).
-    Build()
+    BuildCase()
   newCase,_,err := client.Case.Update(&caze)
   HandleResults(newCase,err)
 }
 
 func (e *Example) CreateCase(client *desk.Client) {
-  links:=desk.LinkCollectionBuilder.
-    SetHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId)).
-    Build()
   message:=desk.MessageBuilder.
     SetString("Direction","in").
     SetString("Status","received").
@@ -83,15 +80,15 @@ func (e *Example) CreateCase(client *desk.Client) {
     SetString("From","someone-else@desk.com").
     SetString("Subject","Case created by API via desk-go").
     SetString("Body","Please assist me with this case").
-    Build()
+    BuildMessage()
   caze:=desk.CaseBuilder.
     SetString("Type","email").
     SetString("Subject","Case created by API via desk-go").
     SetInt("Priority",4).
     SetString("Status","received").
     SetMessage(message).
-    SetLinkCollection(links).
-    Build()
+    AddHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId)).
+    BuildCase()
   newCase,_,err := client.Case.Create(&caze)
   HandleResults(newCase,err)
 }

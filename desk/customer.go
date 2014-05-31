@@ -13,7 +13,7 @@ type Customer struct {
 	LockedUntil         *Timestamp    `json:"locked_until,omitempty"`
 	CreatedAt           *Timestamp    `json:"created_at,omitempty"`
 	UpdatedAt           *Timestamp    `json:"updated_at,omitempty"`
-	CustomFields        *map[string]interface{}    `json:"custom_fields,omitempty"` 
+	CustomFields        map[string]interface{}    `json:"custom_fields,omitempty"` 
 	Emails              []interface{}  `json:"emails,omitempty"` 
 	PhoneNumbers        []interface{}  `json:"phone_numbers,omitempty"` 
 	Addresses           []interface{}  `json:"addresses,omitempty"` 

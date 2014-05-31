@@ -8,7 +8,7 @@ import (
 
 func TestMessage(t *testing.T) {
   fmt.Println("")
-  SkipConvey("ToDo", t, func() {
+  SkipConvey("Nothing to test yet...", t, func() {
   })
 }
 
