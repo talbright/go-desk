@@ -4,7 +4,7 @@ import (
 	// "encoding/json"
 	"fmt"
 	"net/http"
-	// "net/url"
+	"net/url"
 )
 
 type MessageService struct {
@@ -29,8 +29,18 @@ func (s *MessageService) Get(caseId string) (*Message, *http.Response, error) {
 
 // Update the case message.
 // See Desk API: http://dev.desk.com/API/cases/#message-update
-func (s *MessageService) Update(caseId string, msg *Message) (*Message, *http.Response, error) {
-	return nil, nil, nil
+func (s *MessageService) Update(caseId string, msg *Message,params *url.Values) (*Message, *http.Response, error) {
+  path:=fmt.Sprintf("cases/%s/message",caseId)
+	if params != nil && len(*params) > 0 {
+		path = fmt.Sprintf("%v?%v", path, params.Encode())
+	}
+  req,err:=s.client.NewRequest("PATCH",path,msg)
+  if err !=nil {
+    return nil,nil,err
+  }
+  m:=new(Message)
+  resp,err:=s.client.Do(req,m)
+	return m, resp, err
 }
 
 // Delete the case message.

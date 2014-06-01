@@ -65,6 +65,32 @@ func (e *Example) GetCaseMessage(client *desk.Client) {
   HandleResults(cse,err)
 }
 
+func (e *Example) UpdateCaseMessage(client *desk.Client) {
+  message:=desk.MessageBuilder.
+    SetString("Direction","out").
+    SetString("Status","draft").
+    SetString("To","someone@desk.com").
+    SetString("From","someone-else@desk.com").
+    SetString("Subject","Case created by API via desk-go").
+    SetString("Body","Request for assistance denied").
+    BuildMessage()
+  caze:=desk.CaseBuilder.
+    SetString("Type","email").
+    SetString("Subject","Case created by API via desk-go").
+    SetInt("Priority",4).
+    SetString("Status","received").
+    SetMessage(message).
+    AddHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",DefaultCustomerId)).
+    BuildCase()
+  newCase,_,err := client.Case.Create(&caze)
+  HandleResults(newCase,err)
+  updateMsg:=desk.MessageBuilder.
+    SetString("Subject",fmt.Sprintf("Case updated by API via desk-go at %v",time.Now())).
+    BuildMessage()
+  newMsg,_,err := client.Case.Message.Update(fmt.Sprintf("%d",*newCase.ID),&updateMsg,nil)
+  HandleResults(newMsg,err)
+}
+
 func (e *Example) GetCase(client *desk.Client) {
   cse,_,err := client.Case.Get("1")
   HandleResults(cse,err)

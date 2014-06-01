@@ -14,7 +14,7 @@ http://dev.desk.com/API/cases/
 - [x] Delete Case
 - [x] Forward Case
 - [x] Show Message
-- [ ] Update Message
+- [x] Update Message
 - [ ] List Replies 
 - [ ] Show Reply
 - [ ] Update Reply
