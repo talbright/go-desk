@@ -21,34 +21,27 @@ func NewCaseService(httpClient *Client) *CaseService {
 // Get retrieves a single case by ID.
 // See Desk API method show (http://dev.desk.com/API/cases/#show)
 func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
-	path := fmt.Sprintf("cases/%v", id)
-	req, err := s.client.NewRequest("GET", path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
+  restful := Restful{}
 	cse := new(Case)
-	resp, err := s.client.Do(req, cse)
-	//For posterity sake leaving here...an example of making a request
-	//and dumping it into a generic map
-	//var v map[string]interface{}
-	//resp, err := s.client.Do(req, &v)
-	//log.Printf("response %v",v)
-	if err != nil {
-		return nil, resp, err
-	}
+  resp,err := restful.
+    Get(fmt.Sprintf("cases/%v", id)).
+    Json(cse).
+    Client(s.client).
+    Do()
 	return cse, resp, err
 }
 
 // List cases with filtering and pagination.
 // See Desk API method list (http://dev.desk.com/API/cases/#list)
 func (s *CaseService) List(params *url.Values) (*Page, *http.Response, error) {
-	path := fmt.Sprintf("cases")
-	if params != nil && len(*params) > 0 {
-		path = fmt.Sprintf("%v?%v", path, params.Encode())
-	}
-	req, err := s.client.NewRequest("GET", path, nil)
-	page := new(Page)
-	resp, err := s.client.Do(req, page)
+  restful := Restful{}
+  page := new(Page)
+  resp,err := restful.
+    Get("cases").
+    Json(page).
+    Params(params).
+    Client(s.client).
+    Do()
 	if err != nil {
 		return nil,resp,err
 	}
@@ -62,17 +55,17 @@ func (s *CaseService) List(params *url.Values) (*Page, *http.Response, error) {
 // Search for cases with filtering and pagination.
 // See Desk API method list (http://dev.desk.com/API/cases/#search)
 func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Response, error) {
-	path := fmt.Sprintf("cases/search")
-	if params != nil && len(*params) > 0 {
-		path = fmt.Sprintf("%v?%v", path, params.Encode())
-	} else if q != nil {
-		path = fmt.Sprintf("%v?%v", path, q)
-	}
-	req, err := s.client.NewRequest("GET", path, nil)
-	page := new(Page)
-	resp, err := s.client.Do(req, page)
+  restful := Restful{}
+  page := new(Page)
+  resp,err := restful.
+    Get("cases/search").
+    Json(page).
+    Query(q).
+    Params(params).
+    Client(s.client).
+    Do()
 	if err != nil {
-		return nil, resp, err
+		return nil,resp,err
 	}
   err = s.unravelPage(page)
   if err != nil {
@@ -84,49 +77,39 @@ func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Respon
 // Create a case.(does not route through customer cases path)
 // See Desk API: http://dev.desk.com/API/cases/#create
 func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
-	u := fmt.Sprintf("cases")
-	req, err := s.client.NewRequest("POST", u, cse)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	c := new(Case)
-	resp, err := s.client.Do(req, c)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return c, resp, err
+  restful:=Restful{}
+  createdCase:=new(Case)
+  resp,err:=restful.
+    Post("cases").
+    Body(cse).
+    Json(createdCase).
+    Client(s.client).
+    Do()
+  return createdCase,resp,err
 }
 
 // Update a case.
 // See Desk API: http://dev.desk.com/API/cases/#update
 func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
-	u := fmt.Sprintf("cases/%d", *cse.ID)
-	req, err := s.client.NewRequest("PATCH", u, cse)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	c := new(Case)
-	resp, err := s.client.Do(req, c)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return c, resp, err
+  restful:=Restful{}
+  updatedCase:=new(Case)
+  resp,err:=restful.
+    Patch(fmt.Sprintf("cases/%d", *cse.ID)).
+    Body(cse).
+    Json(updatedCase).
+    Client(s.client).
+    Do()
+	return updatedCase, resp, err
 }
 
 // Delete a case by ID.
 // See Desk API: http://dev.desk.com/API/cases/#delete
 func (s *CaseService) Delete(id string) (*http.Response, error) {
-	u := fmt.Sprintf("cases/%s", id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
-	if err != nil {
-		return nil, err
-	}
-	c := new(Case)
-	resp, err := s.client.Do(req, c)
+  restful:=Restful{}
+  resp,err:=restful.
+    Delete(fmt.Sprintf("cases/%s",id)).
+    Client(s.client).
+    Do()
 	return resp, err
 }
 
@@ -136,12 +119,12 @@ func (s* CaseService) Forward(id string,recipients string,note string) (*http.Re
   forward:=make(map[string]string)
   forward["to"] = recipients
   forward["note_text"] = note
-	u := fmt.Sprintf("cases/%s/forward",id)
-	req, err := s.client.NewRequest("POST", u, forward)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := s.client.Do(req,nil)
+  restful:=Restful{}
+  resp,err:=restful.
+    Post(fmt.Sprintf("cases/%s/forward",id)).
+    Client(s.client).
+    Body(forward).
+    Do()
 	return resp, err
 }
 

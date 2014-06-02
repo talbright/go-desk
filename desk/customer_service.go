@@ -14,63 +14,54 @@ type CustomerService struct {
 // Get retrieves a customer.
 // See Desk API: http://dev.desk.com/API/customers/#show 
 func (c* CustomerService) Get(id string) (*Customer, *http.Response, error) {
-  path := fmt.Sprintf("customers/%v",id)
-  req, err := c.client.NewRequest("GET",path,nil)
-  if err!=nil {
-    return nil, nil, err
-  }
+  restful := Restful{}
   customer := new(Customer)
-  resp, err := c.client.Do(req,customer)
-  if err!=nil {
-    return nil, resp, err
-  }
+  resp, err := restful.
+    Get(fmt.Sprintf("customers/%v",id)).
+    Json(customer).
+    Client(c.client).
+    Do()
   return customer, resp, err
 }
 
 // List customers with filtering and pagination. 
 // See Desk API: http://dev.desk.com/API/customers/#list 
 func (c* CustomerService) List(params *url.Values) (*Page,*http.Response,error) {
-  path := fmt.Sprintf("customers")
-  if params!=nil && len(*params) > 0 {
-    path = fmt.Sprintf("%v?%v",path,params.Encode())
-  }
-  req, err := c.client.NewRequest("GET",path,nil)
-  if err!=nil {
-    return nil, nil, err
-  }
+  restful := Restful{}
   page := new(Page)
-  resp, err := c.client.Do(req,page)
-  if err != nil {
-    return nil,resp,err
-  }
+  resp,err := restful.
+    Get("customers").
+    Json(page).
+    Params(params).
+    Client(c.client).
+    Do()
+	if err != nil {
+		return nil,resp,err
+	}
   err = c.unravelPage(page)
   if err != nil {
     return nil,nil,err
   }
-  return page,resp,err
+	return page, resp, err
 }
 
 // Search customers with filtering and pagination.
 // See Desk API: http://dev.desk.com/API/customers/#search 
 func (c *CustomerService) Search(params *url.Values, q *string) (*Page, *http.Response, error) {
-	path := fmt.Sprintf("customers/search")
-	if params != nil && len(*params) > 0 {
-		path = fmt.Sprintf("%v?%v", path, params.Encode())
-	} else if q != nil {
-		path = fmt.Sprintf("%v?%v", path, q)
-	}
-	req, err := c.client.NewRequest("GET", path, nil)
-  if err!=nil {
-    return nil, nil, err
-  }
-	page := new(Page)
-	resp, err := c.client.Do(req, page)
+  restful := Restful{}
+  page := new(Page)
+  resp,err := restful.
+    Get("customers/search").
+    Json(page).
+    Params(params).
+    Client(c.client).
+    Do()
 	if err != nil {
-		return nil, resp, err
+		return nil,resp,err
 	}
-  err = c.unravelPage(page) 
+  err = c.unravelPage(page)
   if err != nil {
-    return nil, nil, err
+    return nil,nil,err
   }
 	return page, resp, err
 }
@@ -78,54 +69,48 @@ func (c *CustomerService) Search(params *url.Values, q *string) (*Page, *http.Re
 // Create a customer.
 // See Desk API: http://dev.desk.com/API/customers/#create
 func (c *CustomerService) Create(customer *Customer) (*Customer, *http.Response, error) {
-	path := fmt.Sprintf("customers")
-	req, err := c.client.NewRequest("POST", path, customer)
-	if err != nil {
-		return nil, nil, err
-	}
+  restful:=Restful{}
 	createdCustomer := new(Customer)
-	resp, err := c.client.Do(req, createdCustomer)
-	if err != nil {
-		return nil, resp, err
-	}
-	return createdCustomer,resp,err
+  resp,err:=restful.
+    Post("customers").
+    Body(customer).
+    Json(createdCustomer).
+    Client(c.client).
+    Do()
+  return createdCustomer,resp,err
 }
 
 // Update a customer.
 // See Desk API: http://dev.desk.com/API/customers/#update
 func (c *CustomerService) Update(customer *Customer) (*Customer, *http.Response, error) {
-	path := fmt.Sprintf("customers/%d", *customer.ID)
-	req, err := c.client.NewRequest("PATCH",path,customer)
-	if err != nil {
-		return nil, nil, err
-	}
-	updatedCustomer := new(Customer)
-	resp, err := c.client.Do(req, updatedCustomer)
-	if err != nil {
-		return nil, resp, err
-	}
-	return updatedCustomer, resp, err
+  restful:=Restful{}
+  updatedCustomer:=new(Customer)
+  resp,err:=restful.
+    Patch(fmt.Sprintf("customers/%d", *customer.ID)).
+    Body(customer).
+    Json(updatedCustomer).
+    Client(c.client).
+    Do()
+  return updatedCustomer,resp,err
 }
 
 // Cases provides a list of cases associated with a customer.
 // See Desk API: http://dev.desk.com/API/customers/#list-cases
 func (c *CustomerService) Cases(id string, params *url.Values) (*Page, *http.Response, error) {
-	path := fmt.Sprintf("customers/%v/cases", id)
-  if params!=nil && len(*params) > 0 {
-    path = fmt.Sprintf("%v?%v",path,params.Encode())
-  }
-  req, err := c.client.NewRequest("GET",path,nil)
+  restful := Restful{}
+  page := new(Page)
+  resp,err := restful.
+    Get(fmt.Sprintf("customers/%v/cases", id)).
+    Json(page).
+    Params(params).
+    Client(c.client).
+    Do()
+	if err != nil {
+		return nil,resp,err
+	}
+  err = c.unravelPage(page)
   if err != nil {
     return nil,nil,err
-  }
-	page := new(Page)
-	resp, err := c.client.Do(req, page)
-	if err != nil {
-		return nil, resp, err
-	}
-  err = c.unravelPage(page) 
-  if err != nil {
-    return nil, nil, err
   }
 	return page, resp, err
 }

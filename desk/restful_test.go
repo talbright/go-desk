@@ -6,9 +6,9 @@ import (
   . "github.com/smartystreets/goconvey/convey"
 )
 
-func TestDesk(t *testing.T) {
+func RestfulMessage(t *testing.T) {
   fmt.Println("")
-  SkipConvey("TODo", t, func() {
+  SkipConvey("TODO", t, func() {
   })
 }
 
