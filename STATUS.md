@@ -2,6 +2,11 @@ Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 
 ## Status
 
+### Authentication
+
+- [x] Basic HTTP auth
+- [ ] Oauth 1
+
 ### Case API
 
 http://dev.desk.com/API/cases/
