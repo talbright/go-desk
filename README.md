@@ -6,6 +6,6 @@ page.
 
 The end goal is implement most of the API endpoints, but prioritizing the ones
 that are most important first. If you need a particular endpoint that hasn't
-been built yet, feel free to open an issue request, or better yet submit a 
+been built yet, feel free to open an issue request, or better yet [submit](CONTRIBUTING.MD) a 
 patch.
 
