@@ -16,7 +16,7 @@ func main() {
 
   //create http client 
   siteUrl := "mysite.desk.com"
-  userEmail := "mysite@somewhere.com
+  userEmail := "mysite@somewhere.com"
   userPassword := "mysite.desk.com pass" 
   client := desk.NewClient(nil,siteUrl,userEmail,userPassword)
   
