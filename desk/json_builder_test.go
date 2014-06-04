@@ -91,6 +91,11 @@ func TestJsonBuilder(t *testing.T) {
         So(msg,ShouldNotBeNil)
         So(msg,ShouldHaveSameTypeAs,Message{})
       })
+      Convey("should build Reply struct",func() {
+        reply:=ReplyBuilder.BuildReply()
+        So(reply,ShouldNotBeNil)
+        So(reply,ShouldHaveSameTypeAs,Reply{})
+      })
       Convey("should build LinkCollection struct",func() {
         links:=LinkCollectionBuilder.BuildLinkCollection()
         So(links,ShouldNotBeNil)

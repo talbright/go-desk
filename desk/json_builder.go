@@ -78,6 +78,10 @@ func (b jsonBuilder) BuildMessage() Message {
   return builder.GetStructLike(b, Message{}).(Message)
 }
 
+func (b jsonBuilder) BuildReply() Reply {
+  return builder.GetStructLike(b, Reply{}).(Reply)
+}
+
 func (b jsonBuilder) BuildCase() Case {
   return builder.GetStructLike(b, Case{}).(Case)
 }
@@ -88,6 +92,7 @@ func (b jsonBuilder) BuildLinkCollection() LinkCollection {
 
 var CaseBuilder = builder.Register(jsonBuilder{}, Case{}).(jsonBuilder)
 var MessageBuilder = builder.Register(jsonBuilder{}, Message{}).(jsonBuilder)
+var ReplyBuilder = builder.Register(jsonBuilder{}, Reply{}).(jsonBuilder)
 var CustomerBuilder = builder.Register(jsonBuilder{}, Customer{}).(jsonBuilder)
 var LinkCollectionBuilder = builder.Register(jsonBuilder{}, LinkCollection{}).(jsonBuilder)
 

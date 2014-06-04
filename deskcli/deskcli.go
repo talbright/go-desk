@@ -4,6 +4,8 @@ import (
   "fmt"
   "reflect"
   "flag"
+  "regexp"
+  "strconv"
   "net/url"
   "time"
   "github.com/talbright/go-desk/desk"
@@ -60,6 +62,49 @@ func BuildSampleCase() *desk.Case {
 //-----------------------------------------------------------------------------
 //Cases
 //-----------------------------------------------------------------------------
+func (e *Example) ListCaseReplies(client *desk.Client) {
+  listParams := url.Values{}
+  listParams.Add("sort_field","created_at")
+  listParams.Add("sort_direction","asc")
+  collection,_,err := client.Case.Reply.List("1",&listParams)
+  HandleResults(collection,err)
+}
+
+func (e *Example) CreateCaseReply(client *desk.Client) {
+  cze:=BuildSampleCase()
+  createdCase,_,err:=client.Case.Create(cze)
+  HandleResults(createdCase,err)
+  reply:=desk.ReplyBuilder.
+    SetString("Body","some body").
+    SetString("Direction","out").
+    SetString("Status","draft").
+    BuildReply()
+  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  HandleResults(newReply,err)
+}
+
+func (e *Example) UpdateCaseReply(client *desk.Client) {
+  cze:=BuildSampleCase()
+  createdCase,_,err:=client.Case.Create(cze)
+  HandleResults(createdCase,err)
+  reply:=desk.ReplyBuilder.
+    SetString("Body","some body").
+    SetString("Direction","out").
+    SetString("Status","draft").
+    BuildReply()
+  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  HandleResults(newReply,err)
+  replyLink:=newReply.LinkCollection.Links["self"]["href"]
+  r,err:=regexp.Compile("\\d+$")
+  replyIdStr:=r.FindString(replyLink.(string))
+  replyIdInt,err:=strconv.Atoi(replyIdStr)
+  body:=fmt.Sprintf("some body updated")
+  reply.Body=&body
+  reply.ID=&replyIdInt
+  updatedReply,_,err:=client.Case.Reply.Update(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  HandleResults(updatedReply,err)
+}
+
 func (e *Example) GetCaseMessage(client *desk.Client) {
   cse,_,err := client.Case.Message.Get("1")
   HandleResults(cse,err)
@@ -214,3 +259,4 @@ func (e *Example) CustomerCases(client *desk.Client) {
   page,_,err := client.Customer.Cases(fmt.Sprintf("%d",DefaultCustomerId),&params)
   HandleResults(page,err)
 }
+
