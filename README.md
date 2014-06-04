@@ -9,6 +9,44 @@ that are most important first. If you need a particular endpoint that hasn't
 been built yet, feel free to open an issue request, or better yet [submit](CONTRIBUTING.MD) a 
 patch.
 
+### Example
+
+```golang
+func main() {
+
+  //create http client 
+  siteUrl := "mysite.desk.com"
+  userEmail := "mysite@somewhere.com
+  userPassword := "mysite.desk.com pass" 
+  client := desk.NewClient(nil,siteUrl,userEmail,userPassword)
+  
+  //create a new case
+  message:=desk.MessageBuilder.
+    SetString("Direction","in").
+    SetString("Status","received").
+    SetString("To","someone@desk.com").
+    SetString("From","someone-else@desk.com").
+    SetString("Subject","Case created by API via desk-go").
+    SetString("Body","Please assist me with this case").
+    BuildMessage()
+  caze:=desk.CaseBuilder.
+    SetString("Type","email").
+    SetString("Subject","Case created by API via desk-go").
+    SetInt("Priority",4).
+    SetString("Status","received").
+    SetMessage(message).
+    AddHrefLink("customer",fmt.Sprintf("/api/v2/customers/%d",192220782)).
+    BuildCase()
+  newCase,_,err := client.Case.Create(caze)
+  if err != nil {
+    fmt.Printf("error: %v\n\n", err)
+  } else {
+    fmt.Printf("%v\n\n",newCase.String())
+  }   
+}
+
+```
+
 ### Other Libraries
 
 Libraries in other languages are also available:
