@@ -11,7 +11,7 @@ patch.
 
 ### Example
 
-```golang
+```go
 func main() {
 
   //create http client 
@@ -44,7 +44,6 @@ func main() {
     fmt.Printf("%v\n\n",newCase.String())
   }   
 }
-
 ```
 
 ### Other Libraries
