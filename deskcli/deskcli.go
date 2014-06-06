@@ -105,6 +105,24 @@ func (e *Example) UpdateCaseReply(client *desk.Client) {
   HandleResults(updatedReply,err)
 }
 
+func (e *Example) DeleteCaseReply(client *desk.Client) {
+  cze:=BuildSampleCase()
+  createdCase,_,err:=client.Case.Create(cze)
+  HandleResults(createdCase,err)
+  reply:=desk.ReplyBuilder.
+    SetString("Body","some body").
+    SetString("Direction","out").
+    SetString("Status","draft").
+    BuildReply()
+  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  HandleResults(newReply,err)
+  replyLink:=newReply.LinkCollection.Links["self"]["href"]
+  r,err:=regexp.Compile("\\d+$")
+  replyIdStr:=r.FindString(replyLink.(string))
+  resp,_:=client.Case.Reply.Delete(fmt.Sprintf("%d",*createdCase.ID),replyIdStr)
+  fmt.Printf("Delete results: %v\n",resp)
+}
+
 func (e *Example) GetCaseMessage(client *desk.Client) {
   cse,_,err := client.Case.Message.Get("1")
   HandleResults(cse,err)

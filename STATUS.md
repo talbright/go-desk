@@ -25,8 +25,8 @@ http://dev.desk.com/API/cases/
 - [x] Show Reply
 - [x] Update Reply
 - [x] Create Reply
+- [x] Delete Reply
 - [ ] Show Draft
-- [ ] Delete Reply
 - [ ] Update Draft
 - [ ] Create Draft
 - [ ] Show Note

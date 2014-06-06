@@ -73,6 +73,17 @@ func (c *ReplyService) Update(caseId string,reply *Reply) (*Reply, *http.Respons
   return updatedReply,resp,err
 }
 
+// Delete a reply for a case.
+// See Desk API: http://dev.desk.com/API/cases/#replies-show 
+func (c* ReplyService) Delete(caseId string,replyId string) (*http.Response, error) {
+  restful := Restful{}
+  resp, err := restful.
+    Delete(fmt.Sprintf("cases/%s/replies/%s",caseId,replyId)).
+    Client(c.client).
+    Do()
+  return resp, err
+}
+
 func (c* ReplyService)unravelPage(page *Page) (error) {
   replies := new([]Reply)
   err := json.Unmarshal(*page.Embedded.RawEntries,&replies)
