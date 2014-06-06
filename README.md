@@ -1,3 +1,6 @@
+[![GoDoc](https://godoc.org/github.com/talbright/go-desk?status.png)](https://godoc.org/github.com/talbright/go-desk)
+[![Build Status](https://travis-ci.org/talbright/go-desk.png?branch=master)](https://travis-ci.org/talbright/go-desk)
+
 Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 
 With over 200 API endpoints, the Desk API is a comprehensize one. To check
