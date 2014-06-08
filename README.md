@@ -3,7 +3,7 @@
 
 Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 
-With over 200 API endpoints, the Desk API is a comprehensize one. To check
+With over 200 API endpoints, the Desk API is a comprehensive one. To check
 on which endpoints have been implemented, please see the [status](STATUS.md) 
 page.
 
