@@ -10,6 +10,7 @@ import (
 )
 
 
+
 //We could also create a map/slice of functions, but I want to play with reflection...
 type Example struct {}
 
