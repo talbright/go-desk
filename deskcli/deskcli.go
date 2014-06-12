@@ -9,6 +9,7 @@ import (
   "github.com/talbright/go-desk/desk"
 )
 
+
 //We could also create a map/slice of functions, but I want to play with reflection...
 type Example struct {}
 
