@@ -86,7 +86,7 @@ func (c *CustomerService) Update(customer *Customer) (*Customer, *http.Response,
   restful:=Restful{}
   updatedCustomer:=new(Customer)
   resp,err:=restful.
-    Patch(fmt.Sprintf("customers/%d", *customer.ID)).
+    Patch(fmt.Sprintf("customers/%d", customer.GetId())).
     Body(customer).
     Json(updatedCustomer).
     Client(c.client).

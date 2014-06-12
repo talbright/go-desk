@@ -24,22 +24,12 @@ func (b jsonBuilder) SetTimestampNow(field string) jsonBuilder {
   return builder.Set(b, field, &timet).(jsonBuilder)
 }
 
-func (b jsonBuilder) SetLinkCollection(value LinkCollection) jsonBuilder {
-  return builder.Set(b, "LinkCollection", value).(jsonBuilder)
+func (b jsonBuilder) SetLinks(value map[string]map[string]interface{}) jsonBuilder {
+  return builder.Set(b, "Links", value).(jsonBuilder)
 }
 
 func (b jsonBuilder) SetMessage(value Message) jsonBuilder {
   return builder.Set(b, "Message", &value).(jsonBuilder)
-}
-
-func (b jsonBuilder) AddHrefLink(class string,href string) jsonBuilder {
-  val,_ := builder.Get(b, "LinkCollection")
-  if val==nil {
-    val = LinkCollection{}
-  }
-  coll,_ := val.(LinkCollection)
-  coll.AddHrefLink(class,href)
-  return builder.Set(b,"LinkCollection",coll).(jsonBuilder)
 }
 
 func (b jsonBuilder) AddCustomField(name string,value interface{}) jsonBuilder {
@@ -86,13 +76,8 @@ func (b jsonBuilder) BuildCase() Case {
   return builder.GetStructLike(b, Case{}).(Case)
 }
 
-func (b jsonBuilder) BuildLinkCollection() LinkCollection {
-  return builder.GetStructLike(b, LinkCollection{}).(LinkCollection)
-}
-
 var CaseBuilder = builder.Register(jsonBuilder{}, Case{}).(jsonBuilder)
 var MessageBuilder = builder.Register(jsonBuilder{}, Message{}).(jsonBuilder)
 var ReplyBuilder = builder.Register(jsonBuilder{}, Reply{}).(jsonBuilder)
 var CustomerBuilder = builder.Register(jsonBuilder{}, Customer{}).(jsonBuilder)
-var LinkCollectionBuilder = builder.Register(jsonBuilder{}, LinkCollection{}).(jsonBuilder)
 

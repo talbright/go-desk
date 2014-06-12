@@ -1,7 +1,6 @@
 package desk
 
 type Case struct {
-	ID              *int                    `json:"id,omitempty"`
 	ExternalID      *string                 `json:"external_id,omitempty"`
 	Type            *string                 `json:"type,omitempty"`
 	Status          *string                 `json:"status,omitempty"`
@@ -21,7 +20,7 @@ type Case struct {
 	ResolvedAt      *Timestamp              `json:"resolved_at,omitempty"`
 	FirstResolvedAt *Timestamp              `json:"first_resolved_at,omitempty"`
   Message         *Message                `json:"message,omitempty"`
-	LinkCollection
+  Hal
 }
 
 func (c Case) String() string {

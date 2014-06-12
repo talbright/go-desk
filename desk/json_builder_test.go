@@ -15,8 +15,8 @@ func TestJsonBuilder(t *testing.T) {
         So(*caze.Subject,ShouldEqual,"foo")
       })
       Convey("should set int fields",func() {
-        caze:=CaseBuilder.SetInt("ID",99).BuildCase()
-        So(*caze.ID,ShouldEqual,99)
+        caze:=CaseBuilder.SetInt("Id",99).BuildCase()
+        So(*caze.Id,ShouldEqual,99)
       })
       Convey("should set Timestamp fields",func() {
         timet:=Timestamp{time.Now()}
@@ -28,10 +28,10 @@ func TestJsonBuilder(t *testing.T) {
         caze:=CaseBuilder.SetTimestampNow("LockedUntil").BuildCase()
         So(caze.LockedUntil.String(),ShouldNotBeNil)
       })
-      Convey("should set LinkCollection field",func() {
-        coll:=LinkCollection{}
-        caze:=CaseBuilder.SetLinkCollection(coll).BuildCase()
-        So(caze.LinkCollection,ShouldNotBeNil)
+      Convey("should set Links field",func() {
+        links:=make(map[string]map[string]interface{})
+        caze:=CaseBuilder.SetLinks(links).BuildCase()
+        So(caze.Links,ShouldNotBeNil)
       })
       Convey("should set Message field",func() {
         msg:=Message{}
@@ -45,18 +45,6 @@ func TestJsonBuilder(t *testing.T) {
           BuildCase()
         So(caze.CustomFields["foo1"],ShouldEqual,"bar1")
         So(caze.CustomFields["foo2"],ShouldEqual,"bar2")
-      })
-      Convey("should add Href link in LinkCollection",func() {
-        caze:=CaseBuilder.
-          AddHrefLink("customer1","/api/v2/customer/1234").
-          AddHrefLink("customer2","/api/v2/customer/1234").
-          BuildCase()
-        So(caze.LinkCollection.Links["customer1"],ShouldNotBeNil)
-        So(caze.LinkCollection.Links["customer1"]["href"],ShouldEqual,"/api/v2/customer/1234")
-        So(caze.LinkCollection.Links["customer1"]["class"],ShouldEqual,"customer1")
-        So(caze.LinkCollection.Links["customer2"],ShouldNotBeNil)
-        So(caze.LinkCollection.Links["customer2"]["href"],ShouldEqual,"/api/v2/customer/1234")
-        So(caze.LinkCollection.Links["customer2"]["class"],ShouldEqual,"customer2")
       })
       Convey("should add address",func() {
         customer:=CustomerBuilder.AddAddress("123 somewhere","primary").BuildCustomer()
@@ -95,11 +83,6 @@ func TestJsonBuilder(t *testing.T) {
         reply:=ReplyBuilder.BuildReply()
         So(reply,ShouldNotBeNil)
         So(reply,ShouldHaveSameTypeAs,Reply{})
-      })
-      Convey("should build LinkCollection struct",func() {
-        links:=LinkCollectionBuilder.BuildLinkCollection()
-        So(links,ShouldNotBeNil)
-        So(links,ShouldHaveSameTypeAs,LinkCollection{})
       })
     })
 }

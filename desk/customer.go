@@ -1,7 +1,6 @@
 package desk
 
 type Customer struct {
-	ID                  *int          `json:"id,omitempty"`
 	ExternalID          *string       `json:"external_id,omitempty"`
 	FirstName           *string       `json:"first_name,omitempty"` 
 	LastName            *string       `json:"last_name,omitempty"` 
@@ -17,7 +16,7 @@ type Customer struct {
 	Emails              []map[string]string   `json:"emails,omitempty"` 
 	PhoneNumbers        []map[string]string   `json:"phone_numbers,omitempty"` 
 	Addresses           []map[string]string   `json:"addresses,omitempty"` 
-	LinkCollection
+  Hal
 }
 
 func (c Customer) String() string {

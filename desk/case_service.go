@@ -96,7 +96,7 @@ func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
   restful:=Restful{}
   updatedCase:=new(Case)
   resp,err:=restful.
-    Patch(fmt.Sprintf("cases/%d", *cse.ID)).
+    Patch(fmt.Sprintf("cases/%d", cse.GetId())).
     Body(cse).
     Json(updatedCase).
     Client(s.client).

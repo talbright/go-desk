@@ -24,7 +24,7 @@ type Page struct {
 	PageNumber   *int             `json:"page,omitempty"`
 	TotalEntries *int             `json:"total_entries,omitempty"`
 	Embedded     *EntryCollection `json:"_embedded,omitempty"`
-	LinkCollection
+  Links map[string]map[string]interface{}   `json:"_links,omitempty"`
 }
 
 func (c Page) String() string {
