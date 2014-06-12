@@ -46,6 +46,18 @@ func TestJsonBuilder(t *testing.T) {
         So(caze.CustomFields["foo1"],ShouldEqual,"bar1")
         So(caze.CustomFields["foo2"],ShouldEqual,"bar2")
       })
+      Convey("should add Href link in Links",func() {
+        caze:=CaseBuilder.
+          AddHrefLink("customer1","/api/v2/customer/1234").
+          AddHrefLink("customer2","/api/v2/customer/1234").
+          BuildCase()
+        So(caze.Links["customer1"],ShouldNotBeNil)
+        So(caze.Links["customer1"]["href"],ShouldEqual,"/api/v2/customer/1234")
+        So(caze.Links["customer1"]["class"],ShouldEqual,"customer1")
+        So(caze.Links["customer2"],ShouldNotBeNil)
+        So(caze.Links["customer2"]["href"],ShouldEqual,"/api/v2/customer/1234")
+        So(caze.Links["customer2"]["class"],ShouldEqual,"customer2")
+      })
       Convey("should add address",func() {
         customer:=CustomerBuilder.AddAddress("123 somewhere","primary").BuildCustomer()
         So(customer.Addresses,ShouldNotBeNil)

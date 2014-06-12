@@ -4,8 +4,6 @@ import (
   "fmt"
   "reflect"
   "flag"
-  // "regexp"
-  // "strconv"
   "net/url"
   "time"
   "github.com/talbright/go-desk/desk"
@@ -79,7 +77,7 @@ func (e *Example) CreateCaseReply(client *desk.Client) {
     SetString("Direction","out").
     SetString("Status","draft").
     BuildReply()
-  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",createdCase.GetId()),&reply)
   newReply.GetId()
   HandleResults(newReply,err)
 }
@@ -93,11 +91,11 @@ func (e *Example) UpdateCaseReply(client *desk.Client) {
     SetString("Direction","out").
     SetString("Status","draft").
     BuildReply()
-  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",createdCase.GetId()),&reply)
   HandleResults(newReply,err)
   body:=fmt.Sprintf("some body updated")
   newReply.Body=&body
-  updatedReply,_,err:=client.Case.Reply.Update(fmt.Sprintf("%d",*createdCase.ID),newReply)
+  updatedReply,_,err:=client.Case.Reply.Update(fmt.Sprintf("%d",createdCase.GetId()),newReply)
   HandleResults(updatedReply,err)
 }
 
@@ -110,9 +108,9 @@ func (e *Example) DeleteCaseReply(client *desk.Client) {
     SetString("Direction","out").
     SetString("Status","draft").
     BuildReply()
-  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",createdCase.GetId()),&reply)
   HandleResults(newReply,err)
-  resp,_:=client.Case.Reply.Delete(fmt.Sprintf("%d",*createdCase.ID),newReply.GetStringId())
+  resp,_:=client.Case.Reply.Delete(fmt.Sprintf("%d",createdCase.GetId()),newReply.GetStringId())
   fmt.Printf("Delete results: %v\n",resp)
 }
 
@@ -143,7 +141,7 @@ func (e *Example) UpdateCaseMessage(client *desk.Client) {
   updateMsg:=desk.MessageBuilder.
     SetString("Subject",fmt.Sprintf("Case updated by API via desk-go at %v",time.Now())).
     BuildMessage()
-  newMsg,_,err := client.Case.Message.Update(fmt.Sprintf("%d",*newCase.ID),&updateMsg,nil)
+  newMsg,_,err := client.Case.Message.Update(fmt.Sprintf("%d",newCase.GetId()),&updateMsg,nil)
   HandleResults(newMsg,err)
 }
 
@@ -166,7 +164,7 @@ func (e *Example) DeleteCaseMessage(client *desk.Client) {
     BuildCase()
   newCase,_,err := client.Case.Create(&caze)
   HandleResults(newCase,err)
-  res,_:=client.Case.Message.Delete(fmt.Sprintf("%d",*newCase.ID))
+  res,_:=client.Case.Message.Delete(fmt.Sprintf("%d",newCase.GetId()))
   fmt.Printf("Delete results: %v\n",res)
 }
 
@@ -211,9 +209,9 @@ func (e *Example) DeleteCase(client *desk.Client) {
   caze:=BuildSampleCase()
   newCase,_,err := client.Case.Create(caze)
   HandleResults(newCase,err)
-  results,err := client.Case.Delete(fmt.Sprintf("%d",*newCase.ID))
+  results,err := client.Case.Delete(fmt.Sprintf("%d",newCase.GetId()))
   fmt.Printf("Delete results: %v\n",results)
-  foundCase,results,err := client.Case.Get(fmt.Sprintf("%d",*newCase.ID))
+  foundCase,results,err := client.Case.Get(fmt.Sprintf("%d",newCase.GetId()))
   HandleResults(foundCase,err)
 }
 
@@ -258,7 +256,8 @@ func (e *Example) CreateCustomer(client *desk.Client) {
 func (e *Example) UpdateCustomer(client *desk.Client) {
   id := DefaultCustomerId 
   background := fmt.Sprintf("background updated at %v",time.Now())
-  customer := desk.Customer{ ID: &id, Background: &background }
+  customer := desk.Customer{ Background: &background }
+  customer.Id = &id
   updatedCustomer,_,err := client.Customer.Update(&customer)
   HandleResults(updatedCustomer,err)
 }

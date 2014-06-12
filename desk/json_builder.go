@@ -60,6 +60,16 @@ func (b jsonBuilder) AddPhoneNumber(value string,valueType string) jsonBuilder {
   return builder.Set(b,"PhoneNumbers",customer.PhoneNumbers).(jsonBuilder)
 }
 
+func (b jsonBuilder) AddHrefLink(class string,href string) jsonBuilder {
+  val,_ := builder.Get(b, "Hal")
+  if val==nil {
+    val = Hal{}
+  }
+  hal,_ := val.(Hal)
+  hal.AddHrefLink(class,href)
+  return builder.Set(b,"Hal",hal).(jsonBuilder)
+}
+
 func (b jsonBuilder) BuildCustomer() Customer {
   return builder.GetStructLike(b, Customer{}).(Customer)
 }
