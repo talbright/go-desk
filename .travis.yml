@@ -7,3 +7,4 @@ go:
 
 install:
   - go get -t github.com/smartystreets/goconvey 
+  - go get -t github.com/lann/builder 
