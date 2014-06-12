@@ -4,8 +4,8 @@ import (
   "fmt"
   "reflect"
   "flag"
-  "regexp"
-  "strconv"
+  // "regexp"
+  // "strconv"
   "net/url"
   "time"
   "github.com/talbright/go-desk/desk"
@@ -80,6 +80,7 @@ func (e *Example) CreateCaseReply(client *desk.Client) {
     SetString("Status","draft").
     BuildReply()
   newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  newReply.GetId()
   HandleResults(newReply,err)
 }
 
@@ -94,14 +95,9 @@ func (e *Example) UpdateCaseReply(client *desk.Client) {
     BuildReply()
   newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
   HandleResults(newReply,err)
-  replyLink:=newReply.LinkCollection.Links["self"]["href"]
-  r,err:=regexp.Compile("\\d+$")
-  replyIdStr:=r.FindString(replyLink.(string))
-  replyIdInt,err:=strconv.Atoi(replyIdStr)
   body:=fmt.Sprintf("some body updated")
-  reply.Body=&body
-  reply.ID=&replyIdInt
-  updatedReply,_,err:=client.Case.Reply.Update(fmt.Sprintf("%d",*createdCase.ID),&reply)
+  newReply.Body=&body
+  updatedReply,_,err:=client.Case.Reply.Update(fmt.Sprintf("%d",*createdCase.ID),newReply)
   HandleResults(updatedReply,err)
 }
 
@@ -116,10 +112,7 @@ func (e *Example) DeleteCaseReply(client *desk.Client) {
     BuildReply()
   newReply,_,err := client.Case.Reply.Create(fmt.Sprintf("%d",*createdCase.ID),&reply)
   HandleResults(newReply,err)
-  replyLink:=newReply.LinkCollection.Links["self"]["href"]
-  r,err:=regexp.Compile("\\d+$")
-  replyIdStr:=r.FindString(replyLink.(string))
-  resp,_:=client.Case.Reply.Delete(fmt.Sprintf("%d",*createdCase.ID),replyIdStr)
+  resp,_:=client.Case.Reply.Delete(fmt.Sprintf("%d",*createdCase.ID),newReply.GetStringId())
   fmt.Printf("Delete results: %v\n",resp)
 }
 

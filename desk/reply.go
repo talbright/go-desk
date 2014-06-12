@@ -1,7 +1,6 @@
 package desk
 
 type Reply struct {
-	ID               *int       `json:"id,omitempty"`
 	Direction        *string    `json:"direction,omitempty"`
 	Body             *string    `json:"body,omitempty"`
 	BodyText         *string    `json:"body_text,omitempty"`
@@ -26,7 +25,7 @@ type Reply struct {
 	HiddentAt        *Timestamp `json:"hidden_at,omitempty"`
 	CreatedAt        *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	LinkCollection
+  Hal
 }
 
 func (c Reply) String() string {

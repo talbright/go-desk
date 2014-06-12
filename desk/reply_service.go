@@ -65,7 +65,7 @@ func (c *ReplyService) Update(caseId string,reply *Reply) (*Reply, *http.Respons
   restful:=Restful{}
   updatedReply:=new(Reply)
   resp,err:=restful.
-    Patch(fmt.Sprintf("cases/%s/replies/%d",caseId,*reply.ID)).
+    Patch(fmt.Sprintf("cases/%s/replies/%d",caseId,reply.GetId())).
     Body(reply).
     Json(updatedReply).
     Client(c.client).
