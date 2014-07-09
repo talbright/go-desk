@@ -60,7 +60,56 @@ func BuildSampleCase() *desk.Case {
 }
 
 //-----------------------------------------------------------------------------
-//Cases
+//Case Drafts
+//-----------------------------------------------------------------------------
+func (e *Example) CreateCaseDraft(client *desk.Client) {
+  cze:=BuildSampleCase()
+  createdCase,_,err:=client.Case.Create(cze)
+  HandleResults(createdCase,err)
+  draft:=desk.DraftBuilder.
+    SetString("Body","some body").
+    SetString("Direction","out").
+    SetString("Status","draft").
+    BuildDraft()
+  newDraft,_,err:=client.Case.Draft.Create(fmt.Sprintf("%d",createdCase.GetId()),&draft)
+  HandleResults(newDraft,err)
+}
+
+func (e *Example) ShowCaseDraft(client *desk.Client) {
+  cze:=BuildSampleCase()
+  createdCase,_,err:=client.Case.Create(cze)
+  HandleResults(createdCase,err)
+  draft:=desk.DraftBuilder.
+    SetString("Body","some body").
+    SetString("Direction","out").
+    SetString("Status","draft").
+    BuildDraft()
+  client.Case.Draft.Create(fmt.Sprintf("%d",createdCase.GetId()),&draft)
+  showDraft,_,err:=client.Case.Draft.Get(fmt.Sprintf("%d",createdCase.GetId()))
+  HandleResults(showDraft,err)
+}
+
+func (e *Example) UpdateCaseDraft(client *desk.Client) {
+  cze:=BuildSampleCase()
+  createdCase,_,err:=client.Case.Create(cze)
+  HandleResults(createdCase,err)
+  draft:=desk.DraftBuilder.
+    SetString("Body","some body").
+    SetString("Direction","out").
+    SetString("Status","draft").
+    BuildDraft()
+  newDraft,_,err:=client.Case.Draft.Create(fmt.Sprintf("%d",createdCase.GetId()),&draft)
+  HandleResults(newDraft,err)
+  body := fmt.Sprintf("body updated at %v",time.Now())
+  newDraft.Body = &body
+  //TODO this marshalls to null, but the API cannot handle null 
+  delete(newDraft.Links,"outbound_mailbox")
+  updatedDraft,_,err:=client.Case.Draft.Update(fmt.Sprintf("%d",createdCase.GetId()),newDraft)
+  HandleResults(updatedDraft,err)
+}
+
+//-----------------------------------------------------------------------------
+//Case Replies
 //-----------------------------------------------------------------------------
 func (e *Example) ListCaseReplies(client *desk.Client) {
   listParams := url.Values{}
@@ -116,6 +165,9 @@ func (e *Example) DeleteCaseReply(client *desk.Client) {
   fmt.Printf("Delete results: %v\n",resp)
 }
 
+//-----------------------------------------------------------------------------
+//Case Message
+//-----------------------------------------------------------------------------
 func (e *Example) GetCaseMessage(client *desk.Client) {
   cse,_,err := client.Case.Message.Get("1")
   HandleResults(cse,err)
@@ -170,6 +222,9 @@ func (e *Example) DeleteCaseMessage(client *desk.Client) {
   fmt.Printf("Delete results: %v\n",res)
 }
 
+//-----------------------------------------------------------------------------
+//Case
+//-----------------------------------------------------------------------------
 func (e *Example) GetCase(client *desk.Client) {
   cse,_,err := client.Case.Get("1")
   HandleResults(cse,err)

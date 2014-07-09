@@ -96,5 +96,10 @@ func TestJsonBuilder(t *testing.T) {
         So(reply,ShouldNotBeNil)
         So(reply,ShouldHaveSameTypeAs,Reply{})
       })
+      Convey("should build Draft struct",func() {
+        draft:=DraftBuilder.BuildDraft()
+        So(draft,ShouldNotBeNil)
+        So(draft,ShouldHaveSameTypeAs,Draft{})
+      })
     })
 }

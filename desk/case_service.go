@@ -11,12 +11,14 @@ type CaseService struct {
 	client      *Client
   Message     *MessageService 
   Reply       *ReplyService
+  Draft       *DraftService
 }
 
 func NewCaseService(httpClient *Client) *CaseService {
 	s := &CaseService{client: httpClient}
 	s.Message = &MessageService{client: httpClient}
 	s.Reply = &ReplyService{client: httpClient}
+  s.Draft = &DraftService{client: httpClient}
 	return s
 }
 

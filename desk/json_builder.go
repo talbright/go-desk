@@ -86,8 +86,13 @@ func (b jsonBuilder) BuildCase() Case {
   return builder.GetStructLike(b, Case{}).(Case)
 }
 
+func (b jsonBuilder) BuildDraft() Draft {
+  return builder.GetStructLike(b, Draft{}).(Draft)
+}
+
 var CaseBuilder = builder.Register(jsonBuilder{}, Case{}).(jsonBuilder)
 var MessageBuilder = builder.Register(jsonBuilder{}, Message{}).(jsonBuilder)
 var ReplyBuilder = builder.Register(jsonBuilder{}, Reply{}).(jsonBuilder)
 var CustomerBuilder = builder.Register(jsonBuilder{}, Customer{}).(jsonBuilder)
+var DraftBuilder = builder.Register(jsonBuilder{}, Draft{}).(jsonBuilder)
 
