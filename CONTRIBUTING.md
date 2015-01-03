@@ -26,3 +26,8 @@ This project uses GoConvey for testing. To start the tests (from the project roo
 
 Then open your browser to: http://localhost:8080
 
+As an alternative, you may also run the following script as a shortcut, but it is 
+os x specific:
+
+    $ ./test.sh
+
