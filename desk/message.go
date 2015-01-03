@@ -17,10 +17,9 @@ type Message struct {
 	FromFacebookName *string    `json:"from_facebook_name,omitempty"`
 	CreatedAt        *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-  Hal
+	Hal
 }
 
 func (c Message) String() string {
 	return Stringify(c)
 }
-

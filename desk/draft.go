@@ -25,10 +25,9 @@ type Draft struct {
 	HiddentAt        *Timestamp `json:"hidden_at,omitempty"`
 	CreatedAt        *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-  Hal
+	Hal
 }
 
 func (c Draft) String() string {
 	return Stringify(c)
 }
-

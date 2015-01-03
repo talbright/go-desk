@@ -14,7 +14,7 @@ import (
 )
 
 type Stringable interface {
-  String() string
+	String() string
 }
 
 var timestampType = reflect.TypeOf(Timestamp{})

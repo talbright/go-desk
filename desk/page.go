@@ -21,10 +21,10 @@ type EntryCollection struct {
 // which, contains the data you probably want to get at.
 // See Desk API (http://dev.desk.com/API/using-the-api/#embedding)
 type Page struct {
-	PageNumber   *int             `json:"page,omitempty"`
-	TotalEntries *int             `json:"total_entries,omitempty"`
-	Embedded     *EntryCollection `json:"_embedded,omitempty"`
-  Links map[string]map[string]interface{}   `json:"_links,omitempty"`
+	PageNumber   *int                              `json:"page,omitempty"`
+	TotalEntries *int                              `json:"total_entries,omitempty"`
+	Embedded     *EntryCollection                  `json:"_embedded,omitempty"`
+	Links        map[string]map[string]interface{} `json:"_links,omitempty"`
 }
 
 func (c Page) String() string {

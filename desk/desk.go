@@ -10,8 +10,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	/* "reflect" */
-	/* "strconv" */ /* "strings" */ /* "time" */)
+	/* "reflect" */ /* "strconv" */ /* "strings" */ /* "time" */)
 
 const (
 	DeskLibVersion = "0.1"
@@ -26,7 +25,7 @@ type Client struct {
 	UserEmail    string
 	UserPassword string
 	Case         *CaseService
-  Customer     *CustomerService
+	Customer     *CustomerService
 }
 
 func init() {
@@ -42,7 +41,7 @@ func NewClient(httpClient *http.Client, endpointURL string, userEmail string, us
 	baseURL, _ := url.Parse(fmt.Sprintf("%s/api/%s/", endpointURL, DeskApiVersion))
 	c := &Client{client: httpClient, BaseURL: baseURL, UserEmail: userEmail, UserPassword: userPassword}
 	c.Case = NewCaseService(c)
-  c.Customer = &CustomerService{client: c}
+	c.Customer = &CustomerService{client: c}
 	return c
 }
 

@@ -1,14 +1,13 @@
 package desk
 
 import (
-  "fmt"
-  "testing"
-  . "github.com/smartystreets/goconvey/convey"
+	"fmt"
+	. "github.com/smartystreets/goconvey/convey"
+	"testing"
 )
 
 func TestDesk(t *testing.T) {
-  fmt.Println("")
-  SkipConvey("TODo", t, func() {
-  })
+	fmt.Println("")
+	SkipConvey("TODo", t, func() {
+	})
 }
-
