@@ -2,7 +2,6 @@ package desk
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -26,9 +25,10 @@ func NewCaseService(httpClient *Client) *CaseService {
 // See Desk API method show (http://dev.desk.com/API/cases/#show)
 func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 	restful := Restful{}
-	cse := new(Case)
+	cse := NewCase()
+	path := NewIdentityResourcePath(id,cse)
 	resp, err := restful.
-		Get(fmt.Sprintf("cases/%v", id)).
+		Get(path.Path()).
 		Json(cse).
 		Client(s.client).
 		Do()
@@ -40,8 +40,9 @@ func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 func (s *CaseService) List(params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
+	path := NewResourcePath(NewCase())
 	resp, err := restful.
-		Get("cases").
+		Get(path.Path()).
 		Json(page).
 		Params(params).
 		Client(s.client).
@@ -61,8 +62,9 @@ func (s *CaseService) List(params *url.Values) (*Page, *http.Response, error) {
 func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
+	path := NewResourcePath(NewCase()).SetAction("search")
 	resp, err := restful.
-		Get("cases/search").
+		Get(path.Path()).
 		Json(page).
 		Query(q).
 		Params(params).
@@ -82,9 +84,10 @@ func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Respon
 // See Desk API: http://dev.desk.com/API/cases/#create
 func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
 	restful := Restful{}
-	createdCase := new(Case)
+	createdCase := NewCase()
+	path := NewResourcePath(NewCase())
 	resp, err := restful.
-		Post("cases").
+		Post(path.Path()).
 		Body(cse).
 		Json(createdCase).
 		Client(s.client).
@@ -96,9 +99,10 @@ func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
 // See Desk API: http://dev.desk.com/API/cases/#update
 func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
 	restful := Restful{}
-	updatedCase := new(Case)
+	updatedCase := NewCase()
+	path := NewIdentityResourcePath(cse.GetResourceId(),cse)
 	resp, err := restful.
-		Patch(fmt.Sprintf("cases/%d", cse.GetId())).
+		Patch(path.Path()).
 		Body(cse).
 		Json(updatedCase).
 		Client(s.client).
@@ -110,8 +114,9 @@ func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
 // See Desk API: http://dev.desk.com/API/cases/#delete
 func (s *CaseService) Delete(id string) (*http.Response, error) {
 	restful := Restful{}
+	path := NewIdentityResourcePath(id,NewCase())
 	resp, err := restful.
-		Delete(fmt.Sprintf("cases/%s", id)).
+		Delete(path.Path()).
 		Client(s.client).
 		Do()
 	return resp, err
@@ -124,8 +129,9 @@ func (s *CaseService) Forward(id string, recipients string, note string) (*http.
 	forward["to"] = recipients
 	forward["note_text"] = note
 	restful := Restful{}
+	path := NewIdentityResourcePath(id,NewCase()).SetAction("forward")
 	resp, err := restful.
-		Post(fmt.Sprintf("cases/%s/forward", id)).
+		Post(path.Path()).
 		Client(s.client).
 		Body(forward).
 		Do()
@@ -140,6 +146,7 @@ func (s *CaseService) unravelPage(page *Page) error {
 	}
 	page.Embedded.Entries = make([]interface{}, len(*cases))
 	for i, v := range *cases {
+		v.InitializeResource(v)
 		page.Embedded.Entries[i] = interface{}(v)
 	}
 	page.Embedded.RawEntries = nil

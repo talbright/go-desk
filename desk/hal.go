@@ -29,16 +29,18 @@ func (c *Hal) GetId() int {
 			if len(sections) > 0 {
 				strId := sections[len(sections)-1]
 				intId, _ := strconv.Atoi(strId)
-				c.Id = new(int)
-				*c.Id = intId
+				c.SetId(intId)
 			}
+		} else {
+			c.SetId(-1)
 		}
 	}
 	return *c.Id
 }
 
-func (c *Hal) GetStringId() string {
-	return fmt.Sprintf("%d", c.GetId())
+func (c *Hal) SetId(id int) {
+	c.Id = new(int)
+	*c.Id = id
 }
 
 func (c *Hal) GetLinkSubItemStringValue(link string, subitem string) string {
@@ -79,3 +81,26 @@ func (c *Hal) HasLink(name string) bool {
 func (c *Hal) HasLinkAndSubItem(name string, subitem string) bool {
 	return c.HasLink(name) && c.Links[name][subitem] != nil
 }
+
+func (c *Hal) GetResourceId() string {
+	var id string
+	if c.GetId()>=0 {
+		id = fmt.Sprintf("%d", c.GetId())
+	}
+	return id
+}
+
+func (c *Hal) SetResourceId(id string) {
+	intId, _ := strconv.Atoi(id)
+	c.SetId(intId)
+}
+
+func (c *Hal) GetResourcePath(resource Resourceful, options ...func(*ResourcePath)) ResourcePath {
+	pathing:=ResourcePath{Target: resource}
+	pathing.SetMember()
+	for _,option := range options {
+		option(&pathing)
+	}
+	return pathing
+}
+

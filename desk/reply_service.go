@@ -2,7 +2,6 @@ package desk
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -15,9 +14,11 @@ type ReplyService struct {
 // See Desk API: http://dev.desk.com/API/cases/#replies-show
 func (c *ReplyService) Get(caseId string, replyId string) (*Reply, *http.Response, error) {
 	restful := Restful{}
-	reply := new(Reply)
+	reply := NewReply()
+	replyPath := NewIdentityResourcePath(replyId,NewReply())
+	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
 	resp, err := restful.
-		Get(fmt.Sprintf("cases/%s/replies/%s", caseId, replyId)).
+		Get(casePath.Path()).
 		Json(reply).
 		Client(c.client).
 		Do()
@@ -29,8 +30,10 @@ func (c *ReplyService) Get(caseId string, replyId string) (*Reply, *http.Respons
 func (c *ReplyService) List(caseId string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
+	replyPath := NewResourcePath(NewReply())
+	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
 	resp, err := restful.
-		Get(fmt.Sprintf("cases/%s/replies", caseId)).
+		Get(casePath.Path()).
 		Json(page).
 		Params(params).
 		Client(c.client).
@@ -49,9 +52,11 @@ func (c *ReplyService) List(caseId string, params *url.Values) (*Page, *http.Res
 // See Desk API: http://dev.desk.com/API/cases/#replies-create
 func (c *ReplyService) Create(caseId string, reply *Reply) (*Reply, *http.Response, error) {
 	restful := Restful{}
-	createdReply := new(Reply)
+	createdReply := NewReply()
+	replyPath := NewResourcePath(createdReply)
+	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
 	resp, err := restful.
-		Post(fmt.Sprintf("cases/%s/replies", caseId)).
+		Post(casePath.Path()).
 		Body(reply).
 		Json(createdReply).
 		Client(c.client).
@@ -63,9 +68,10 @@ func (c *ReplyService) Create(caseId string, reply *Reply) (*Reply, *http.Respon
 // See Desk API: http://dev.desk.com/API/replies/#update
 func (c *ReplyService) Update(caseId string, reply *Reply) (*Reply, *http.Response, error) {
 	restful := Restful{}
-	updatedReply := new(Reply)
+	updatedReply := NewReply()
+	casePath := NewIdentityResourcePath(caseId,NewCase()).SetNested(reply)
 	resp, err := restful.
-		Patch(fmt.Sprintf("cases/%s/replies/%d", caseId, reply.GetId())).
+		Patch(casePath.Path()).
 		Body(reply).
 		Json(updatedReply).
 		Client(c.client).
@@ -77,8 +83,10 @@ func (c *ReplyService) Update(caseId string, reply *Reply) (*Reply, *http.Respon
 // See Desk API: http://dev.desk.com/API/cases/#replies-show
 func (c *ReplyService) Delete(caseId string, replyId string) (*http.Response, error) {
 	restful := Restful{}
+	replyPath := NewIdentityResourcePath(replyId,NewReply())
+	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
 	resp, err := restful.
-		Delete(fmt.Sprintf("cases/%s/replies/%s", caseId, replyId)).
+		Delete(casePath.Path()).
 		Client(c.client).
 		Do()
 	return resp, err
@@ -92,6 +100,7 @@ func (c *ReplyService) unravelPage(page *Page) error {
 	}
 	page.Embedded.Entries = make([]interface{}, len(*replies))
 	for i, v := range *replies {
+		v.InitializeResource(v)
 		page.Embedded.Entries[i] = interface{}(v)
 	}
 	page.Embedded.RawEntries = nil

@@ -8,12 +8,41 @@ import (
 
 func TestHal(t *testing.T) {
 	fmt.Println("")
-	Convey("GetStringId", t, func() {
+	Convey("GetResourcePath", t, func() {
+		Convey("should generate a valid member path", func() {
+			caze := NewCase()
+			caze.SetResourceId("1")
+			So(caze.GetResourcePath(caze).String(), ShouldEqual, "cases/1")
+		})
+		Convey("should generate a valid collection path", func() {
+			caze := NewCase()
+			caze.SetResourceId("1")
+			path := caze.GetResourcePath(caze,ResourcePathOptionSetCollection)
+			So(path.String(), ShouldEqual, "cases")
+		})
+		Convey("should inclue a prefix", func() {
+			caze := NewCase()
+			caze.SetResourceId("1")
+			path := caze.GetResourcePath(caze,func(rp *ResourcePath) {
+				rp.Prefix = "api/v2"
+			})
+			So(path.String(), ShouldEqual, "api/v2/cases/1")
+		})
+		Convey("should inclue a sufix", func() {
+			caze := NewCase()
+			caze.SetResourceId("1")
+			path := caze.GetResourcePath(caze,func(rp *ResourcePath) {
+				rp.Suffix = "replies/1"
+			})
+			So(path.String(), ShouldEqual, "cases/1/replies/1")
+		})
+	})
+	Convey("GetResourceId", t, func() {
 		Convey("should return stringified Id", func() {
 			hal := NewHal()
 			hal.Id = new(int)
 			*hal.Id = 123
-			So(hal.GetStringId(), ShouldEqual, "123")
+			So(hal.GetResourceId(), ShouldEqual, "123")
 		})
 	})
 	Convey("GetId", t, func() {

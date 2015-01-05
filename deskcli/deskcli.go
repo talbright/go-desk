@@ -69,7 +69,7 @@ func (e *Example) CreateCaseDraft(client *desk.Client) {
 		SetString("Direction", "out").
 		SetString("Status", "draft").
 		BuildDraft()
-	newDraft, _, err := client.Case.Draft.Create(fmt.Sprintf("%d", createdCase.GetId()), &draft)
+	newDraft, _, err := client.Case.Draft.Create(createdCase.GetResourceId(),&draft)
 	HandleResults(newDraft, err)
 }
 
@@ -82,8 +82,8 @@ func (e *Example) ShowCaseDraft(client *desk.Client) {
 		SetString("Direction", "out").
 		SetString("Status", "draft").
 		BuildDraft()
-	client.Case.Draft.Create(fmt.Sprintf("%d", createdCase.GetId()), &draft)
-	showDraft, _, err := client.Case.Draft.Get(fmt.Sprintf("%d", createdCase.GetId()))
+	client.Case.Draft.Create(createdCase.GetResourceId(), &draft)
+	showDraft, _, err := client.Case.Draft.Get(createdCase.GetResourceId())
 	HandleResults(showDraft, err)
 }
 
@@ -96,13 +96,13 @@ func (e *Example) UpdateCaseDraft(client *desk.Client) {
 		SetString("Direction", "out").
 		SetString("Status", "draft").
 		BuildDraft()
-	newDraft, _, err := client.Case.Draft.Create(fmt.Sprintf("%d", createdCase.GetId()), &draft)
+	newDraft, _, err := client.Case.Draft.Create(createdCase.GetResourceId(), &draft)
 	HandleResults(newDraft, err)
 	body := fmt.Sprintf("body updated at %v", time.Now())
 	newDraft.Body = &body
 	//TODO this marshalls to null, but the API cannot handle null
 	delete(newDraft.Links, "outbound_mailbox")
-	updatedDraft, _, err := client.Case.Draft.Update(fmt.Sprintf("%d", createdCase.GetId()), newDraft)
+	updatedDraft, _, err := client.Case.Draft.Update(createdCase.GetResourceId(), newDraft)
 	HandleResults(updatedDraft, err)
 }
 
@@ -126,7 +126,7 @@ func (e *Example) CreateCaseReply(client *desk.Client) {
 		SetString("Direction", "out").
 		SetString("Status", "draft").
 		BuildReply()
-	newReply, _, err := client.Case.Reply.Create(fmt.Sprintf("%d", createdCase.GetId()), &reply)
+	newReply, _, err := client.Case.Reply.Create(createdCase.GetResourceId(), &reply)
 	newReply.GetId()
 	HandleResults(newReply, err)
 }
@@ -140,11 +140,11 @@ func (e *Example) UpdateCaseReply(client *desk.Client) {
 		SetString("Direction", "out").
 		SetString("Status", "draft").
 		BuildReply()
-	newReply, _, err := client.Case.Reply.Create(fmt.Sprintf("%d", createdCase.GetId()), &reply)
+	newReply, _, err := client.Case.Reply.Create(createdCase.GetResourceId(), &reply)
 	HandleResults(newReply, err)
 	body := fmt.Sprintf("some body updated")
 	newReply.Body = &body
-	updatedReply, _, err := client.Case.Reply.Update(fmt.Sprintf("%d", createdCase.GetId()), newReply)
+	updatedReply, _, err := client.Case.Reply.Update(createdCase.GetResourceId(), newReply)
 	HandleResults(updatedReply, err)
 }
 
@@ -157,9 +157,9 @@ func (e *Example) DeleteCaseReply(client *desk.Client) {
 		SetString("Direction", "out").
 		SetString("Status", "draft").
 		BuildReply()
-	newReply, _, err := client.Case.Reply.Create(fmt.Sprintf("%d", createdCase.GetId()), &reply)
+	newReply, _, err := client.Case.Reply.Create(createdCase.GetResourceId(), &reply)
 	HandleResults(newReply, err)
-	resp, _ := client.Case.Reply.Delete(fmt.Sprintf("%d", createdCase.GetId()), newReply.GetStringId())
+	resp, _ := client.Case.Reply.Delete(createdCase.GetResourceId(), newReply.GetResourceId())
 	fmt.Printf("Delete results: %v\n", resp)
 }
 
@@ -193,7 +193,7 @@ func (e *Example) UpdateCaseMessage(client *desk.Client) {
 	updateMsg := desk.MessageBuilder.
 		SetString("Subject", fmt.Sprintf("Case updated by API via desk-go at %v", time.Now())).
 		BuildMessage()
-	newMsg, _, err := client.Case.Message.Update(fmt.Sprintf("%d", newCase.GetId()), &updateMsg, nil)
+	newMsg, _, err := client.Case.Message.Update(newCase.GetResourceId(), &updateMsg, nil)
 	HandleResults(newMsg, err)
 }
 
@@ -216,7 +216,7 @@ func (e *Example) DeleteCaseMessage(client *desk.Client) {
 		BuildCase()
 	newCase, _, err := client.Case.Create(&caze)
 	HandleResults(newCase, err)
-	res, _ := client.Case.Message.Delete(fmt.Sprintf("%d", newCase.GetId()))
+	res, _ := client.Case.Message.Delete(newCase.GetResourceId())
 	fmt.Printf("Delete results: %v\n", res)
 }
 
@@ -264,9 +264,9 @@ func (e *Example) DeleteCase(client *desk.Client) {
 	caze := BuildSampleCase()
 	newCase, _, err := client.Case.Create(caze)
 	HandleResults(newCase, err)
-	results, err := client.Case.Delete(fmt.Sprintf("%d", newCase.GetId()))
+	results, err := client.Case.Delete(newCase.GetResourceId())
 	fmt.Printf("Delete results: %v\n", results)
-	foundCase, results, err := client.Case.Get(fmt.Sprintf("%d", newCase.GetId()))
+	foundCase, results, err := client.Case.Get(newCase.GetResourceId())
 	HandleResults(foundCase, err)
 }
 

@@ -6,8 +6,13 @@ import (
 	"testing"
 )
 
-func TestReply(t *testing.T) {
+func TestDraft(t *testing.T) {
 	fmt.Println("")
-	SkipConvey("Nothing to test yet...", t, func() {
+	Convey("GetResourceName", t, func() {
+		Convey("should return correct name", func() {
+			draft := NewDraft()
+			So(draft.GetResourceName(), ShouldEqual, "draft")
+		})
 	})
 }
+

@@ -16,7 +16,13 @@ type Customer struct {
 	Emails       []map[string]string    `json:"emails,omitempty"`
 	PhoneNumbers []map[string]string    `json:"phone_numbers,omitempty"`
 	Addresses    []map[string]string    `json:"addresses,omitempty"`
-	Hal
+	Resource
+}
+
+func NewCustomer() *Customer {
+	customer := &Customer{}
+	customer.InitializeResource(customer)
+	return customer
 }
 
 func (c Customer) String() string {

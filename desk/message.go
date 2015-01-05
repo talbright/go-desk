@@ -17,7 +17,14 @@ type Message struct {
 	FromFacebookName *string    `json:"from_facebook_name,omitempty"`
 	CreatedAt        *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	Hal
+	Resource
+}
+
+func NewMessage() *Message {
+	message := &Message{}
+	message.InitializeResource(message)
+	message.Singularize()
+	return message
 }
 
 func (c Message) String() string {

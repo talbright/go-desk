@@ -25,7 +25,14 @@ type Draft struct {
 	HiddentAt        *Timestamp `json:"hidden_at,omitempty"`
 	CreatedAt        *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	Hal
+	Resource
+}
+
+func NewDraft() *Draft {
+	d := &Draft{}
+	d.InitializeResource(d)
+	d.Singularize()
+	return d
 }
 
 func (c Draft) String() string {

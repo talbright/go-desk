@@ -1,7 +1,6 @@
 package desk
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -14,9 +13,10 @@ type MessageService struct {
 // See Desk API: http://dev.desk.com/API/cases/#message-show
 func (s *MessageService) Get(caseId string) (*Message, *http.Response, error) {
 	restful := Restful{}
-	msg := new(Message)
+	msg := NewMessage()
+	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(msg)
 	resp, err := restful.
-		Get(fmt.Sprintf("cases/%s/message", caseId)).
+		Get(path.Path()).
 		Json(msg).
 		Client(s.client).
 		Do()
@@ -27,9 +27,10 @@ func (s *MessageService) Get(caseId string) (*Message, *http.Response, error) {
 // See Desk API: http://dev.desk.com/API/cases/#message-update
 func (s *MessageService) Update(caseId string, msg *Message, params *url.Values) (*Message, *http.Response, error) {
 	restful := Restful{}
-	updatedMsg := new(Message)
+	updatedMsg := NewMessage()
+	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(msg)
 	resp, err := restful.
-		Patch(fmt.Sprintf("cases/%s/message", caseId)).
+		Patch(path.Path()).
 		Body(updatedMsg).
 		Params(params).
 		Json(updatedMsg).
@@ -42,8 +43,9 @@ func (s *MessageService) Update(caseId string, msg *Message, params *url.Values)
 // See Desk API: http://dev.desk.com/API/cases/#message-delete
 func (s *MessageService) Delete(caseId string) (*http.Response, error) {
 	restful := Restful{}
+	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(NewMessage())
 	resp, err := restful.
-		Delete(fmt.Sprintf("cases/%s/message", caseId)).
+		Delete(path.Path()).
 		Client(s.client).
 		Do()
 	return resp, err

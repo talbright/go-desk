@@ -1,7 +1,6 @@
 package desk
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -11,11 +10,12 @@ type DraftService struct {
 
 // Get retrieves the draft reply for a case.
 // See Desk API: http://dev.desk.com/API/cases/#drafts-show
-func (c *DraftService) Get(caseId string) (*Draft, *http.Response, error) {
+func (c *DraftService) Get(id string) (*Draft, *http.Response, error) {
 	restful := Restful{}
-	draft := new(Draft)
+	draft := NewDraft()
+	path := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetNested(NewDraft())
 	resp, err := restful.
-		Get(fmt.Sprintf("cases/%s/replies/draft", caseId)).
+		Get(path.Path()).
 		Json(draft).
 		Client(c.client).
 		Do()
@@ -24,11 +24,12 @@ func (c *DraftService) Get(caseId string) (*Draft, *http.Response, error) {
 
 // Create a draft.
 // See Desk API: http://dev.desk.com/API/cases/#drafts-create
-func (c *DraftService) Create(caseId string, draft *Draft) (*Draft, *http.Response, error) {
+func (c *DraftService) Create(id string, draft *Draft) (*Draft, *http.Response, error) {
 	restful := Restful{}
-	createdDraft := new(Draft)
+	createdDraft := NewDraft()
+	path := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetNested(draft)
 	resp, err := restful.
-		Post(fmt.Sprintf("cases/%s/replies/draft", caseId)).
+		Post(path.Path()).
 		Body(draft).
 		Json(createdDraft).
 		Client(c.client).
@@ -38,11 +39,13 @@ func (c *DraftService) Create(caseId string, draft *Draft) (*Draft, *http.Respon
 
 // Update a draft.
 // See Desk API: http://dev.desk.com/API/replies/#update
-func (c *DraftService) Update(caseId string, draft *Draft) (*Draft, *http.Response, error) {
+func (c *DraftService) Update(id string, draft *Draft) (*Draft, *http.Response, error) {
 	restful := Restful{}
-	updatedDraft := new(Draft)
+	updatedDraft := NewDraft()
+	repliesPath := NewIdentityResourcePath(draft.GetResourceId(),NewReply())
+	casesPath := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetSuffix(repliesPath.Path())
 	resp, err := restful.
-		Patch(fmt.Sprintf("cases/%s/replies/%d", caseId, draft.GetId())).
+		Patch(casesPath.Path()).
 		Body(draft).
 		Json(updatedDraft).
 		Client(c.client).

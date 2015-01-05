@@ -20,7 +20,13 @@ type Case struct {
 	ResolvedAt      *Timestamp             `json:"resolved_at,omitempty"`
 	FirstResolvedAt *Timestamp             `json:"first_resolved_at,omitempty"`
 	Message         *Message               `json:"message,omitempty"`
-	Hal
+	Resource
+}
+
+func NewCase() *Case {
+	caze := &Case{}
+	caze.InitializeResource(caze)
+	return caze
 }
 
 func (c Case) String() string {

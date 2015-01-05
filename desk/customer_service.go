@@ -2,7 +2,6 @@ package desk
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -15,9 +14,10 @@ type CustomerService struct {
 // See Desk API: http://dev.desk.com/API/customers/#show
 func (c *CustomerService) Get(id string) (*Customer, *http.Response, error) {
 	restful := Restful{}
-	customer := new(Customer)
+	customer := NewCustomer()
+	path := NewIdentityResourcePath(id,customer)
 	resp, err := restful.
-		Get(fmt.Sprintf("customers/%v", id)).
+		Get(path.Path()).
 		Json(customer).
 		Client(c.client).
 		Do()
@@ -29,8 +29,9 @@ func (c *CustomerService) Get(id string) (*Customer, *http.Response, error) {
 func (c *CustomerService) List(params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
+	path := NewResourcePath(NewCustomer())
 	resp, err := restful.
-		Get("customers").
+		Get(path.Path()).
 		Json(page).
 		Params(params).
 		Client(c.client).
@@ -50,8 +51,9 @@ func (c *CustomerService) List(params *url.Values) (*Page, *http.Response, error
 func (c *CustomerService) Search(params *url.Values, q *string) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
+	path := NewResourcePath(NewCustomer()).SetAction("search")
 	resp, err := restful.
-		Get("customers/search").
+		Get(path.Path()).
 		Json(page).
 		Params(params).
 		Client(c.client).
@@ -71,8 +73,9 @@ func (c *CustomerService) Search(params *url.Values, q *string) (*Page, *http.Re
 func (c *CustomerService) Create(customer *Customer) (*Customer, *http.Response, error) {
 	restful := Restful{}
 	createdCustomer := new(Customer)
+	path := NewResourcePath(NewCustomer())
 	resp, err := restful.
-		Post("customers").
+		Post(path.Path()).
 		Body(customer).
 		Json(createdCustomer).
 		Client(c.client).
@@ -85,8 +88,9 @@ func (c *CustomerService) Create(customer *Customer) (*Customer, *http.Response,
 func (c *CustomerService) Update(customer *Customer) (*Customer, *http.Response, error) {
 	restful := Restful{}
 	updatedCustomer := new(Customer)
+	path := NewIdentityResourcePath(customer.GetResourceId(),customer)
 	resp, err := restful.
-		Patch(fmt.Sprintf("customers/%d", customer.GetId())).
+		Patch(path.Path()).
 		Body(customer).
 		Json(updatedCustomer).
 		Client(c.client).
@@ -99,8 +103,9 @@ func (c *CustomerService) Update(customer *Customer) (*Customer, *http.Response,
 func (c *CustomerService) Cases(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
+	path := NewIdentityResourcePath(id,NewCustomer()).SetNested(NewCase())
 	resp, err := restful.
-		Get(fmt.Sprintf("customers/%v/cases", id)).
+		Get(path.Path()).
 		Json(page).
 		Params(params).
 		Client(c.client).
@@ -123,6 +128,7 @@ func (c *CustomerService) unravelPage(page *Page) error {
 	}
 	page.Embedded.Entries = make([]interface{}, len(*customers))
 	for i, v := range *customers {
+		v.InitializeResource(v)
 		page.Embedded.Entries[i] = interface{}(v)
 	}
 	page.Embedded.RawEntries = nil

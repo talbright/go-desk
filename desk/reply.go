@@ -25,7 +25,13 @@ type Reply struct {
 	HiddentAt        *Timestamp `json:"hidden_at,omitempty"`
 	CreatedAt        *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	Hal
+	Resource
+}
+
+func NewReply() *Reply {
+	reply := &Reply{}
+	reply.InitializeResource(reply)
+	return reply
 }
 
 func (c Reply) String() string {
