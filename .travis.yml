@@ -5,5 +5,8 @@ go:
   - tip
 
 install:
-  - go get -t github.com/smartystreets/goconvey 
-  - go get -t github.com/lann/builder 
+  - go get -t github.com/smartystreets/goconvey
+  - go get -t github.com/lann/builder
+  - go get -t github.com/gedex/inflector
+
+script: go test -short -v ./...
