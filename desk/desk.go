@@ -60,6 +60,10 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		if err != nil {
 			return nil, err
 		}
+		b, err := json.MarshalIndent(body, "", "  ")
+		if err == nil {
+			log.Printf("%s %s [request]\n%s",method,u.String(),b)
+		}
 	}
 
 	req, err := http.NewRequest(method, u.String(), buf)
@@ -98,6 +102,12 @@ func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 			io.Copy(w, resp.Body)
 		} else {
 			err = json.NewDecoder(resp.Body).Decode(v)
+			if err == nil {
+				b, indentErr := json.MarshalIndent(v, "", "  ")
+				if indentErr == nil {
+					log.Printf("%s %v [response]\n%s",req.Method,req.URL,b)
+				}
+			}
 		}
 	}
 	return resp, err
