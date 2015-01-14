@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"strings"
-	"log"
 )
 
 type Restful struct {
@@ -90,14 +88,10 @@ func (r *Restful) Do() (*http.Response, error) {
 	} else if r.query != nil {
 		path = fmt.Sprintf("%v?%v", path, r.query)
 	}
-	log.Printf("Request %v %v",strings.ToUpper(r.method),path)
 	req, err := r.client.NewRequest(r.method, path, r.body)
 	if err != nil {
 		return nil, err
 	}
 	resp, err := r.client.Do(req, r.json)
-	if err != nil {
-		return resp, err
-	}
 	return resp, err
 }

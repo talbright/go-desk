@@ -24,18 +24,21 @@ message:=desk.MessageBuilder.
 	BuildMessage()
 ```
 
-Using struct literal syntax:
+Using the constructor:
 
 ```go
-message:=desk.Message{
-	Direction: StringValue("in"),
-	Status: StringValue("received"),
-	To: StringValue("someone@desk.com"),
-	From: StringValue("someone-else@desk.com"),
-	Subject: StringValue("Case created by API via desk-go"),
-	Body: StringValue("Please assist me with this case")
+message:=desk.NewMessage()
+message.Direction: desk.String("in")
+message.Status: desk.String("received")
+message.To: desk.String("someone@desk.com")
+message.From: desk.String("someone-else@desk.com")
+message.Subject: desk.String("Case created by API via desk-go")
+message.Body: desk.String("Please assist me with this case")
 }
 ```
+
+Struct literal composition is not supported, as the constructor
+performs some additional initialization.
 
 #### Create a new case
 
