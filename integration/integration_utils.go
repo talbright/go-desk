@@ -78,3 +78,10 @@ func BuildSampleCase() *desk.Case {
 	return &caze
 }
 
+func BuildSampleNote() *desk.Note {
+	note := desk.NoteBuilder.
+		SetString("Body","sexy body").
+		BuildNote()
+	return &note
+}
+

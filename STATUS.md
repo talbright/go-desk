@@ -29,10 +29,10 @@ http://dev.desk.com/API/cases/
 - [x] Show Draft
 - [x] Update Draft
 - [x] Create Draft
-- [ ] Show Note
-- [ ] Create Note
-- [ ] Update Note
-- [ ] Delete Note
+- [x] Show Note
+- [x] Create Note
+- [x] Update Note
+- [x] Delete Note
 - [ ] List Attachments
 - [ ] Show Attachment
 - [ ] Create Attachment
@@ -40,7 +40,7 @@ http://dev.desk.com/API/cases/
 - [ ] List History
 - [ ] Preview Macro
 - [ ] List Labels
-- [ ] List Links 
+- [ ] List Links
 - [ ] Create Link
 
 ### Customer API
