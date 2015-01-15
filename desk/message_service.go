@@ -28,10 +28,10 @@ func (s *MessageService) Get(caseId string) (*Message, *http.Response, error) {
 func (s *MessageService) Update(caseId string, msg *Message, params *url.Values) (*Message, *http.Response, error) {
 	restful := Restful{}
 	updatedMsg := NewMessage()
-	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(msg)
+	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(NewMessage())
 	resp, err := restful.
 		Patch(path.Path()).
-		Body(updatedMsg).
+		Body(msg).
 		Params(params).
 		Json(updatedMsg).
 		Client(s.client).

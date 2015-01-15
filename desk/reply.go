@@ -31,6 +31,7 @@ type Reply struct {
 func NewReply() *Reply {
 	reply := &Reply{}
 	reply.InitializeResource(reply)
+	reply.requireSelfId = true
 	return reply
 }
 

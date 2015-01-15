@@ -29,6 +29,35 @@ func SetupLogging() {
 	log.SetOutput(f)
 }
 
+func BuildSampleMessage() *desk.Message {
+	message := desk.MessageBuilder.
+		SetString("Direction", "in").
+		SetString("Status", "received").
+		SetString("To", "someone@desk.com").
+		SetString("From", "someone-else@desk.com").
+		SetString("Subject", "Case created by API via desk-go").
+		SetString("Body", "Please assist me with this case").
+		BuildMessage()
+	return &message
+}
+
+func BuildSampleDraft() *desk.Draft {
+	draft := desk.NewDraft()
+	draft.Body = desk.String("nice body")
+	draft.Direction = desk.String("out")
+	draft.Status = desk.String("draft")
+	return draft
+}
+
+func BuildSampleReply() *desk.Reply {
+	reply := desk.ReplyBuilder.
+		SetString("Body", "some body").
+		SetString("Direction", "out").
+		SetString("Status", "draft").
+		BuildReply()
+	return &reply
+}
+
 func BuildSampleCase() *desk.Case {
 	message := desk.MessageBuilder.
 		SetString("Direction", "in").

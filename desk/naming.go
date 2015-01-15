@@ -7,7 +7,7 @@ import (
 )
 
 type Naming struct {
-	ResourceName string
+	ResourceName string `json:"-"`
 }
 
 func (n* Naming) SetResourceName(thing interface{}) {

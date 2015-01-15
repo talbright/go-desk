@@ -83,8 +83,7 @@ func (c *ReplyService) Update(caseId string, reply *Reply) (*Reply, *http.Respon
 // See Desk API: http://dev.desk.com/API/cases/#replies-show
 func (c *ReplyService) Delete(caseId string, replyId string) (*http.Response, error) {
 	restful := Restful{}
-	replyPath := NewIdentityResourcePath(replyId,NewReply())
-	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
+	casePath := NewIdentityResourcePath(caseId,NewCase()).SetAction("replies").SetSuffix(replyId)
 	resp, err := restful.
 		Delete(casePath.Path()).
 		Client(c.client).

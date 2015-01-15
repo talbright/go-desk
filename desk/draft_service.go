@@ -42,8 +42,7 @@ func (c *DraftService) Create(id string, draft *Draft) (*Draft, *http.Response, 
 func (c *DraftService) Update(id string, draft *Draft) (*Draft, *http.Response, error) {
 	restful := Restful{}
 	updatedDraft := NewDraft()
-	repliesPath := NewIdentityResourcePath(draft.GetResourceId(),NewReply())
-	casesPath := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetSuffix(repliesPath.Path())
+	casesPath := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetNested(NewDraft())
 	resp, err := restful.
 		Patch(casesPath.Path()).
 		Body(draft).

@@ -7,6 +7,7 @@ import (
 )
 
 type Hal struct {
+	requireSelfId	bool
 	Id    *int                              `json:"id,omitempty"`
 	Links map[string]map[string]interface{} `json:"_links,omitempty"`
 }
@@ -22,7 +23,7 @@ func (c Hal) String() string {
 }
 
 func (c *Hal) GetId() int {
-	if c.Id == nil || *c.Id == 0 {
+	if c.Id == nil || *c.Id == 0 || c.requireSelfId == true {
 		idLink := c.GetHrefLink("self")
 		if idLink != "" {
 			sections := strings.Split(idLink, "/")

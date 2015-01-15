@@ -40,6 +40,8 @@ message.Body: desk.String("Please assist me with this case")
 Struct literal composition is not supported, as the constructor
 performs some additional initialization.
 
+For additional examples of the desk API usage, look at the tests in the integration directory.
+
 #### Create a new case
 
 ```go
