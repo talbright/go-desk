@@ -24,7 +24,7 @@ message:=desk.MessageBuilder.
 	BuildMessage()
 ```
 
-Using the constructor:
+Using a constructor:
 
 ```go
 message:=desk.NewMessage()
@@ -34,11 +34,10 @@ message.To: desk.String("someone@desk.com")
 message.From: desk.String("someone-else@desk.com")
 message.Subject: desk.String("Case created by API via desk-go")
 message.Body: desk.String("Please assist me with this case")
-}
 ```
 
 Struct literal composition is not supported, as the constructor
-performs some additional initialization.
+performs some additional initialization(s).
 
 For additional examples of the desk API usage, look at the tests in the integration directory.
 
