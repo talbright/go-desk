@@ -74,5 +74,13 @@ func TestCaseIntegration(t *testing.T) {
 		So(err,ShouldBeNil)
 		log.Printf("Forward response: %v\n", resp)
 	})
+	Convey("should be able to get case feed",t,func() {
+		collection, _, err := client.Case.Feed("1",nil)
+		So(err,ShouldBeNil)
+		So(collection,ShouldNotBeNil)
+		log.Println("collection %v",collection)
+		So(*collection.TotalEntries,ShouldBeGreaterThan,0)
+		So(*collection.Embedded,ShouldNotBeNil)
+	})
 }
 

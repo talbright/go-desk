@@ -8,7 +8,7 @@ import (
 
 type Hal struct {
 	requireSelfId	bool
-	Id    *int                              `json:"id,omitempty"`
+	Id    *int                              `json:"id,int,omitempty"`
 	Links map[string]map[string]interface{} `json:"_links,omitempty"`
 }
 

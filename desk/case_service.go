@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"bytes"
 )
 
 type CaseService struct {
@@ -82,6 +83,26 @@ func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Respon
 	return page, resp, err
 }
 
+func (s *CaseService) Feed(id string,params *url.Values) (*Page, *http.Response, error) {
+	restful := Restful{}
+	page := new(Page)
+	path := NewIdentityResourcePath(id,NewCase()).SetAction("feed")
+	resp, err := restful.
+		Get(path.Path()).
+		Json(page).
+		Params(params).
+		Client(s.client).
+		Do()
+	if err != nil {
+		return nil, resp, err
+	}
+	err = s.unravelFeedPage(page)
+	if err != nil {
+		return nil, nil, err
+	}
+	return page, resp, err
+}
+
 // Create a case.(does not route through customer cases path)
 // See Desk API: http://dev.desk.com/API/cases/#create
 func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
@@ -154,3 +175,53 @@ func (s *CaseService) unravelPage(page *Page) error {
 	page.Embedded.RawEntries = nil
 	return err
 }
+
+func (s *CaseService) unravelFeedPage(page *Page) error {
+	var container interface{}
+
+	decoder := json.NewDecoder(bytes.NewReader(*page.Embedded.RawEntries))
+	decoder.UseNumber()
+	err := decoder.Decode(&container)
+	if err != nil {
+		return err
+	}
+
+	feedItems := container.([]interface{})
+	page.Embedded.Entries = make([]interface{},0)
+	for _, v := range feedItems {
+		entry := v.(map[string]interface{})
+		links := entry["_links"].(map[string]interface{})
+		self := links["self"].(map[string]interface{})
+		remarshalled, err := json.Marshal(v)
+		if err != nil {
+			return err
+		}
+		switch self["class"] {
+		case "note":
+			note := NewNote()
+			err = json.Unmarshal(remarshalled, &note)
+			if err != nil {
+				return err
+			}
+			page.Embedded.Entries = append(page.Embedded.Entries,interface{}(note))
+		default:
+			reply := NewReply()
+			err = json.Unmarshal(remarshalled, &reply)
+			if err != nil {
+				return err
+			}
+			page.Embedded.Entries = append(page.Embedded.Entries,interface{}(reply))
+		}
+	}
+
+	return err
+}
+
+//TODO make this a utility method
+// fmt.Println("marshal indent")
+// mi, err := json.MarshalIndent(entry, "", "  ")
+// if err != nil {
+// 	return err
+// }
+// fmt.Printf("note marshalled: %s\n",mi)
+

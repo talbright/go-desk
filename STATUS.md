@@ -21,7 +21,7 @@ http://dev.desk.com/API/cases/
 - [x] Show Message
 - [x] Update Message
 - [x] Delete Message
-- [x] List Replies 
+- [x] List Replies
 - [x] Show Reply
 - [x] Update Reply
 - [x] Create Reply
@@ -37,7 +37,8 @@ http://dev.desk.com/API/cases/
 - [ ] Show Attachment
 - [ ] Create Attachment
 - [ ] Delete Attachment
-- [ ] List History
+- [ ] History
+- [x] Feed
 - [ ] Preview Macro
 - [ ] List Labels
 - [ ] List Links

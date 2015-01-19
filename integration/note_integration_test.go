@@ -11,6 +11,7 @@ import (
 )
 
 func TestNoteIntegration(t *testing.T) {
+
 	if testing.Short() {
 		t.Skip("integration tests are skipped in short mode.")
 	}
