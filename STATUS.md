@@ -2,10 +2,11 @@ Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 
 ## Status
 
-### Authentication
+### Misc
 
 - [x] Basic HTTP auth
 - [ ] Oauth 1
+- [ ] Etag support (see http://stackoverflow.com/questions/23014106/http-etags-and-http-redirects)
 
 ### Case API
 
