@@ -103,6 +103,26 @@ func (s *CaseService) Feed(id string,params *url.Values) (*Page, *http.Response,
 	return page, resp, err
 }
 
+func (s *CaseService) History(id string,params *url.Values) (*Page, *http.Response, error) {
+	restful := Restful{}
+	page := new(Page)
+	path := NewIdentityResourcePath(id,NewCase()).SetAction("history")
+	resp, err := restful.
+		Get(path.Path()).
+		Json(page).
+		Params(params).
+		Client(s.client).
+		Do()
+	if err != nil {
+		return nil, resp, err
+	}
+	err = s.unravelHistoryPage(page)
+	if err != nil {
+		return nil, nil, err
+	}
+	return page, resp, err
+}
+
 // Create a case.(does not route through customer cases path)
 // See Desk API: http://dev.desk.com/API/cases/#create
 func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
@@ -217,11 +237,18 @@ func (s *CaseService) unravelFeedPage(page *Page) error {
 	return err
 }
 
-//TODO make this a utility method
-// fmt.Println("marshal indent")
-// mi, err := json.MarshalIndent(entry, "", "  ")
-// if err != nil {
-// 	return err
-// }
-// fmt.Printf("note marshalled: %s\n",mi)
+func (s *CaseService) unravelHistoryPage(page *Page) error {
+	caseEvents := new([]CaseEvent)
+	err := json.Unmarshal(*page.Embedded.RawEntries, &caseEvents)
+	if err != nil {
+		return err
+	}
+	page.Embedded.Entries = make([]interface{}, len(*caseEvents))
+	for i, v := range *caseEvents {
+		v.InitializeResource(v)
+		page.Embedded.Entries[i] = interface{}(v)
+	}
+	page.Embedded.RawEntries = nil
+	return err
+}
 

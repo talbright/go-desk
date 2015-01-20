@@ -38,7 +38,7 @@ http://dev.desk.com/API/cases/
 - [ ] Show Attachment
 - [ ] Create Attachment
 - [ ] Delete Attachment
-- [ ] History
+- [x] History
 - [x] Feed
 - [ ] Preview Macro
 - [ ] List Labels
