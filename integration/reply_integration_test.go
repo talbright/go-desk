@@ -9,7 +9,7 @@ import (
 	"github.com/talbright/go-desk/desk"
 )
 
-func TestReply(t *testing.T) {
+func TestReplyIntegration(t *testing.T) {
 	if testing.Short() {
 		t.Skip("integration tests are skipped in short mode.")
 	}
