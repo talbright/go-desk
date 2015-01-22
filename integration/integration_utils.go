@@ -85,3 +85,11 @@ func BuildSampleNote() *desk.Note {
 	return &note
 }
 
+func BuildSampleAttachment() *desk.Attachment {
+	attach := desk.NewAttachment()
+	attach.FileName = desk.String("test.png")
+	attach.ContentType = desk.String("image/png")
+	attach.SetContent("test.png")
+	return attach
+}
+

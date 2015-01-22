@@ -8,11 +8,12 @@ import (
 )
 
 type CaseService struct {
-	client  *Client
-	Message *MessageService
-	Reply   *ReplyService
-	Draft   *DraftService
-	Note    *NoteService
+	client			*Client
+	Message			*MessageService
+	Reply				*ReplyService
+	Draft				*DraftService
+	Note				*NoteService
+	Attachment	*AttachmentService
 }
 
 func NewCaseService(httpClient *Client) *CaseService {
@@ -21,6 +22,7 @@ func NewCaseService(httpClient *Client) *CaseService {
 	s.Reply = &ReplyService{client: httpClient}
 	s.Draft = &DraftService{client: httpClient}
 	s.Note = &NoteService{client: httpClient}
+	s.Attachment = &AttachmentService{client: httpClient}
 	return s
 }
 
