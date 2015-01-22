@@ -34,10 +34,10 @@ http://dev.desk.com/API/cases/
 - [x] Create Note
 - [x] Update Note
 - [x] Delete Note
-- [ ] List Attachments
-- [ ] Show Attachment
-- [ ] Create Attachment
-- [ ] Delete Attachment
+- [x] List Attachments
+- [x] Show Attachment
+- [x] Create Attachment
+- [x] Delete Attachment
 - [x] History
 - [x] Feed
 - [ ] Preview Macro
