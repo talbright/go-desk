@@ -14,7 +14,7 @@ There's two ways to create request bodies.
 Using the builder pattern:
 
 ```go
-message:=desk.MessageBuilder.
+message:=resource.MessageBuilder.
 	SetString("Direction","in").
 	SetString("Status","received").
 	SetString("To","someone@desk.com").
@@ -27,13 +27,13 @@ message:=desk.MessageBuilder.
 Using a constructor:
 
 ```go
-message:=desk.NewMessage()
-message.Direction=desk.String("in")
-message.Status=desk.String("received")
-message.To=desk.String("someone@desk.com")
-message.From=desk.String("someone-else@desk.com")
-message.Subject=desk.String("Case created by API via desk-go")
-message.Body=desk.String("Please assist me with this case")
+message:=resource.NewMessage()
+message.Direction=types.String("in")
+message.Status=types.String("received")
+message.To=types.String("someone@desk.com")
+message.From=types.String("someone-else@desk.com")
+message.Subject=types.String("Case created by API via desk-go")
+message.Body=types.String("Please assist me with this case")
 ```
 
 Struct literal composition is not supported, as the constructor
@@ -50,10 +50,10 @@ func main() {
 	siteUrl := "mysite.desk.com"
 	userEmail := "mysite@somewhere.com"
 	userPassword := "mysite.desk.com pass"
-	client := desk.NewClient(nil,siteUrl,userEmail,userPassword)
+	client := service.NewClient(nil,siteUrl,userEmail,userPassword)
 
   //create a new case
-	message:=desk.MessageBuilder.
+	message:=resource.MessageBuilder.
 		SetString("Direction","in").
 		SetString("Status","received").
 		SetString("To","someone@desk.com").
@@ -61,7 +61,7 @@ func main() {
 		SetString("Subject","Case created by API via desk-go").
 		SetString("Body","Please assist me with this case").
 		BuildMessage()
-	caze:=desk.CaseBuilder.
+	caze:=resource.CaseBuilder.
 		SetString("Type","email").
 		SetString("Subject","Case created by API via desk-go").
 		SetInt("Priority",4).
