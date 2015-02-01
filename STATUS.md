@@ -5,8 +5,8 @@ Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 ### Misc
 
 - [x] Basic HTTP auth
-- [ ] Oauth 1
 - [ ] Etag support (see http://stackoverflow.com/questions/23014106/http-etags-and-http-redirects)
+- [ ] Rate limiting
 
 ### Case API
 
@@ -41,7 +41,7 @@ http://dev.desk.com/API/cases/
 - [x] History
 - [x] Feed
 - [ ] Preview Macro
-- [ ] List Labels
+- [x] List Labels
 - [ ] List Links
 - [ ] Create Link
 

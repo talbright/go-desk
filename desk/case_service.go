@@ -125,6 +125,26 @@ func (s *CaseService) History(id string,params *url.Values) (*Page, *http.Respon
 	return page, resp, err
 }
 
+func (s *CaseService) Labels(id string,params *url.Values) (*Page, *http.Response, error) {
+	restful := Restful{}
+	page := new(Page)
+	path := NewIdentityResourcePath(id,NewCase()).SetAction("labels")
+	resp, err := restful.
+		Get(path.Path()).
+		Json(page).
+		Params(params).
+		Client(s.client).
+		Do()
+	if err != nil {
+		return nil, resp, err
+	}
+	err = s.unravelLabelPage(page)
+	if err != nil {
+		return nil, nil, err
+	}
+	return page, resp, err
+}
+
 // Create a case.(does not route through customer cases path)
 // See Desk API: http://dev.desk.com/API/cases/#create
 func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
@@ -247,6 +267,21 @@ func (s *CaseService) unravelHistoryPage(page *Page) error {
 	}
 	page.Embedded.Entries = make([]interface{}, len(*caseEvents))
 	for i, v := range *caseEvents {
+		v.InitializeResource(v)
+		page.Embedded.Entries[i] = interface{}(v)
+	}
+	page.Embedded.RawEntries = nil
+	return err
+}
+
+func (s *CaseService) unravelLabelPage(page *Page) error {
+	labels := new([]Label)
+	err := json.Unmarshal(*page.Embedded.RawEntries, &labels)
+	if err != nil {
+		return err
+	}
+	page.Embedded.Entries = make([]interface{}, len(*labels))
+	for i, v := range *labels {
 		v.InitializeResource(v)
 		page.Embedded.Entries[i] = interface{}(v)
 	}
