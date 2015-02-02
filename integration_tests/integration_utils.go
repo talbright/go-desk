@@ -17,9 +17,9 @@ func init() {
 }
 
 func CreateClient() *service.Client {
-	siteUrl := os.Getenv("resource_SITE_URL")
-	userEmail := os.Getenv("resource_SITE_EMAIL")
-	userPassword := os.Getenv("resource_SITE_PASS")
+	siteUrl := os.Getenv("DESK_SITE_URL")
+	userEmail := os.Getenv("DESK_SITE_EMAIL")
+	userPassword := os.Getenv("DESK_SITE_PASS")
 	return service.NewClient(nil, siteUrl, userEmail, userPassword)
 }
 
