@@ -12,6 +12,8 @@ import (
 	"net/url"
 	/* "reflect" */ /* "strconv" */ /* "strings" */ /* "time" */
 	desk "github.com/talbright/go-desk"
+	"strconv"
+	"time"
 )
 
 type Client struct {
@@ -73,9 +75,32 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 // first decode it.
 func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 	log.Printf("Do %v", req)
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return nil, err
+
+	var resp *http.Response
+	var err error
+
+	for {
+		resp, err = c.client.Do(req)
+
+		if err != nil {
+			return nil, err
+		}
+
+		// if we get a 429 response code we should try the request again
+		// otherwise we simply break out of the loop and continue
+		if resp.StatusCode != 429 {
+			break
+		}
+
+		// resp will be overwritten so close the body before that happens
+		resp.Body.Close()
+
+		// get the amount of time till the rate limit reset will occur
+		nextWindow, _ := strconv.Atoi(resp.Header.Get("X-Rate-Limit-Reset"))
+
+		// sleep till the rate limit has been reset then continue in the loop
+		// so the request gets retried
+		time.Sleep(time.Second * time.Duration(nextWindow))
 	}
 
 	defer resp.Body.Close()
