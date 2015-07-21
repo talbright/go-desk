@@ -7,6 +7,7 @@ import (
 	"os"
 	"log"
 	"fmt"
+	"strconv"
 )
 
 //TODO this shouldn't be hardcoded
@@ -69,13 +70,17 @@ func BuildSampleCase() *resource.Case {
 		SetString("Subject", "Case created by API via resource-go").
 		SetString("Body", "Please assist me with this case").
 		BuildMessage()
+	customerId, err := strconv.Atoi(os.Getenv("CUSTOMER_ID"))
+	if err == nil {
+		customerId = DefaultCustomerId
+	}
 	caze := resource.CaseBuilder.
 		SetString("Type", "email").
 		SetString("Subject", "Case created by API via resource-go").
 		SetInt("Priority", 4).
 		SetString("Status", "received").
 		SetMessage(message).
-		AddHrefLink("customer", fmt.Sprintf("/api/v2/customers/%d", DefaultCustomerId)).
+		AddHrefLink("customer", fmt.Sprintf("/api/v2/customers/%d", customerId)).
 		BuildCase()
 	return &caze
 }
