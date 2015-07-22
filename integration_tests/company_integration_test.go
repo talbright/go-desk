@@ -74,5 +74,15 @@ func TestCompanyIntegration(t *testing.T) {
 		So(*collection.TotalEntries,ShouldBeGreaterThan,0)
 		So(*collection.Embedded,ShouldNotBeNil)
 	})
+
+	Convey("should be able to get company customers",t,func() {
+		params := url.Values{}
+		params.Add("sort_field", "created_at")
+		params.Add("sort_direction", "asc")
+		collection, _, err := client.Company.Customers(fmt.Sprintf("%d", DefaultCompanyId), &params)
+		So(err,ShouldBeNil)
+		So(*collection.TotalEntries,ShouldBeGreaterThan,0)
+		So(*collection.Embedded,ShouldNotBeNil)
+	})
 }
 

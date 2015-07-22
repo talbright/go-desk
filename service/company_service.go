@@ -100,11 +100,33 @@ func (c *CompanyService) Update(company *Company) (*Company, *http.Response, err
 }
 
 // Cases provides a list of companies associated with a company.
-// See Desk API: http://dev.desk.com/API/companies/#list-companies
+// See Desk API: http://dev.desk.com/API/companies/#list-cases
 func (c *CompanyService) Cases(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
 	path := NewIdentityResourcePath(id,NewCompany()).SetNested(NewCase())
+	resp, err := restful.
+		Get(path.Path()).
+		Json(page).
+		Params(params).
+		Client(c.client).
+		Do()
+	if err != nil {
+		return nil, resp, err
+	}
+	err = c.unravelPage(page)
+	if err != nil {
+		return nil, nil, err
+	}
+	return page, resp, err
+}
+
+// Customers provides a list of companies associated with a company.
+// See Desk API: http://dev.desk.com/API/companies/#customers-list
+func (c *CompanyService) Customers(id string, params *url.Values) (*Page, *http.Response, error) {
+	restful := Restful{}
+	page := new(Page)
+	path := NewIdentityResourcePath(id,NewCompany()).SetNested(NewCustomer())
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).
