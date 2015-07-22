@@ -99,12 +99,12 @@ func (c *CompanyService) Update(company *Company) (*Company, *http.Response, err
 	return updatedCompany, resp, err
 }
 
-// Companies provides a list of companies associated with a company.
+// Cases provides a list of companies associated with a company.
 // See Desk API: http://dev.desk.com/API/companies/#list-companies
-func (c *CompanyService) Companies(id string, params *url.Values) (*Page, *http.Response, error) {
+func (c *CompanyService) Cases(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(id,NewCompany()).SetNested(NewCompany())
+	path := NewIdentityResourcePath(id,NewCompany()).SetNested(NewCase())
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).

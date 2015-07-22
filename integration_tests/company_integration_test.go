@@ -65,37 +65,14 @@ func TestCompanyIntegration(t *testing.T) {
 		So(newCompany.GetResourceId(),ShouldNotBeBlank)
 	})
 
-	// Convey("should be able to forward a company",t,func() {
-	// 	resp, err := client.Company.Forward("1", "someone@desk.com", "some note")
-	// 	So(err,ShouldBeNil)
-	// 	log.Printf("Forward response: %v\n", resp)
-	// })
-
-	// Convey("should be able to get company feed",t,func() {
-	// 	collection, _, err := client.Company.Feed("1",nil)
-	// 	So(err,ShouldBeNil)
-	// 	So(collection,ShouldNotBeNil)
-	// 	log.Println("collection %v",collection)
-	// 	So(*collection.TotalEntries,ShouldBeGreaterThan,0)
-	// 	So(*collection.Embedded,ShouldNotBeNil)
-	// })
-
-	// Convey("should be able to get company history",t,func() {
-	// 	collection, _, err := client.Company.History("1",nil)
-	// 	So(err,ShouldBeNil)
-	// 	So(collection,ShouldNotBeNil)
-	// 	log.Println("collection %v",collection)
-	// 	So(*collection.TotalEntries,ShouldBeGreaterThan,0)
-	// 	So(*collection.Embedded,ShouldNotBeNil)
-	// })
-
-	// Convey("should be able to get company labels",t,func() {
-	// 	collection, _, err := client.Company.Labels("1",nil)
-	// 	So(err,ShouldBeNil)
-	// 	So(collection,ShouldNotBeNil)
-	// 	log.Println("collection %v",collection)
-	// 	So(*collection.TotalEntries,ShouldBeGreaterThan,0)
-	// 	So(*collection.Embedded,ShouldNotBeNil)
-	// })
+	Convey("should be able to get company cases",t,func() {
+		params := url.Values{}
+		params.Add("sort_field", "created_at")
+		params.Add("sort_direction", "asc")
+		collection, _, err := client.Company.Cases(fmt.Sprintf("%d", DefaultCompanyId), &params)
+		So(err,ShouldBeNil)
+		So(*collection.TotalEntries,ShouldBeGreaterThan,0)
+		So(*collection.Embedded,ShouldNotBeNil)
+	})
 }
 
