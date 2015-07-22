@@ -23,3 +23,7 @@ func NewCompany() *Company {
 func (c Company) String() string {
 	return Stringify(c)
 }
+
+func (c *Company) AddDomain(domain string) {
+	c.Domains = append(c.Domains, domain)
+}

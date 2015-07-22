@@ -99,28 +99,6 @@ func (c *CompanyService) Update(company *Company) (*Company, *http.Response, err
 	return updatedCompany, resp, err
 }
 
-// Companies provides a list of companies associated with a company.
-// See Desk API: http://dev.desk.com/API/companies/#list-companies
-func (c *CompanyService) Companies(id string, params *url.Values) (*Page, *http.Response, error) {
-	restful := Restful{}
-	page := new(Page)
-	path := NewIdentityResourcePath(id,NewCompany()).SetNested(NewCompany())
-	resp, err := restful.
-		Get(path.Path()).
-		Json(page).
-		Params(params).
-		Client(c.client).
-		Do()
-	if err != nil {
-		return nil, resp, err
-	}
-	err = c.unravelPage(page)
-	if err != nil {
-		return nil, nil, err
-	}
-	return page, resp, err
-}
-
 func (c *CompanyService) unravelPage(page *Page) error {
 	companies := new([]Company)
 	err := json.Unmarshal(*page.Embedded.RawEntries, &companies)
