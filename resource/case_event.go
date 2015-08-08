@@ -6,7 +6,7 @@ import(
 
 type CaseEvent struct {
 	Type            *string                  `json:"type,omitempty"`
-	Context         *string                  `json:"type,omitempty"`
+	Context         *string                  `json:"context,omitempty"`
 	CreatedAt       *Timestamp               `json:"created_at,omitempty"`
 	Changes         []map[string]interface{} `json:"changes,omitempty"`
 	Resource
