@@ -13,6 +13,7 @@ type Case struct {
 	Blurb           *string                `json:"blurb,omitempty"`
 	Language        *string                `json:"language,omitempty"`
 	Priority        *int                   `json:"priority,omitempty"`
+	Labels          []string               `json:"labels,omitempty"`
 	CustomFields    map[string]interface{} `json:"custom_fields,omitempty"`
 	LockedUntil     *Timestamp             `json:"locked_until",omitempty`
 	CreatedAt       *Timestamp             `json:"created_at,omitempty"`
