@@ -21,7 +21,7 @@ type Reply struct {
 	ClientType       *string    `json:"client_type,omitempty"`
 	FromFacebookName *string    `json:"from_facebook_name,omitempty"`
 	PublicUrl        *string    `json:"public_url,omitempty"`
-	IsBestAnswer     *string    `json:"is_best_answer,omitempty"`
+	IsBestAnswer     *bool      `json:"is_best_answer,omitempty"`
 	Rating           *float32   `json:"rating,omitempty"`
 	RatingCount      *int       `json:"rating_count,omitempty"`
 	RatingScore      *int       `json:"rating_score,omitempty"`
