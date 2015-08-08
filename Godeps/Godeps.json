@@ -1,0 +1,30 @@
+{
+	"ImportPath": "github.com/talbright/go-desk",
+	"GoVersion": "go1.4.2",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/gedex/inflector",
+			"Rev": "8c0e57904488c554ab26caec525db5c92b23f051"
+		},
+		{
+			"ImportPath": "github.com/jacobsa/oglematchers",
+			"Rev": "4fc24f97b5b74022c2a3f4ca7eed57ca29083d3e"
+		},
+		{
+			"ImportPath": "github.com/lann/builder",
+			"Rev": "e392a3807936973dc23108a6b108ade8567f1bc7"
+		},
+		{
+			"ImportPath": "github.com/mndrix/ps",
+			"Rev": "33ddf69629c1bcea76b04f4a4e9e00e4cce82eb6"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/goconvey/convey",
+			"Comment": "1.5.0-206-g13db5bb",
+			"Rev": "13db5bb88b509cb5ac23c1e8624a0ab9e685e083"
+		}
+	]
+}
