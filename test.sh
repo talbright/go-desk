@@ -1,12 +1,14 @@
 #!/bin/bash
 
+GOPATH=`godep path`:$GOPATH
+
 function run_unit_tests {
 	open http://localhost:8080
-	$GOPATH/bin/goconvey -short=true
+	goconvey -short=true
 }
 
 function run_integration_tests {
-	go test -v integration_tests/*.go
+	godep go test -v integration_tests/*.go
 }
 
 case $1 in
@@ -17,5 +19,5 @@ case $1 in
 		run_integration_tests
 		;;
 	*)
-		unit_tests
+		run_unit_tests
 esac
