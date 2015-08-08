@@ -2,7 +2,7 @@
 
 function run_unit_tests {
 	open http://localhost:8080
-	$GOPATH/bin/goconvey -short=true
+	$GOPATH/bin/goconvey -test.short=true
 }
 
 function run_integration_tests {
@@ -17,5 +17,5 @@ case $1 in
 		run_integration_tests
 		;;
 	*)
-		unit_tests
+		run_unit_tests
 esac
