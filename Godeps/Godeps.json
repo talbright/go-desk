@@ -14,6 +14,11 @@
 			"Rev": "4fc24f97b5b74022c2a3f4ca7eed57ca29083d3e"
 		},
 		{
+			"ImportPath": "github.com/joho/godotenv",
+			"Comment": "v1-8-g443e926",
+			"Rev": "443e926da0d793d3b3f32118b1e4ba52ada26503"
+		},
+		{
 			"ImportPath": "github.com/lann/builder",
 			"Rev": "e392a3807936973dc23108a6b108ade8567f1bc7"
 		},

@@ -49,5 +49,5 @@ os x specific:
 
     $ DESK_SITE_URL=https://mysite.desk.com DESK_SITE_EMAIL=myemail@example.com DESK_SITE_PASS=mypass ./test.sh integration
 
-You may also store the environment variables DESK_* in a .env file in the root of the project,
-and the test script will pick them up. See ```.env.example```
+You may also store the environment variables DESK_* in ```.env.test``` file in the root of the project,
+and the test script will pick them up. See ```.env.test.example```

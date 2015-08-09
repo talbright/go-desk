@@ -7,4 +7,4 @@ go:
 install:
   - go get github.com/tools/godep
 
-script: godep go test -short -v ./...
+script: godep go test -v -test.short ./{service,resource}
