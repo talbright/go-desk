@@ -1,19 +1,25 @@
 package integration_tests
 
 import (
-	service "github.com/talbright/go-desk/service"
-	resource "github.com/talbright/go-desk/resource"
-	types "github.com/talbright/go-desk/types"
-	"os"
-	"log"
 	"fmt"
+	dotenv "github.com/joho/godotenv"
+	resource "github.com/talbright/go-desk/resource"
+	service "github.com/talbright/go-desk/service"
+	types "github.com/talbright/go-desk/types"
+	"log"
+	"os"
+	"strconv"
+	"time"
 )
 
-//TODO this shouldn't be hardcoded
-const DefaultCustomerId int = 192220782
+var DefaultCustomerId int
+var DefaultCompanyId int
 
 func init() {
 	SetupLogging()
+	SetupEnv()
+	DefaultCustomerId, _ = strconv.Atoi(os.Getenv("DESK_DEFAULT_CUSTOMER_ID"))
+	DefaultCompanyId, _ = strconv.Atoi(os.Getenv("DESK_DEFAULT_COMPANY_ID"))
 }
 
 func CreateClient() *service.Client {
@@ -24,11 +30,18 @@ func CreateClient() *service.Client {
 }
 
 func SetupLogging() {
-	f, err := os.OpenFile("test.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	f, err := os.OpenFile("test.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-			panic(fmt.Sprintf("error opening log file: %v", err))
+		panic(fmt.Sprintf("error opening log file: %v", err))
 	}
 	log.SetOutput(f)
+}
+
+func SetupEnv() {
+	err := dotenv.Load("../.env.test")
+	if err != nil {
+		log.Fatal("Error loading .env.test file")
+	}
 }
 
 func BuildSampleMessage() *resource.Message {
@@ -69,6 +82,10 @@ func BuildSampleCase() *resource.Case {
 		SetString("Subject", "Case created by API via resource-go").
 		SetString("Body", "Please assist me with this case").
 		BuildMessage()
+	// customerId, err := strconv.Atoi(os.Getenv("CUSTOMER_ID"))
+	// if err == nil {
+	// 	customerId = DefaultCustomerId
+	// }
 	caze := resource.CaseBuilder.
 		SetString("Type", "email").
 		SetString("Subject", "Case created by API via resource-go").
@@ -80,9 +97,23 @@ func BuildSampleCase() *resource.Case {
 	return &caze
 }
 
+func BuildSampleCompany() *resource.Company {
+	companyId, err := strconv.Atoi(os.Getenv("COMPANY_ID"))
+	if err == nil {
+		companyId = DefaultCompanyId
+	}
+	companyName := types.String(fmt.Sprintf("Acme Corp %v", time.Now()))
+	company := resource.CompanyBuilder.
+		SetString("Name", *companyName).
+		AddDomain("amce.org").
+		AddHrefLink("customer", fmt.Sprintf("/api/v2/companies/%d", companyId)).
+		BuildCompany()
+	return &company
+}
+
 func BuildSampleNote() *resource.Note {
 	note := resource.NoteBuilder.
-		SetString("Body","sexy body").
+		SetString("Body", "sexy body").
 		BuildNote()
 	return &note
 }
@@ -94,4 +125,3 @@ func BuildSampleAttachment() *resource.Attachment {
 	attach.SetContent("test.png")
 	return attach
 }
-

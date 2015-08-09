@@ -22,7 +22,7 @@ _testmain.go
 
 *.exe
 *.test
-.env
+.env.test
 
 deskcli/deskcli
 deskcli/*.sh
