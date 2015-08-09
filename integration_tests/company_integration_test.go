@@ -46,7 +46,7 @@ func TestCompanyIntegration(t *testing.T) {
 	})
 
 	Convey("should be able to update a company", t, func() {
-		subject := types.String(fmt.Sprintf("updated company at %v", time.Now()))
+		subject := types.String(fmt.Sprintf("desk.com updated company at %v", time.Now()))
 		company := resource.NewCompany()
 		company.Name = subject
 		company.SetResourceId(fmt.Sprintf("%d", DefaultCompanyId))
