@@ -23,6 +23,7 @@ type Client struct {
 	UserPassword string
 	Case         *CaseService
 	Customer     *CustomerService
+	Company      *CompanyService
 }
 
 func NewClient(httpClient *http.Client, endpointURL string, userEmail string, userPassword string) *Client {
@@ -33,6 +34,7 @@ func NewClient(httpClient *http.Client, endpointURL string, userEmail string, us
 	c := &Client{client: httpClient, BaseURL: baseURL, UserEmail: userEmail, UserPassword: userPassword}
 	c.Case = NewCaseService(c)
 	c.Customer = &CustomerService{client: c}
+	c.Company = &CompanyService{client: c}
 	return c
 }
 

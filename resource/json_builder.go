@@ -71,6 +71,12 @@ func (b jsonBuilder) AddHrefLink(class string, href string) jsonBuilder {
 	return builder.Set(b, "Hal", hal).(jsonBuilder)
 }
 
+func (b jsonBuilder) AddDomain(value string) jsonBuilder {
+	company := builder.GetStructLike(b, Company{}).(Company)
+	company.AddDomain(value)
+	return builder.Set(b, "Domains", company.Domains).(jsonBuilder)
+}
+
 func (b jsonBuilder) BuildCustomer() Customer {
 	return builder.GetStructLike(b, Customer{}).(Customer)
 }
@@ -95,9 +101,14 @@ func (b jsonBuilder) BuildNote() Note {
 	return builder.GetStructLike(b, Note{}).(Note)
 }
 
+func (b jsonBuilder) BuildCompany() Company {
+	return builder.GetStructLike(b, Company{}).(Company)	
+}
+
 var CaseBuilder = builder.Register(jsonBuilder{}, Case{}).(jsonBuilder)
 var MessageBuilder = builder.Register(jsonBuilder{}, Message{}).(jsonBuilder)
 var ReplyBuilder = builder.Register(jsonBuilder{}, Reply{}).(jsonBuilder)
 var CustomerBuilder = builder.Register(jsonBuilder{}, Customer{}).(jsonBuilder)
 var DraftBuilder = builder.Register(jsonBuilder{}, Draft{}).(jsonBuilder)
 var NoteBuilder = builder.Register(jsonBuilder{}, Note{}).(jsonBuilder)
+var CompanyBuilder = builder.Register(jsonBuilder{}, Company{}).(jsonBuilder)
