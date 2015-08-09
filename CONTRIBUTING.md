@@ -31,7 +31,7 @@ To start the unit tests (from the project root):
 
 Then open your browser to: http://localhost:8080
 
-As an alternative, you may also run the following script as a shortcut, but it is 
+As an alternative, you may also run the following script as a shortcut, but it is
 os x specific:
 
     $ ./test.sh unit
@@ -44,8 +44,10 @@ To start integration tests:
 
     $ DESK_SITE_URL=https://mysite.desk.com DESK_SITE_EMAIL=myemail@example.com DESK_SITE_PASS=mypass go test integration_tests/*.go
 
-As an alternative, you may also run the following script as a shortcut, but it is 
+As an alternative, you may also run the following script as a shortcut, but it is
 os x specific:
 
     $ DESK_SITE_URL=https://mysite.desk.com DESK_SITE_EMAIL=myemail@example.com DESK_SITE_PASS=mypass ./test.sh integration
 
+You may also store the environment variables DESK_* in a .env file in the root of the project,
+and the test script will pick them up. See ```.env.example```

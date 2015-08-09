@@ -1,6 +1,6 @@
 package resource
 
-import(
+import (
 	. "github.com/talbright/go-desk/types"
 )
 
@@ -14,10 +14,13 @@ type Case struct {
 	Language        *string                `json:"language,omitempty"`
 	Priority        *int                   `json:"priority,omitempty"`
 	Labels          []string               `json:"labels,omitempty"`
+	LabelIDs        []int                  `json:"label_ids,omitempty"`
+	SuppressRules   *bool                  `json:"suppress_rules,omitempty"`
 	CustomFields    map[string]interface{} `json:"custom_fields,omitempty"`
 	LockedUntil     *Timestamp             `json:"locked_until",omitempty`
 	CreatedAt       *Timestamp             `json:"created_at,omitempty"`
 	UpdatedAt       *Timestamp             `json:"updated_at,omitempty"`
+	ChangedAt       *Timestamp             `json:"changed_at,omitempty"`
 	ReceivedAt      *Timestamp             `json:"received_at,omitempty"`
 	ActiveAt        *Timestamp             `json:"active_at,omitempty"`
 	OpenedAt        *Timestamp             `json:"opened_at,omitempty"`

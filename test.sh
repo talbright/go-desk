@@ -2,6 +2,12 @@
 
 GOPATH=`godep path`:$GOPATH
 
+if [[ -f .env ]]; then
+	set -a
+	source .env
+	set +a
+fi
+
 function run_unit_tests {
 	open http://localhost:8080
 	goconvey -short=true
