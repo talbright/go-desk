@@ -1,11 +1,3 @@
-//
-// Copyright (c) 2015 Highwinds Network Group, inc.
-// Unauthorized copying of this file, via any medium is strictly prohibited
-// Proprietary and confidential.
-//
-// @author    Scot Wells <scot.wells@highwinds.com>
-// @copyright 2015 Highwinds Network Group, inc.
-//
 package integration_tests
 
 import (
