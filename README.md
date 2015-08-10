@@ -3,9 +3,10 @@
 
 Desk.com APIv2 client implementation in Go (http://dev.desk.com/API)
 
-With over 200 API endpoints, the Desk API is a comprehensive one. To check
-on which endpoints have been implemented, please see the [status](STATUS.md)
-page.
+Most major endpoints have been implemented, leaving the more isoteric ones
+still to do. Those likely won't be worked on unless there's a demand for it.
+See the project issues section for up-to-date information on what's on the
+roadmap.
 
 ### Examples
 
