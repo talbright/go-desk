@@ -24,6 +24,7 @@ type Client struct {
 	Case         *CaseService
 	Customer     *CustomerService
 	Company      *CompanyService
+	User         *UserService
 }
 
 func NewClient(httpClient *http.Client, endpointURL string, userEmail string, userPassword string) *Client {
@@ -35,6 +36,7 @@ func NewClient(httpClient *http.Client, endpointURL string, userEmail string, us
 	c.Case = NewCaseService(c)
 	c.Customer = &CustomerService{client: c}
 	c.Company = &CompanyService{client: c}
+	c.User = &UserService{client: c}
 	return c
 }
 
@@ -55,7 +57,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		}
 		b, err := json.MarshalIndent(body, "", "  ")
 		if err == nil {
-			log.Printf("%s %s [request]\n%s",method,u.String(),b)
+			log.Printf("%s %s [request]\n%s", method, u.String(), b)
 		}
 	}
 
@@ -121,7 +123,7 @@ func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 			if err == nil {
 				b, indentErr := json.MarshalIndent(v, "", "  ")
 				if indentErr == nil {
-					log.Printf("%s %v [response]\n%s",req.Method,req.URL,b)
+					log.Printf("%s %v [response]\n%s", req.Method, req.URL, b)
 				}
 			}
 		}
