@@ -1,8 +1,8 @@
 package service
 
 import (
-	"net/http"
 	. "github.com/talbright/go-desk/resource"
+	"net/http"
 )
 
 type DraftService struct {
@@ -14,7 +14,7 @@ type DraftService struct {
 func (c *DraftService) Get(id string) (*Draft, *http.Response, error) {
 	restful := Restful{}
 	draft := NewDraft()
-	path := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetNested(NewDraft())
+	path := NewIdentityResourcePath(id, NewCase()).SetAction("replies").SetNested(NewDraft())
 	resp, err := restful.
 		Get(path.Path()).
 		Json(draft).
@@ -28,7 +28,7 @@ func (c *DraftService) Get(id string) (*Draft, *http.Response, error) {
 func (c *DraftService) Create(id string, draft *Draft) (*Draft, *http.Response, error) {
 	restful := Restful{}
 	createdDraft := NewDraft()
-	path := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetNested(draft)
+	path := NewIdentityResourcePath(id, NewCase()).SetAction("replies").SetNested(draft)
 	resp, err := restful.
 		Post(path.Path()).
 		Body(draft).
@@ -43,7 +43,7 @@ func (c *DraftService) Create(id string, draft *Draft) (*Draft, *http.Response, 
 func (c *DraftService) Update(id string, draft *Draft) (*Draft, *http.Response, error) {
 	restful := Restful{}
 	updatedDraft := NewDraft()
-	casesPath := NewIdentityResourcePath(id,NewCase()).SetAction("replies").SetNested(NewDraft())
+	casesPath := NewIdentityResourcePath(id, NewCase()).SetAction("replies").SetNested(NewDraft())
 	resp, err := restful.
 		Patch(casesPath.Path()).
 		Body(draft).

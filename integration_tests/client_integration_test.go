@@ -2,9 +2,9 @@ package integration_tests
 
 import (
 	. "github.com/smartystreets/goconvey/convey"
-	"testing"
 	"strconv"
 	"sync"
+	"testing"
 )
 
 func TestClientIntegration(t *testing.T) {
@@ -24,9 +24,9 @@ func TestClientIntegration(t *testing.T) {
 
 		// send the number of requests remaining plus 10, seems like sometimes the
 		// Desk API will let you pass the rate limit threshold
-		for i := 0; i < limit + 10; i++ {
+		for i := 0; i < limit+10; i++ {
 			wait.Add(1)
-			go func(){
+			go func() {
 				// issue a request against the API
 				// this request will block when the api limit has been hit
 				_, resp, _ := client.Case.Get("1")
@@ -42,6 +42,6 @@ func TestClientIntegration(t *testing.T) {
 
 		// wait until all the requests have completed
 		wait.Wait()
-		So(cases, ShouldEqual, limit + 10)
+		So(cases, ShouldEqual, limit+10)
 	})
 }

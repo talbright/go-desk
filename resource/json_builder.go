@@ -2,8 +2,8 @@ package resource
 
 import (
 	"github.com/lann/builder"
-	"time"
 	. "github.com/talbright/go-desk/types"
+	"time"
 )
 
 type jsonBuilder builder.Builder
@@ -102,7 +102,7 @@ func (b jsonBuilder) BuildNote() Note {
 }
 
 func (b jsonBuilder) BuildCompany() Company {
-	return builder.GetStructLike(b, Company{}).(Company)	
+	return builder.GetStructLike(b, Company{}).(Company)
 }
 
 var CaseBuilder = builder.Register(jsonBuilder{}, Case{}).(jsonBuilder)

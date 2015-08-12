@@ -2,9 +2,9 @@ package service
 
 import (
 	"encoding/json"
+	. "github.com/talbright/go-desk/resource"
 	"net/http"
 	"net/url"
-	. "github.com/talbright/go-desk/resource"
 )
 
 type CompanyService struct {
@@ -16,7 +16,7 @@ type CompanyService struct {
 func (c *CompanyService) Get(id string) (*Company, *http.Response, error) {
 	restful := Restful{}
 	company := NewCompany()
-	path := NewIdentityResourcePath(id,company)
+	path := NewIdentityResourcePath(id, company)
 	resp, err := restful.
 		Get(path.Path()).
 		Json(company).
@@ -89,7 +89,7 @@ func (c *CompanyService) Create(company *Company) (*Company, *http.Response, err
 func (c *CompanyService) Update(company *Company) (*Company, *http.Response, error) {
 	restful := Restful{}
 	updatedCompany := new(Company)
-	path := NewIdentityResourcePath(company.GetResourceId(),company)
+	path := NewIdentityResourcePath(company.GetResourceId(), company)
 	resp, err := restful.
 		Patch(path.Path()).
 		Body(company).
@@ -104,7 +104,7 @@ func (c *CompanyService) Update(company *Company) (*Company, *http.Response, err
 func (c *CompanyService) Cases(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(id,NewCompany()).SetNested(NewCase())
+	path := NewIdentityResourcePath(id, NewCompany()).SetNested(NewCase())
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).
@@ -126,7 +126,7 @@ func (c *CompanyService) Cases(id string, params *url.Values) (*Page, *http.Resp
 func (c *CompanyService) Customers(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(id,NewCompany()).SetNested(NewCustomer())
+	path := NewIdentityResourcePath(id, NewCompany()).SetNested(NewCustomer())
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).

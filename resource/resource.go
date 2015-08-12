@@ -13,7 +13,6 @@ type Resource struct {
 	Naming
 }
 
-func (r* Resource) InitializeResource(model interface{}) {
+func (r *Resource) InitializeResource(model interface{}) {
 	r.SetResourceName(model)
 }
-

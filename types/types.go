@@ -59,4 +59,3 @@ type DoubleValue *float64
 func Double(v float64) DoubleValue {
 	return &v
 }
-

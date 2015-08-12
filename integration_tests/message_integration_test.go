@@ -1,12 +1,12 @@
 package integration_tests
 
 import (
-	"log"
-	"testing"
 	"fmt"
-	"time"
 	. "github.com/smartystreets/goconvey/convey"
 	resource "github.com/talbright/go-desk/resource"
+	"log"
+	"testing"
+	"time"
 )
 
 func TestMessageIntegration(t *testing.T) {
@@ -17,9 +17,9 @@ func TestMessageIntegration(t *testing.T) {
 
 	Convey("should be able to show a case message", t, func() {
 		msg, _, err := client.Case.Message.Get("1")
-		So(err,ShouldBeNil)
-		log.Printf("retrieved message %v",msg)
-		So(*msg.Body,ShouldNotBeBlank)
+		So(err, ShouldBeNil)
+		log.Printf("retrieved message %v", msg)
+		So(*msg.Body, ShouldNotBeBlank)
 	})
 
 	Convey("should be able to update a case message", t, func() {
@@ -40,14 +40,14 @@ func TestMessageIntegration(t *testing.T) {
 			AddHrefLink("customer", fmt.Sprintf("/api/v2/customers/%d", DefaultCustomerId)).
 			BuildCase()
 		newCase, _, err := client.Case.Create(&caze)
-		So(err,ShouldBeNil)
+		So(err, ShouldBeNil)
 		subject := fmt.Sprintf("Case updated by API via desk-go at %v", time.Now())
 		updateMsg := resource.MessageBuilder.
 			SetString("Subject", subject).
 			BuildMessage()
 		newMsg, _, err := client.Case.Message.Update(newCase.GetResourceId(), &updateMsg, nil)
-		So(err,ShouldBeNil)
-		So(*newMsg.Subject,ShouldEqual,subject)
+		So(err, ShouldBeNil)
+		So(*newMsg.Subject, ShouldEqual, subject)
 	})
 
 	Convey("should be able to delete a case message", t, func() {
@@ -68,10 +68,9 @@ func TestMessageIntegration(t *testing.T) {
 			AddHrefLink("customer", fmt.Sprintf("/api/v2/customers/%d", DefaultCustomerId)).
 			BuildCase()
 		newCase, _, err := client.Case.Create(&caze)
-		So(err,ShouldBeNil)
+		So(err, ShouldBeNil)
 		_, err1 := client.Case.Message.Delete(newCase.GetResourceId())
-		So(err1,ShouldBeNil)
+		So(err1, ShouldBeNil)
 	})
 
 }
-

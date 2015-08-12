@@ -1,9 +1,9 @@
 package service
 
 import (
+	. "github.com/talbright/go-desk/resource"
 	"net/http"
 	"net/url"
-	. "github.com/talbright/go-desk/resource"
 )
 
 type MessageService struct {
@@ -15,7 +15,7 @@ type MessageService struct {
 func (s *MessageService) Get(caseId string) (*Message, *http.Response, error) {
 	restful := Restful{}
 	msg := NewMessage()
-	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(msg)
+	path := NewIdentityResourcePath(caseId, NewCase()).SetNested(msg)
 	resp, err := restful.
 		Get(path.Path()).
 		Json(msg).
@@ -29,7 +29,7 @@ func (s *MessageService) Get(caseId string) (*Message, *http.Response, error) {
 func (s *MessageService) Update(caseId string, msg *Message, params *url.Values) (*Message, *http.Response, error) {
 	restful := Restful{}
 	updatedMsg := NewMessage()
-	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(NewMessage())
+	path := NewIdentityResourcePath(caseId, NewCase()).SetNested(NewMessage())
 	resp, err := restful.
 		Patch(path.Path()).
 		Body(msg).
@@ -44,7 +44,7 @@ func (s *MessageService) Update(caseId string, msg *Message, params *url.Values)
 // See Desk API: http://dev.desk.com/API/cases/#message-delete
 func (s *MessageService) Delete(caseId string) (*http.Response, error) {
 	restful := Restful{}
-	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(NewMessage())
+	path := NewIdentityResourcePath(caseId, NewCase()).SetNested(NewMessage())
 	resp, err := restful.
 		Delete(path.Path()).
 		Client(s.client).

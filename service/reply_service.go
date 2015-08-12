@@ -2,9 +2,9 @@ package service
 
 import (
 	"encoding/json"
+	. "github.com/talbright/go-desk/resource"
 	"net/http"
 	"net/url"
-	. "github.com/talbright/go-desk/resource"
 )
 
 type ReplyService struct {
@@ -16,8 +16,8 @@ type ReplyService struct {
 func (c *ReplyService) Get(caseId string, replyId string) (*Reply, *http.Response, error) {
 	restful := Restful{}
 	reply := NewReply()
-	replyPath := NewIdentityResourcePath(replyId,NewReply())
-	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
+	replyPath := NewIdentityResourcePath(replyId, NewReply())
+	casePath := NewIdentityResourcePath(caseId, NewCase()).AppendPath(replyPath)
 	resp, err := restful.
 		Get(casePath.Path()).
 		Json(reply).
@@ -32,7 +32,7 @@ func (c *ReplyService) List(caseId string, params *url.Values) (*Page, *http.Res
 	restful := Restful{}
 	page := new(Page)
 	replyPath := NewResourcePath(NewReply())
-	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
+	casePath := NewIdentityResourcePath(caseId, NewCase()).AppendPath(replyPath)
 	resp, err := restful.
 		Get(casePath.Path()).
 		Json(page).
@@ -55,7 +55,7 @@ func (c *ReplyService) Create(caseId string, reply *Reply) (*Reply, *http.Respon
 	restful := Restful{}
 	createdReply := NewReply()
 	replyPath := NewResourcePath(createdReply)
-	casePath := NewIdentityResourcePath(caseId,NewCase()).AppendPath(replyPath)
+	casePath := NewIdentityResourcePath(caseId, NewCase()).AppendPath(replyPath)
 	resp, err := restful.
 		Post(casePath.Path()).
 		Body(reply).
@@ -70,7 +70,7 @@ func (c *ReplyService) Create(caseId string, reply *Reply) (*Reply, *http.Respon
 func (c *ReplyService) Update(caseId string, reply *Reply) (*Reply, *http.Response, error) {
 	restful := Restful{}
 	updatedReply := NewReply()
-	casePath := NewIdentityResourcePath(caseId,NewCase()).SetNested(reply)
+	casePath := NewIdentityResourcePath(caseId, NewCase()).SetNested(reply)
 	resp, err := restful.
 		Patch(casePath.Path()).
 		Body(reply).
@@ -84,7 +84,7 @@ func (c *ReplyService) Update(caseId string, reply *Reply) (*Reply, *http.Respon
 // See Desk API: http://dev.desk.com/API/cases/#replies-show
 func (c *ReplyService) Delete(caseId string, replyId string) (*http.Response, error) {
 	restful := Restful{}
-	casePath := NewIdentityResourcePath(caseId,NewCase()).SetAction("replies").SetSuffix(replyId)
+	casePath := NewIdentityResourcePath(caseId, NewCase()).SetAction("replies").SetSuffix(replyId)
 	resp, err := restful.
 		Delete(casePath.Path()).
 		Client(c.client).

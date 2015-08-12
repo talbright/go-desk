@@ -16,4 +16,3 @@ func init() {
 	log.Println("init")
 	log.Printf("Desk client library (%v) for desk.com API %v\n", DeskLibVersion, DeskApiVersion)
 }
-

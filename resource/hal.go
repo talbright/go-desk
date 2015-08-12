@@ -2,15 +2,15 @@ package resource
 
 import (
 	"fmt"
+	. "github.com/talbright/go-desk/types"
 	"strconv"
 	"strings"
-	. "github.com/talbright/go-desk/types"
 )
 
 type Hal struct {
-	requireSelfId	bool
-	Id    *int                              `json:"id,int,omitempty"`
-	Links map[string]map[string]interface{} `json:"_links,omitempty"`
+	requireSelfId bool
+	Id            *int                              `json:"id,int,omitempty"`
+	Links         map[string]map[string]interface{} `json:"_links,omitempty"`
 }
 
 func NewHal() *Hal {
@@ -86,7 +86,7 @@ func (c *Hal) HasLinkAndSubItem(name string, subitem string) bool {
 
 func (c *Hal) GetResourceId() string {
 	var id string
-	if c.GetId()>=0 {
+	if c.GetId() >= 0 {
 		id = fmt.Sprintf("%d", c.GetId())
 	}
 	return id
@@ -98,11 +98,10 @@ func (c *Hal) SetResourceId(id string) {
 }
 
 func (c *Hal) GetResourcePath(resource Resourceful, options ...func(*ResourcePath)) ResourcePath {
-	pathing:=ResourcePath{Target: resource}
+	pathing := ResourcePath{Target: resource}
 	pathing.SetMember()
-	for _,option := range options {
+	for _, option := range options {
 		option(&pathing)
 	}
 	return pathing
 }
-
