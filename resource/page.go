@@ -31,4 +31,3 @@ type Page struct {
 func (c Page) String() string {
 	return Stringify(c)
 }
-

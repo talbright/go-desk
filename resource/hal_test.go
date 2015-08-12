@@ -17,13 +17,13 @@ func TestHal(t *testing.T) {
 		Convey("should generate a valid collection path", func() {
 			caze := NewCase()
 			caze.SetResourceId("1")
-			path := caze.GetResourcePath(caze,ResourcePathOptionSetCollection)
+			path := caze.GetResourcePath(caze, ResourcePathOptionSetCollection)
 			So(path.String(), ShouldEqual, "cases")
 		})
 		Convey("should inclue a prefix", func() {
 			caze := NewCase()
 			caze.SetResourceId("1")
-			path := caze.GetResourcePath(caze,func(rp *ResourcePath) {
+			path := caze.GetResourcePath(caze, func(rp *ResourcePath) {
 				rp.Prefix = "api/v2"
 			})
 			So(path.String(), ShouldEqual, "api/v2/cases/1")
@@ -31,7 +31,7 @@ func TestHal(t *testing.T) {
 		Convey("should inclue a sufix", func() {
 			caze := NewCase()
 			caze.SetResourceId("1")
-			path := caze.GetResourcePath(caze,func(rp *ResourcePath) {
+			path := caze.GetResourcePath(caze, func(rp *ResourcePath) {
 				rp.Suffix = "replies/1"
 			})
 			So(path.String(), ShouldEqual, "cases/1/replies/1")

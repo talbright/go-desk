@@ -1,20 +1,20 @@
 package service
 
 import (
+	"bytes"
 	"encoding/json"
+	. "github.com/talbright/go-desk/resource"
 	"net/http"
 	"net/url"
-	"bytes"
-	. "github.com/talbright/go-desk/resource"
 )
 
 type CaseService struct {
-	client			*Client
-	Message			*MessageService
-	Reply				*ReplyService
-	Draft				*DraftService
-	Note				*NoteService
-	Attachment	*AttachmentService
+	client     *Client
+	Message    *MessageService
+	Reply      *ReplyService
+	Draft      *DraftService
+	Note       *NoteService
+	Attachment *AttachmentService
 }
 
 func NewCaseService(httpClient *Client) *CaseService {
@@ -32,7 +32,7 @@ func NewCaseService(httpClient *Client) *CaseService {
 func (s *CaseService) Get(id string) (*Case, *http.Response, error) {
 	restful := Restful{}
 	cse := NewCase()
-	path := NewIdentityResourcePath(id,cse)
+	path := NewIdentityResourcePath(id, cse)
 	resp, err := restful.
 		Get(path.Path()).
 		Json(cse).
@@ -86,10 +86,10 @@ func (s *CaseService) Search(params *url.Values, q *string) (*Page, *http.Respon
 	return page, resp, err
 }
 
-func (s *CaseService) Feed(id string,params *url.Values) (*Page, *http.Response, error) {
+func (s *CaseService) Feed(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(id,NewCase()).SetAction("feed")
+	path := NewIdentityResourcePath(id, NewCase()).SetAction("feed")
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).
@@ -106,10 +106,10 @@ func (s *CaseService) Feed(id string,params *url.Values) (*Page, *http.Response,
 	return page, resp, err
 }
 
-func (s *CaseService) History(id string,params *url.Values) (*Page, *http.Response, error) {
+func (s *CaseService) History(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(id,NewCase()).SetAction("history")
+	path := NewIdentityResourcePath(id, NewCase()).SetAction("history")
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).
@@ -126,10 +126,10 @@ func (s *CaseService) History(id string,params *url.Values) (*Page, *http.Respon
 	return page, resp, err
 }
 
-func (s *CaseService) Labels(id string,params *url.Values) (*Page, *http.Response, error) {
+func (s *CaseService) Labels(id string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(id,NewCase()).SetAction("labels")
+	path := NewIdentityResourcePath(id, NewCase()).SetAction("labels")
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).
@@ -166,7 +166,7 @@ func (s *CaseService) Create(cse *Case) (*Case, *http.Response, error) {
 func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
 	restful := Restful{}
 	updatedCase := NewCase()
-	path := NewIdentityResourcePath(cse.GetResourceId(),cse)
+	path := NewIdentityResourcePath(cse.GetResourceId(), cse)
 	resp, err := restful.
 		Patch(path.Path()).
 		Body(cse).
@@ -180,7 +180,7 @@ func (s *CaseService) Update(cse *Case) (*Case, *http.Response, error) {
 // See Desk API: http://dev.desk.com/API/cases/#delete
 func (s *CaseService) Delete(id string) (*http.Response, error) {
 	restful := Restful{}
-	path := NewIdentityResourcePath(id,NewCase())
+	path := NewIdentityResourcePath(id, NewCase())
 	resp, err := restful.
 		Delete(path.Path()).
 		Client(s.client).
@@ -195,7 +195,7 @@ func (s *CaseService) Forward(id string, recipients string, note string) (*http.
 	forward["to"] = recipients
 	forward["note_text"] = note
 	restful := Restful{}
-	path := NewIdentityResourcePath(id,NewCase()).SetAction("forward")
+	path := NewIdentityResourcePath(id, NewCase()).SetAction("forward")
 	resp, err := restful.
 		Post(path.Path()).
 		Client(s.client).
@@ -230,7 +230,7 @@ func (s *CaseService) unravelFeedPage(page *Page) error {
 	}
 
 	feedItems := container.([]interface{})
-	page.Embedded.Entries = make([]interface{},0)
+	page.Embedded.Entries = make([]interface{}, 0)
 	for _, v := range feedItems {
 		entry := v.(map[string]interface{})
 		links := entry["_links"].(map[string]interface{})
@@ -246,14 +246,14 @@ func (s *CaseService) unravelFeedPage(page *Page) error {
 			if err != nil {
 				return err
 			}
-			page.Embedded.Entries = append(page.Embedded.Entries,interface{}(note))
+			page.Embedded.Entries = append(page.Embedded.Entries, interface{}(note))
 		default:
 			reply := NewReply()
 			err = json.Unmarshal(remarshalled, &reply)
 			if err != nil {
 				return err
 			}
-			page.Embedded.Entries = append(page.Embedded.Entries,interface{}(reply))
+			page.Embedded.Entries = append(page.Embedded.Entries, interface{}(reply))
 		}
 	}
 
@@ -289,4 +289,3 @@ func (s *CaseService) unravelLabelPage(page *Page) error {
 	page.Embedded.RawEntries = nil
 	return err
 }
-

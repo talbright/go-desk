@@ -1,20 +1,20 @@
 package service
 
 import (
-	"net/http"
 	"encoding/json"
 	. "github.com/talbright/go-desk/resource"
+	"net/http"
 )
 
 type AttachmentService struct {
 	client *Client
 }
 
-func (s *AttachmentService) Get(caseId string,attachId string) (*Attachment, *http.Response, error) {
+func (s *AttachmentService) Get(caseId string, attachId string) (*Attachment, *http.Response, error) {
 	restful := Restful{}
 	attach := NewAttachment()
-	attachPath := NewIdentityResourcePath(attachId,NewAttachment())
-	path := NewIdentityResourcePath(caseId,NewCase()).AppendPath(attachPath)
+	attachPath := NewIdentityResourcePath(attachId, NewAttachment())
+	path := NewIdentityResourcePath(caseId, NewCase()).AppendPath(attachPath)
 	resp, err := restful.
 		Get(path.Path()).
 		Json(attach).
@@ -27,7 +27,7 @@ func (s *AttachmentService) Create(caseId string, attach *Attachment) (*Attachme
 	restful := Restful{}
 	createdAttachment := NewAttachment()
 	attachmentPath := NewResourcePath(createdAttachment)
-	path := NewIdentityResourcePath(caseId,NewCase()).AppendPath(attachmentPath)
+	path := NewIdentityResourcePath(caseId, NewCase()).AppendPath(attachmentPath)
 	resp, err := restful.
 		Post(path.Path()).
 		Body(attach).
@@ -37,10 +37,10 @@ func (s *AttachmentService) Create(caseId string, attach *Attachment) (*Attachme
 	return createdAttachment, resp, err
 }
 
-func (s *AttachmentService) Delete(caseId string,attachId string) (*http.Response, error) {
+func (s *AttachmentService) Delete(caseId string, attachId string) (*http.Response, error) {
 	restful := Restful{}
-	attachPath := NewIdentityResourcePath(attachId,NewAttachment())
-	path := NewIdentityResourcePath(caseId,NewCase()).AppendPath(attachPath)
+	attachPath := NewIdentityResourcePath(attachId, NewAttachment())
+	path := NewIdentityResourcePath(caseId, NewCase()).AppendPath(attachPath)
 	resp, err := restful.
 		Delete(path.Path()).
 		Client(s.client).
@@ -51,7 +51,7 @@ func (s *AttachmentService) Delete(caseId string,attachId string) (*http.Respons
 func (s *AttachmentService) List(caseId string) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(caseId,NewCase()).SetAction("attachments")
+	path := NewIdentityResourcePath(caseId, NewCase()).SetAction("attachments")
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).
@@ -81,4 +81,3 @@ func (s *AttachmentService) unravelPage(page *Page) error {
 	page.Embedded.RawEntries = nil
 	return err
 }
-

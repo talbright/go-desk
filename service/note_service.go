@@ -2,13 +2,13 @@ package service
 
 import (
 	"encoding/json"
+	. "github.com/talbright/go-desk/resource"
 	"net/http"
 	"net/url"
-	. "github.com/talbright/go-desk/resource"
 )
 
 type NoteService struct {
-	client  *Client
+	client *Client
 }
 
 func NewNoteService(httpClient *Client) *NoteService {
@@ -16,11 +16,11 @@ func NewNoteService(httpClient *Client) *NoteService {
 	return s
 }
 
-func (s *NoteService) Get(caseId string,noteId string) (*Note, *http.Response, error) {
+func (s *NoteService) Get(caseId string, noteId string) (*Note, *http.Response, error) {
 	restful := Restful{}
 	note := NewNote()
-	notePath := NewIdentityResourcePath(noteId,NewNote())
-	path := NewIdentityResourcePath(caseId,NewCase()).AppendPath(notePath)
+	notePath := NewIdentityResourcePath(noteId, NewNote())
+	path := NewIdentityResourcePath(caseId, NewCase()).AppendPath(notePath)
 	resp, err := restful.
 		Get(path.Path()).
 		Json(note).
@@ -29,10 +29,10 @@ func (s *NoteService) Get(caseId string,noteId string) (*Note, *http.Response, e
 	return note, resp, err
 }
 
-func (s *NoteService) Create(caseId string,note *Note) (*Note, *http.Response, error) {
+func (s *NoteService) Create(caseId string, note *Note) (*Note, *http.Response, error) {
 	restful := Restful{}
 	createdNote := NewNote()
-	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(createdNote)
+	path := NewIdentityResourcePath(caseId, NewCase()).SetNested(createdNote)
 	resp, err := restful.
 		Post(path.Path()).
 		Body(note).
@@ -42,11 +42,11 @@ func (s *NoteService) Create(caseId string,note *Note) (*Note, *http.Response, e
 	return createdNote, resp, err
 }
 
-func (s *NoteService) Update(caseId string,note *Note) (*Note, *http.Response, error) {
+func (s *NoteService) Update(caseId string, note *Note) (*Note, *http.Response, error) {
 	restful := Restful{}
 	updatedNote := NewNote()
 	notePath := NewResourcePath(note).SetMember()
-	path := NewIdentityResourcePath(caseId,NewCase()).AppendPath(notePath)
+	path := NewIdentityResourcePath(caseId, NewCase()).AppendPath(notePath)
 	resp, err := restful.
 		Patch(path.Path()).
 		Body(note).
@@ -56,10 +56,10 @@ func (s *NoteService) Update(caseId string,note *Note) (*Note, *http.Response, e
 	return updatedNote, resp, err
 }
 
-func (s *NoteService) List(caseId string,params *url.Values) (*Page, *http.Response, error) {
+func (s *NoteService) List(caseId string, params *url.Values) (*Page, *http.Response, error) {
 	restful := Restful{}
 	page := new(Page)
-	path := NewIdentityResourcePath(caseId,NewCase()).SetNested(NewNote())
+	path := NewIdentityResourcePath(caseId, NewCase()).SetNested(NewNote())
 	resp, err := restful.
 		Get(path.Path()).
 		Json(page).
@@ -78,8 +78,8 @@ func (s *NoteService) List(caseId string,params *url.Values) (*Page, *http.Respo
 
 func (s *NoteService) Delete(caseId string, noteId string) (*http.Response, error) {
 	restful := Restful{}
-	notePath := NewIdentityResourcePath(noteId,NewNote()).SetMember()
-	path := NewIdentityResourcePath(caseId,NewCase()).AppendPath(notePath)
+	notePath := NewIdentityResourcePath(noteId, NewNote()).SetMember()
+	path := NewIdentityResourcePath(caseId, NewCase()).AppendPath(notePath)
 	resp, err := restful.
 		Delete(path.Path()).
 		Client(s.client).
@@ -101,4 +101,3 @@ func (s *NoteService) unravelPage(page *Page) error {
 	page.Embedded.RawEntries = nil
 	return err
 }
-

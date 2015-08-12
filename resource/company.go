@@ -1,6 +1,6 @@
 package resource
 
-import(
+import (
 	. "github.com/talbright/go-desk/types"
 )
 

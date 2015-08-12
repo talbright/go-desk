@@ -2,13 +2,13 @@ package integration_tests
 
 import (
 	// "log"
-	"testing"
 	"fmt"
-	"net/url"
-	"time"
 	. "github.com/smartystreets/goconvey/convey"
 	resource "github.com/talbright/go-desk/resource"
 	types "github.com/talbright/go-desk/types"
+	"net/url"
+	"testing"
+	"time"
 )
 
 func TestCustomerIntegration(t *testing.T) {
@@ -19,8 +19,8 @@ func TestCustomerIntegration(t *testing.T) {
 
 	Convey("should be able to retrieve a customer by ID", t, func() {
 		customer, _, err := client.Customer.Get(fmt.Sprintf("%d", DefaultCustomerId))
-		So(err,ShouldBeNil)
-		So(customer,ShouldNotBeNil)
+		So(err, ShouldBeNil)
+		So(customer, ShouldNotBeNil)
 	})
 
 	Convey("should be able to retrieve a list of customers", t, func() {
@@ -28,9 +28,9 @@ func TestCustomerIntegration(t *testing.T) {
 		listParams.Add("sort_field", "created_at")
 		listParams.Add("sort_direction", "asc")
 		collection, _, err := client.Customer.List(&listParams)
-		So(err,ShouldBeNil)
-		So(*collection.TotalEntries,ShouldBeGreaterThan,0)
-		So(*collection.Embedded,ShouldNotBeNil)
+		So(err, ShouldBeNil)
+		So(*collection.TotalEntries, ShouldBeGreaterThan, 0)
+		So(*collection.Embedded, ShouldNotBeNil)
 	})
 
 	Convey("should be able to search for customers", t, func() {
@@ -39,9 +39,9 @@ func TestCustomerIntegration(t *testing.T) {
 		searchParams.Add("sort_direction", "asc")
 		searchParams.Add("max_id", "200000000")
 		collection, _, err := client.Customer.Search(&searchParams, nil)
-		So(err,ShouldBeNil)
-		So(*collection.TotalEntries,ShouldBeGreaterThan,0)
-		So(*collection.Embedded,ShouldNotBeNil)
+		So(err, ShouldBeNil)
+		So(*collection.TotalEntries, ShouldBeGreaterThan, 0)
+		So(*collection.Embedded, ShouldNotBeNil)
 	})
 
 	Convey("should be able to create a customer", t, func() {
@@ -49,8 +49,8 @@ func TestCustomerIntegration(t *testing.T) {
 		customer.FirstName = types.String("James")
 		customer.LastName = types.String("Dean")
 		newCustomer, _, err := client.Customer.Create(customer)
-		So(err,ShouldBeNil)
-		So(newCustomer,ShouldNotBeNil)
+		So(err, ShouldBeNil)
+		So(newCustomer, ShouldNotBeNil)
 	})
 
 	Convey("should be able to update a customer", t, func() {
@@ -59,9 +59,9 @@ func TestCustomerIntegration(t *testing.T) {
 		customer.Id = types.Integer(DefaultCustomerId)
 		customer.Background = types.String(background)
 		updatedCustomer, _, err := client.Customer.Update(customer)
-		So(err,ShouldBeNil)
-		So(updatedCustomer,ShouldNotBeNil)
-		So(*updatedCustomer.Background,ShouldEqual,background)
+		So(err, ShouldBeNil)
+		So(updatedCustomer, ShouldNotBeNil)
+		So(*updatedCustomer.Background, ShouldEqual, background)
 	})
 
 	Convey("should be able to retrieve cases for a customer", t, func() {
@@ -69,10 +69,9 @@ func TestCustomerIntegration(t *testing.T) {
 		params.Add("sort_field", "created_at")
 		params.Add("sort_direction", "asc")
 		collection, _, err := client.Customer.Cases(fmt.Sprintf("%d", DefaultCustomerId), &params)
-		So(err,ShouldBeNil)
-		So(*collection.TotalEntries,ShouldBeGreaterThan,0)
-		So(*collection.Embedded,ShouldNotBeNil)
+		So(err, ShouldBeNil)
+		So(*collection.TotalEntries, ShouldBeGreaterThan, 0)
+		So(*collection.Embedded, ShouldNotBeNil)
 	})
 
 }
-
