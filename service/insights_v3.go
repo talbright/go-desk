@@ -19,6 +19,7 @@ func (s *InsightsV3Service) Report(query *InsightsV3Query) (*InsightsV3Report, *
 		Json(report).
 		Client(s.client).
 		Do()
+	report.Unravel()
 
 	return report, resp, err
 }
