@@ -81,7 +81,9 @@ func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 	var resp *http.Response
 	var err error
 
+	body, err := ioutil.ReadAll(req.Body)
 	for {
+		req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 		resp, err = c.client.Do(req)
 
 		if err != nil {
