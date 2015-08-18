@@ -15,6 +15,7 @@ import (
 var DefaultCustomerId int
 var DefaultCompanyId int
 var DefaultUserId int
+var DefaultGroupId int
 
 func init() {
 	SetupLogging()
@@ -22,6 +23,7 @@ func init() {
 	DefaultCustomerId, _ = strconv.Atoi(os.Getenv("DESK_DEFAULT_CUSTOMER_ID"))
 	DefaultCompanyId, _ = strconv.Atoi(os.Getenv("DESK_DEFAULT_COMPANY_ID"))
 	DefaultUserId, _ = strconv.Atoi(os.Getenv("DESK_DEFAULT_USER_ID"))
+	DefaultGroupId, _ = strconv.Atoi(os.Getenv("DESK_DEFAULT_GROUP_ID"))
 }
 
 func CreateClient() *service.Client {
