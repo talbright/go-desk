@@ -6,9 +6,9 @@ import (
 )
 
 type InsightsV3Report struct {
-	Request *InsightsV3Query        `json:"request"`
-	Header  []string                `json:"header"`
-	RawData [][]interface{}         `json:"data"`
+	Request *InsightsV3Query `json:"request"`
+	Header  []string         `json:"header"`
+	RawData [][]interface{}  `json:"data"`
 	Data    []*InsightsV3ReportItem
 }
 
@@ -16,19 +16,19 @@ type InsightsV3ReportItem struct {
 	Dimension1Value interface{}
 	Dimension2Value interface{}
 	WindowTime      Timestamp
-	Data            map[string] interface{}
+	Data            map[string]interface{}
 }
 
 func (r *InsightsV3Report) Unravel() {
 	for _, d := range r.RawData {
 		// initialize the map
-		item := InsightsV3ReportItem{
-			Data: make(map[string] interface{}),
+		item := &InsightsV3ReportItem{
+			Data: make(map[string]interface{}),
 		}
 
 		// check that the window time is given
 		if d[0] != nil {
-			time, err := time.Parse(time.RFC3339, d[0].(string))
+			time, err := time.Parse("2006-01-02 15:04:05", d[0].(string))
 
 			if err == nil {
 				// add the window time as a timestamp type
@@ -48,5 +48,7 @@ func (r *InsightsV3Report) Unravel() {
 			// use the headers value as the key in the map
 			item.Data[headers[j]] = val
 		}
+
+		r.Data = append(r.Data, item)
 	}
 }
