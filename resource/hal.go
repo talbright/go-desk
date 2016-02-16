@@ -71,7 +71,7 @@ func (c *Hal) AddHrefLink(class string, href string) {
 func (c *Hal) GetHrefLink(class string) string {
 	var href string
 	if c.HasLinkAndSubItem(class, "href") {
-		href = c.Links["self"]["href"].(string)
+		href = c.Links[class]["href"].(string)
 	}
 	return href
 }
