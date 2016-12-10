@@ -30,6 +30,25 @@ func (c *GroupService) Get(id string) (*Group, *http.Response, error) {
 	return group, resp, err
 }
 
+func (c *GroupService) GetUserGroups(id string) (*Page, *http.Response, error) {
+	restful := Restful{}
+	page := new(Page)
+	resp, err := restful.
+		Get("/api/v2/users/"+id+"/groups").
+		Json(page).
+		Client(c.client).
+		Do()
+
+	if err != nil {
+		return nil, resp, err
+	}
+	err = c.unravelPage(page)
+	if err != nil {
+		return nil, nil, err
+	}
+	return page, resp, err
+}
+
 // List group with filtering and pagination.
 // See Desk API: http://dev.desk.com/API/groups/#list
 func (c *GroupService) List(params *url.Values) (*Page, *http.Response, error) {
